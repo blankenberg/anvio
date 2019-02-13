@@ -1,0 +1,47 @@
+<tool id="anvi_oligotype_linkmers" name="anvi-oligotype-linkmers" version="5.2">
+    <description>Takes an anvi'o linkmers report, generates an oligotyping output</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-oligotype-linkmers --version</version_command>
+    <command><![CDATA[
+        anvi-oligotype-linkmers
+--input-file '${input_file}'
+
+
+#if $output_dir:
+    --output-dir '${output_dir.extra_files_path}'
+#end if
+
+&> '${GALAXY_ANVIO_LOG}'
+
+ &&
+ls -lahR
+    ]]></command>
+    <inputs>
+        <param name="input_file" type="data" label="Input File" format="txt" optional="False" multiple="False" argument="--input-file" help="Output file of `anvi-report-linkmers`."/>
+    </inputs>
+    <outputs>
+        <data name="output_dir" format="anvio_profile_db" format_source="input_output_dir" metadata_source="input_output_dir" label="${tool.name} on ${on_string}: Output Dir"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-oligotype-linkmers [-h] -i LINKMER_REPORT -o DIR_PATH
+
+Takes an anvi'o linkmers report, generates an oligotyping output
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i LINKMER_REPORT, --input-file LINKMER_REPORT
+                        Output file of `anvi-report-linkmers`.
+  -o DIR_PATH, --output-dir DIR_PATH
+                        Directory path for output files
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+    </citations>
+</tool>

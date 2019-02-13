@@ -31,7 +31,8 @@ if __name__ == '__main__':
 
     groupA = parser.add_argument_group('INPUT', 'Give us the preciousss...')
     groupA.add_argument('-m', '--metadata', required=True, help='This is the file you get from the\
-                            program `ncbi-genome-download` when you use the parameter `--metadata-table`.')
+                            program `ncbi-genome-download` when you use the parameter `--metadata-table`.',
+                            metavar='GENBANK_METADATA')
 
     groupB = parser.add_argument_group('OUTPUT', "Where to find your precioussesss...")
     groupB.add_argument(*anvio.A('output-dir'), **anvio.K('output-dir'))

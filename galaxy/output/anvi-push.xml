@@ -1,0 +1,174 @@
+<tool id="anvi_push" name="anvi-push" version="5.2">
+    <description>Push stuff to an anvi'server</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-push --version</version_command>
+    <command><![CDATA[
+        anvi-push
+--user '${user}'
+
+
+#if $str( $api_url ):
+    --api-url '${api_url}'
+#end if
+
+--project-name '${project_name}'
+
+
+#if $tree:
+    --tree '${tree}'
+#end if
+
+
+#if $items_order:
+    --items-order '${items_order}'
+#end if
+
+
+#if $fasta_file:
+    --fasta-file '${fasta_file}'
+#end if
+
+
+#if $view_data:
+    --view-data '${view_data}'
+#end if
+
+
+#if $additional_layers:
+    --additional-layers '${additional_layers}'
+#end if
+
+
+#if $state:
+    --state '${state}'
+#end if
+
+
+#if $description:
+    --description '${description}'
+#end if
+
+
+#if $bins:
+    --bins '${bins}'
+#end if
+
+
+#if $bins_info:
+    --bins-info '${bins_info}'
+#end if
+
+${delete_if_exists}
+
+&> '${GALAXY_ANVIO_LOG}'
+
+ &&
+ls -lahR
+    ]]></command>
+    <inputs>
+        <param name="user" type="text" label="User" value="" optional="False" argument="--user" help="The user for an anvi'server."/>
+        <param name="api_url" type="text" label="Api Url" value="https://anvi-server.org" optional="True" argument="--api-url" help="Anvi'server url"/>
+        <param name="project_name" type="text" label="Project Name" value="" optional="False" argument="--project-name" help="Name of the project. Please choose a short but descriptive name (so anvi'o can use it whenever she needs to name an output file, or add a new table in a database, or name her first born)."/>
+        <param name="tree" type="data" label="Tree" format="newick" optional="True" multiple="False" argument="--tree" help="NEWICK formatted tree structure"/>
+        <param name="items_order" type="data" label="Items Order" format="txt" optional="True" multiple="False" argument="--items-order" help="A flat file that contains the order of items you wish the display using the interactive interface. You may want to use this if you have a specific order of items in your mind, and do not want to display a tree in the middle (or simply you don't have one). The file format is simple: each line should have an item name, and there should be no header."/>
+        <param name="fasta_file" type="data" label="Fasta File" format="fasta" optional="True" multiple="False" argument="--fasta-file" help="A FASTA-formatted input file"/>
+        <param name="view_data" type="data" label="View Data" format="tabular" optional="True" multiple="False" argument="--view-data" help="A TAB-delimited file for view data"/>
+        <param name="additional_layers" type="data" label="Additional Layers" format="tabular" optional="True" multiple="False" argument="--additional-layers" help="A TAB-delimited file for additional layers for splits. The first column of this file must be split names, and the remaining columns should be unique attributes. The file does not need to contain all split names, or values for each split in every column. Anvi'o will try to deal with missing data nicely. Each column in this file will be visualized as a new layer in the tree."/>
+        <param name="state" type="data" label="State" format="anvio_state" optional="True" multiple="False" argument="--state" help="State file, you can export states from database using anvi-export-state program"/>
+        <param name="description" type="data" label="Description" format="tabular" optional="True" multiple="False" argument="--description" help="A plain text file that contains some description about the project. You can use Markdwon syntax. The description text will be rendered and shown in all relevant interfaces, including the anvi'o interactive interface, or anvi'o summary outputs."/>
+        <param name="bins" type="data" label="Bins" format="tabular" optional="True" multiple="False" argument="--bins" help="Tab-delimited file, first column contains tree leaves (gene clusters, splits, contigs etc.) and second column contains which Bin they belong."/>
+        <param name="bins_info" type="data" label="Bins Info" format="tabular" optional="True" multiple="False" argument="--bins-info" help="Additional information for bins. The file must contain three TAB-delimited columns, where the first one must be a unique bin name, the second should be a 'source', and the last one should be a 7 character HTML color code (i.e., '#424242'). Source column must contain information about the origin of the bin. If these bins are automatically identified by a program like CONCOCT, this column could contain the program name and version. The source information will be associated with the bin in various interfaces so in a sense it is not *that* critical what it says there, but on the other hand it is, becuse we should also think about people who may end up having to work with what we put together later."/>
+        <param name="delete_if_exists" type="boolean" label="Delete If Exists" truevalue="--delete-if-exists" falsevalue="" checked="False" optional="True" argument="--delete-if-exists" help="Be bold (at your own risk), and delete if exists."/>
+    </inputs>
+    <outputs>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-push [-h] --user USERNAME [--api-url API_URL] -n
+                              PROJECT_NAME [-t NEWICK]
+                              [--items-order FLAT_FILE] [-f FASTA]
+                              [-d VIEW_DATA] [-A ADDITIONAL_LAYERS] [-s STATE]
+                              [--description TEXT_FILE] [--bins BINS_DATA]
+                              [--bins-info BINS_INFO] [--delete-if-exists]
+
+Push stuff to an anvi'server
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --user USERNAME       The user for an anvi'server.
+  --api-url API_URL     Anvi'server url
+  -n PROJECT_NAME, --project-name PROJECT_NAME
+                        Name of the project. Please choose a short but
+                        descriptive name (so anvi'o can use it whenever she
+                        needs to name an output file, or add a new table in a
+                        database, or name her first born).
+  -t NEWICK, --tree NEWICK
+                        NEWICK formatted tree structure
+  --items-order FLAT_FILE
+                        A flat file that contains the order of items you wish
+                        the display using the interactive interface. You may
+                        want to use this if you have a specific order of items
+                        in your mind, and do not want to display a tree in the
+                        middle (or simply you don't have one). The file format
+                        is simple: each line should have an item name, and
+                        there should be no header.
+  -f FASTA, --fasta-file FASTA
+                        A FASTA-formatted input file
+  -d VIEW_DATA, --view-data VIEW_DATA
+                        A TAB-delimited file for view data
+  -A ADDITIONAL_LAYERS, --additional-layers ADDITIONAL_LAYERS
+                        A TAB-delimited file for additional layers for splits.
+                        The first column of this file must be split names, and
+                        the remaining columns should be unique attributes. The
+                        file does not need to contain all split names, or
+                        values for each split in every column. Anvi'o will try
+                        to deal with missing data nicely. Each column in this
+                        file will be visualized as a new layer in the tree.
+  -s STATE, --state STATE
+                        State file, you can export states from database using
+                        anvi-export-state program
+  --description TEXT_FILE
+                        A plain text file that contains some description about
+                        the project. You can use Markdwon syntax. The
+                        description text will be rendered and shown in all
+                        relevant interfaces, including the anvi'o interactive
+                        interface, or anvi'o summary outputs.
+  --bins BINS_DATA      Tab-delimited file, first column contains tree leaves
+                        (gene clusters, splits, contigs etc.) and second
+                        column contains which Bin they belong.
+  --bins-info BINS_INFO
+                        Additional information for bins. The file must contain
+                        three TAB-delimited columns, where the first one must
+                        be a unique bin name, the second should be a 'source',
+                        and the last one should be a 7 character HTML color
+                        code (i.e., '#424242'). Source column must contain
+                        information about the origin of the bin. If these bins
+                        are automatically identified by a program like
+                        CONCOCT, this column could contain the program name
+                        and version. The source information will be associated
+                        with the bin in various interfaces so in a sense it is
+                        not *that* critical what it says there, but on the
+                        other hand it is, becuse we should also think about
+                        people who may end up having to work with what we put
+                        together later.
+  --delete-if-exists    Be bold (at your own risk), and delete if exists.
+
+SERVER DETAILS:
+  Details of how to access to an anvi'server instance.
+
+PROJECT DETAILS:
+  What to send to the server
+
+RISKY CLICKS:
+  As the name suggests!
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+    </citations>
+</tool>

@@ -1,0 +1,86 @@
+<tool id="anvi_report_linkmers" name="anvi-report-linkmers" version="5.2">
+    <description>Access reads in contigs and positions in a BAM file</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-report-linkmers --version</version_command>
+    <command><![CDATA[
+        
+        #for $gxy_i, $input_galaxy_bam in enumerate( $input_files ):
+        #if $gxy_i != 0:
+            &&
+        #end if
+        ln -s '${input_galaxy_bam}' '${gxy_i}_input_files.bam' && ln -s '${input_galaxy_bam.metadata.bam_index}' '${gxy_i}_input_files.bam.bai'
+        #end for
+        
+ &&
+ anvi-report-linkmers
+
+        #for $gxy_i, $input_galaxy_bam in enumerate( $input_files ):
+        --input-files '${gxy_i}_input_files.bam'
+        #end for
+        
+
+--contigs-and-positions '${contigs_and_positions}'
+
+${only_complete_links}
+
+--output-file '${output_file}'
+
+${list_contigs}
+
+&> '${GALAXY_ANVIO_LOG}'
+
+ &&
+ls -lahR
+    ]]></command>
+    <inputs>
+        <param name="input_files" type="data" label="Input Files" format="bam" optional="False" multiple="True" argument="--input-files" help="Sorted and indexed BAM files to analyze. It is essential that all BAM files must be the result of mappings against the same contigs."/>
+        <param name="contigs_and_positions" type="data" label="Contigs And Positions" format="tabular" optional="False" multiple="False" argument="--contigs-and-positions" help="This is the file where you list the contigs, and nucleotide positions you are interested in. This is supposed to be a TAB-delimited file with two columns. In each line, the first column should be the contig name, and the second column should be the comma-separated list of integers for nucleotide positions."/>
+        <param name="only_complete_links" type="boolean" label="Only Complete Links" truevalue="--only-complete-links" falsevalue="" checked="False" optional="True" argument="--only-complete-links" help="When declared, only reads that cover all positions will be reported. It is necessary to use this flag if you want to perform oligotyping-like analyses on matching reads."/>
+        <param name="list_contigs" type="boolean" label="List Contigs" truevalue="--list-contigs" falsevalue="" checked="False" optional="True" argument="--list-contigs" help="When declared, the program will list contigs in the BAM file and exit gracefully without any further analysis."/>
+    </inputs>
+    <outputs>
+        <data name="output_file" format="txt" format_source="input_output_file" metadata_source="input_output_file" label="${tool.name} on ${on_string}: Output File"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-report-linkmers [-h] -i INPUT_BAMS) [INPUT_BAM(S ...]
+                              --contigs-and-positions CONTIGS_AND_POS
+                              [--only-complete-links] -o FILE_PATH
+                              [--list-contigs]
+
+Access reads in contigs and positions in a BAM file
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i INPUT_BAM(S) [INPUT_BAM(S) ...], --input-files INPUT_BAM(S) [INPUT_BAM(S) ...]
+                        Sorted and indexed BAM files to analyze. It is
+                        essential that all BAM files must be the result of
+                        mappings against the same contigs.
+  --contigs-and-positions CONTIGS_AND_POS
+                        This is the file where you list the contigs, and
+                        nucleotide positions you are interested in. This is
+                        supposed to be a TAB-delimited file with two columns.
+                        In each line, the first column should be the contig
+                        name, and the second column should be the comma-
+                        separated list of integers for nucleotide positions.
+  --only-complete-links
+                        When declared, only reads that cover all positions
+                        will be reported. It is necessary to use this flag if
+                        you want to perform oligotyping-like analyses on
+                        matching reads.
+  -o FILE_PATH, --output-file FILE_PATH
+                        File path to store results.
+  --list-contigs        When declared, the program will list contigs in the
+                        BAM file and exit gracefully without any further
+                        analysis.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+    </citations>
+</tool>

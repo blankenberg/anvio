@@ -1,0 +1,95 @@
+<tool id="anvi_script_get_short_reads_matching_something" name="anvi-script-get-short-reads-matching-something" version="5.2">
+    <description>You give this program one or more FASTQ files and a short sequence,                                                  and it returns all short reads from the FASTQ file that matches to it.                                                  The purpose of this is to get back short reads that may be extending into                                                  hypervariable regions of genomes, resulting a decreased mappability of                                                  short reads in the metagenome given a reference. You often see those areas                                                  of genomes as significant dips in coverage, and in most cases with a large                                                  number of SNVs. When you provide the downstream conserved sequence, this                                                  program allows you to take a better look at those regions at the short                                                  read level without any mapping.</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-script-get-short-reads-matching-something --version</version_command>
+    <command><![CDATA[
+        anvi-script-get-short-reads-matching-something
+
+#if $str( $fastq_files ):
+     '${fastq_files}'
+#end if
+
+--match-sequence '${match_sequence}'
+
+
+#if $str( $min_remainder_length ):
+    --min-remainder-length '${min_remainder_length}'
+#end if
+
+--sample-name '${sample_name}'
+
+
+#if $output_directory:
+    --output-directory '${output_directory}'
+#end if
+
+${report_raw}
+
+
+#if $str( $stop_after ):
+    --stop-after '${stop_after}'
+#end if
+
+&> '${GALAXY_ANVIO_LOG}'
+
+ &&
+ls -lahR
+    ]]></command>
+    <inputs>
+        <param name="fastq_files" type="text" label="Fastq Files" value="" optional="True" argument="" help="One or more FASTQ formatted files"/>
+        <param name="match_sequence" type="text" label="Match Sequence" value="" optional="False" argument="--match-sequence" help="Short sequence to look for.."/>
+        <param name="min_remainder_length" type="integer" label="Min Remainder Length" value="60" optional="True" argument="--min-remainder-length" help="Minimum lenght of the remainder of the read after the match. If your short read is XXXMMMMMMYYYYYYYYYYYYYY, where M indicates nucleotides of matchhing sequence, min remainder length is len(Y)."/>
+        <param name="sample_name" type="text" label="Sample Name" value="" optional="False" argument="--sample-name" help="A short sample name (use a single word without spaces or fancy chars)"/>
+        <param name="report_raw" type="boolean" label="Report Raw" truevalue="--report-raw" falsevalue="" checked="" optional="True" argument="--report-raw" help="Just report them raw. Don't bother trimming."/>
+        <param name="stop_after" type="integer" label="Stop After" value="0" optional="True" argument="--stop-after" help="Stop after X number of hits because who needs data."/>
+    </inputs>
+    <outputs>
+        <data name="output_directory" format="txt" format_source="input_output_directory" metadata_source="input_output_directory" label="${tool.name} on ${on_string}: Output Directory"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-script-get-short-reads-matching-something [-h] --match-sequence SHORT SEQUENCE [-m INT] -s
+                              NAME [-O PATH] [--report-raw] [--stop-after INT]
+                              fastq_files [fastq_files ...]
+
+You give this program one or more FASTQ files and a short sequence, and it
+returns all short reads from the FASTQ file that matches to it. The purpose of
+this is to get back short reads that may be extending into hypervariable
+regions of genomes, resulting a decreased mappability of short reads in the
+metagenome given a reference. You often see those areas of genomes as
+significant dips in coverage, and in most cases with a large number of SNVs.
+When you provide the downstream conserved sequence, this program allows you to
+take a better look at those regions at the short read level without any
+mapping.
+
+positional arguments:
+  fastq_files           One or more FASTQ formatted files
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --match-sequence SHORT SEQUENCE
+                        Short sequence to look for..
+  -m INT, --min-remainder-length INT
+                        Minimum lenght of the remainder of the read after the
+                        match. If your short read is XXXMMMMMMYYYYYYYYYYYYYY,
+                        where M indicates nucleotides of matchhing sequence,
+                        min remainder length is len(Y).
+  -s NAME, --sample-name NAME
+                        A short sample name (use a single word without spaces
+                        or fancy chars)
+  -O PATH, --output-directory PATH
+                        Output directory for results to be stored. The default
+                        is the current working directory.
+  --report-raw          Just report them raw. Don't bother trimming.
+  --stop-after INT      Stop after X number of hits because who needs data.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+    </citations>
+</tool>

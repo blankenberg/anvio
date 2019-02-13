@@ -1,0 +1,48 @@
+<tool id="anvi_script_transpose_matrix" name="anvi-script-transpose-matrix" version="5.2">
+    <description>Transpose a TAB-delimited file</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-script-transpose-matrix --version</version_command>
+    <command><![CDATA[
+        anvi-script-transpose-matrix
+
+#if $str( $input_file ):
+     '${input_file}'
+#end if
+
+--output-file '${output_file}'
+
+&> '${GALAXY_ANVIO_LOG}'
+
+ &&
+ls -lahR
+    ]]></command>
+    <inputs>
+        <param name="input_file" type="text" label="Input File" value="" optional="True" argument="" help="Input matrix."/>
+    </inputs>
+    <outputs>
+        <data name="output_file" format="txt" format_source="input_output_file" metadata_source="input_output_file" label="${tool.name} on ${on_string}: Output File"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-script-transpose-matrix [-h] -o FILE_PATH input_file
+
+Transpose a TAB-delimited file
+
+positional arguments:
+  input_file            Input matrix.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -o FILE_PATH, --output-file FILE_PATH
+                        File path to store results.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+    </citations>
+</tool>

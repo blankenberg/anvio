@@ -1,0 +1,111 @@
+<tool id="anvi_script_reformat_fasta" name="anvi-script-reformat-fasta" version="5.2">
+    <description>Reformat FASTA file (remove contigs based on length, or based on a given list of                                                  deflines, and/or generate an output with simpler names)</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-script-reformat-fasta --version</version_command>
+    <command><![CDATA[
+        anvi-script-reformat-fasta
+
+#if $contigs_fasta:
+     '${contigs_fasta}'
+#end if
+
+
+#if $str( $min_len ):
+    --min-len '${min_len}'
+#end if
+
+
+#if $str( $exclude_ids ):
+    --exclude-ids '${exclude_ids}'
+#end if
+
+
+#if $str( $keep_ids ):
+    --keep-ids '${keep_ids}'
+#end if
+
+--output-file '${output_file}'
+
+${simplify_names}
+
+
+#if $str( $prefix ):
+    --prefix '${prefix}'
+#end if
+
+
+#if $report_file:
+    --report-file '${report_file}'
+#end if
+
+&> '${GALAXY_ANVIO_LOG}'
+
+ &&
+ls -lahR
+    ]]></command>
+    <inputs>
+        <param name="contigs_fasta" type="data" label="Contigs Fasta" format="fasta" optional="True" multiple="False" argument="" help=""/>
+        <param name="min_len" type="text" label="Min Len" value="0" optional="True" argument="--min-len" help="Minimum length of contigs to keep (contigs shorter than this value will not be included in the output file). The default is %(default)d, so nothing will be removed if you do not declare a minimum size."/>
+        <param name="exclude_ids" type="text" label="Exclude Ids" value="" optional="True" argument="--exclude-ids" help="IDs to remove from the FASTA file. You cannot provide both --keep-ids and --exclude-ids."/>
+        <param name="keep_ids" type="text" label="Keep Ids" value="" optional="True" argument="--keep-ids" help="If provided, all IDs not in this file will be excluded from the reformatted FASTA file. Any additional filters (such as --min-len) will still be applied to the IDs in this file. You cannot provide both --exclude-ids and --keep-ids."/>
+        <param name="simplify_names" type="boolean" label="Simplify Names" truevalue="--simplify-names" falsevalue="" checked="False" optional="True" argument="--simplify-names" help="Edit deflines to make sure they contigs have simple names."/>
+        <param name="prefix" type="text" label="Prefix" value="" optional="True" argument="--prefix" help="Use this parameter if you would like to add a prefix to your contig names while simplifying them. The prefix must be a single word (you can use underscor character, but nothing more!)."/>
+    </inputs>
+    <outputs>
+        <data name="output_file" format="fasta" format_source="input_output_file" metadata_source="input_output_file" label="${tool.name} on ${on_string}: Output File"/>
+        <data name="report_file" format="txt" format_source="input_report_file" metadata_source="input_report_file" label="${tool.name} on ${on_string}: Report File"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-script-reformat-fasta [-h] [-l MIN_LENGTH] [-i TXT FILE] [-I TXT FILE]
+                              -o FASTA FILE [--simplify-names]
+                              [--prefix PREFIX] [-r REPORT FILE]
+                              FASTA FILE
+
+Reformat FASTA file (remove contigs based on length, or based on a given list
+of deflines, and/or generate an output with simpler names)
+
+positional arguments:
+  FASTA FILE
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -l MIN_LENGTH, --min-len MIN_LENGTH
+                        Minimum length of contigs to keep (contigs shorter
+                        than this value will not be included in the output
+                        file). The default is 0, so nothing will be removed if
+                        you do not declare a minimum size.
+  -i TXT FILE, --exclude-ids TXT FILE
+                        IDs to remove from the FASTA file. You cannot provide
+                        both --keep-ids and --exclude-ids.
+  -I TXT FILE, --keep-ids TXT FILE
+                        If provided, all IDs not in this file will be excluded
+                        from the reformatted FASTA file. Any additional
+                        filters (such as --min-len) will still be applied to
+                        the IDs in this file. You cannot provide both
+                        --exclude-ids and --keep-ids.
+  -o FASTA FILE, --output-file FASTA FILE
+                        Output file path.
+  --simplify-names      Edit deflines to make sure they contigs have simple
+                        names.
+  --prefix PREFIX       Use this parameter if you would like to add a prefix
+                        to your contig names while simplifying them. The
+                        prefix must be a single word (you can use underscor
+                        character, but nothing more!).
+  -r REPORT FILE, --report-file REPORT FILE
+                        Report file path. When you run this program with
+                        `--simplify-names` flag, all changes to deflines will
+                        be reported in this file in case you need to go back
+                        to this information later. It is not mandatory to
+                        declare one, but it is a very good idea to have it.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+    </citations>
+</tool>

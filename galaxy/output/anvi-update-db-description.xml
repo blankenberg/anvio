@@ -1,0 +1,60 @@
+<tool id="anvi_update_db_description" name="anvi-update-db-description" version="5.2">
+    <description>Update the description in an anvi'o database</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-update-db-description --version</version_command>
+    <command><![CDATA[
+        
+    #if $input_db_path:
+        cp -R '${input_db_path.extra_files_path}' '${output_db_path.extra_files_path}'
+    #else
+        echo ''
+    #end if
+ &&
+ anvi-update-db-description
+
+#if $output_db_path:
+     '${output_db_path.extra_files_path}/${output_db_path.metadata.anvio_basename}'
+#end if
+
+--description '${description}'
+
+&> '${GALAXY_ANVIO_LOG}'
+
+ &&
+ls -lahR
+    ]]></command>
+    <inputs>
+        <param name="input_db_path" type="data" label="Db Path" format="anvio_db" optional="True" multiple="False" argument="" help="An anvi'o database."/>
+        <param name="description" type="data" label="Description" format="tabular" optional="False" multiple="False" argument="--description" help="A plain text file that contains some description about the project. You can use Markdwon syntax. The description text will be rendered and shown in all relevant interfaces, including the anvi'o interactive interface, or anvi'o summary outputs."/>
+    </inputs>
+    <outputs>
+        <data name="output_db_path" format="anvio_db" format_source="input_db_path" metadata_source="input_db_path" label="${tool.name} on ${on_string}: Db Path"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-update-db-description [-h] --description TEXT_FILE DB
+
+Update the description in an anvi'o database
+
+positional arguments:
+  DB                    An anvi'o database.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --description TEXT_FILE
+                        A plain text file that contains some description about
+                        the project. You can use Markdwon syntax. The
+                        description text will be rendered and shown in all
+                        relevant interfaces, including the anvi'o interactive
+                        interface, or anvi'o summary outputs.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+    </citations>
+</tool>

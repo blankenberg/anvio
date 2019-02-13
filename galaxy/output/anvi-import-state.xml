@@ -1,0 +1,57 @@
+<tool id="anvi_import_state" name="anvi-import-state" version="5.2">
+    <description>Import an anvi'o state into a profile database.</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-import-state --version</version_command>
+    <command><![CDATA[
+        cp -R '${input_pan_or_profile_db.extra_files_path}' '${output_pan_or_profile_db.extra_files_path}'
+ &&
+ anvi-import-state
+
+#if $output_pan_or_profile_db:
+    --pan-or-profile-db '${output_pan_or_profile_db.extra_files_path}/${output_pan_or_profile_db.metadata.anvio_basename}'
+#end if
+
+--state '${state}'
+
+--name '${name}'
+
+&> '${GALAXY_ANVIO_LOG}'
+
+ &&
+ls -lahR
+    ]]></command>
+    <inputs>
+        <param name="input_pan_or_profile_db" type="data" label="Pan Or Profile Db" format="anvio_profile_db,anvio_pan_db" optional="False" multiple="False" argument="--pan-or-profile-db" help="Anvi'o pan or profile database (and even genes database in appropriate contexts)."/>
+        <param name="state" type="data" label="State" format="anvio_state" optional="False" multiple="False" argument="--state" help="JSON serializable anvi'o state file."/>
+        <param name="name" type="text" label="Name" value="" optional="False" argument="--name" help="State name."/>
+    </inputs>
+    <outputs>
+        <data name="output_pan_or_profile_db" format="anvio_profile_db" format_source="input_pan_or_profile_db" metadata_source="input_pan_or_profile_db" label="${tool.name} on ${on_string}: Pan Or Profile Db"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-import-state [-h] -p PAN_OR_PROFILE_DB -s STATE_FILE -n
+                              STATE_NAME
+
+Import an anvi'o state into a profile database.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p PAN_OR_PROFILE_DB, --pan-or-profile-db PAN_OR_PROFILE_DB
+                        Anvi'o pan or profile database (and even genes
+                        database in appropriate contexts).
+  -s STATE_FILE, --state STATE_FILE
+                        JSON serializable anvi'o state file.
+  -n STATE_NAME, --name STATE_NAME
+                        State name.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+    </citations>
+</tool>

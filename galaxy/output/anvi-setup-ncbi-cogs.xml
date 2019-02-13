@@ -1,0 +1,79 @@
+<tool id="anvi_setup_ncbi_cogs" name="anvi-setup-ncbi-cogs" version="5.2">
+    <description>Download COG data from the NCBI</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-setup-ncbi-cogs --version</version_command>
+    <command><![CDATA[
+        
+    #if $input_cog_data_dir:
+        cp -R '${input_cog_data_dir.extra_files_path}' '${output_cog_data_dir.extra_files_path}'
+    #else
+        echo ''
+    #end if
+ &&
+ anvi-setup-ncbi-cogs
+--cog-data-dir '${output_cog_data_dir.extra_files_path}'
+
+${reset}
+
+--just-do-it
+--num-threads "\${GALAXY_SLOTS:-1}"
+
+&> '${GALAXY_ANVIO_LOG}'
+
+ &&
+ls -lahR
+    ]]></command>
+    <inputs>
+        <param name="input_cog_data_dir" type="data" label="Cog Data Dir" format="anvio_cog_profile" optional="True" multiple="False" argument="--cog-data-dir" help="The directory for COG data to be stored. If you leave it as is without specifying anything, the default destination for the data directory will be used to set things up. The advantage of it is that everyone will be using a single data directory, but then you may need superuser privileges to do it. Using this parameter you can choose the location of the data directory somewhere you like. However, when it is time to run COGs, you will need to remember that path and provide it to the program."/>
+        <param name="reset" type="boolean" label="Reset" truevalue="--reset" falsevalue="" checked="False" optional="True" argument="--reset" help="This program by default attempts to use previously downloaded files in your COGs data directory if there are any. If something is wrong for some reason you can use this to tell anvi'o to remove everything, and start over."/>
+    </inputs>
+    <outputs>
+        <data name="output_cog_data_dir" format="anvio_cog_profile" format_source="input_cog_data_dir" metadata_source="input_cog_data_dir" label="${tool.name} on ${on_string}: Cog Data Dir"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-setup-ncbi-cogs [-h] [--cog-data-dir COG_DATA_DIR] [--reset]
+                              [--just-do-it] [-T NUM_THREADS]
+
+Download COG data from the NCBI
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --cog-data-dir COG_DATA_DIR
+                        The directory for COG data to be stored. If you leave
+                        it as is without specifying anything, the default
+                        destination for the data directory will be used to set
+                        things up. The advantage of it is that everyone will
+                        be using a single data directory, but then you may
+                        need superuser privileges to do it. Using this
+                        parameter you can choose the location of the data
+                        directory somewhere you like. However, when it is time
+                        to run COGs, you will need to remember that path and
+                        provide it to the program.
+  --reset               This program by default attempts to use previously
+                        downloaded files in your COGs data directory if there
+                        are any. If something is wrong for some reason you can
+                        use this to tell anvi'o to remove everything, and
+                        start over.
+  --just-do-it          Don't bother me with questions or warnings, just do
+                        it.
+  -T NUM_THREADS, --num-threads NUM_THREADS
+                        Maximum number of threads to use for multithreading
+                        whenever possible. Very conservatively, the default is
+                        1. It is a good idea to not exceed the number of CPUs
+                        / cores on your system. Plus, please be careful with
+                        this option if you are running your commands on a SGE
+                        --if you are clusterizing your runs, and asking for
+                        multiple threads to use, you may deplete your
+                        resources very fast.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+    </citations>
+</tool>

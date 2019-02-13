@@ -1,0 +1,58 @@
+<tool id="anvi_gen_phylogenomic_tree" name="anvi-gen-phylogenomic-tree" version="5.2">
+    <description>Generate phylogenomic tree from aligment file.</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-gen-phylogenomic-tree --version</version_command>
+    <command><![CDATA[
+        anvi-gen-phylogenomic-tree
+--fasta-file '${fasta_file}'
+
+--output-file '${output_file}'
+
+&> '${GALAXY_ANVIO_LOG}'
+
+ &&
+ls -lahR
+    ]]></command>
+    <inputs>
+        <param name="fasta_file" type="data" label="Fasta File" format="fasta" optional="False" multiple="False" argument="--fasta-file" help="A FASTA-formatted input file"/>
+    </inputs>
+    <outputs>
+        <data name="output_file" format="txt" format_source="input_output_file" metadata_source="input_output_file" label="${tool.name} on ${on_string}: Output File"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-gen-phylogenomic-tree [-h] -f FASTA -o FILE_PATH
+                              [--program PROGRAM_NAME]
+
+Generate phylogenomic tree from aligment file.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -f FASTA, --fasta-file FASTA
+                        A FASTA-formatted input file
+  -o FILE_PATH, --output-file FILE_PATH
+                        File path to store results.
+  --program PROGRAM_NAME
+                        Program name.
+
+INPUT FILES:
+  Concatenated aligment files exported using anvi-get-sequences-for-gene-
+  clusters
+
+OUTPUT FILE:
+  The output file where the generated newick tree will be stored.
+
+PROGRAM:
+  The program that will be used for generating tree. Available options:
+  default, fasttree
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+    </citations>
+</tool>

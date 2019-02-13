@@ -1,0 +1,91 @@
+<tool id="anvi_matrix_to_newick" name="anvi-matrix-to-newick" version="5.2">
+    <description>Takes an observation matrix, returns a newick tree.</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-matrix-to-newick --version</version_command>
+    <command><![CDATA[
+        anvi-matrix-to-newick
+
+#if $input_matrix:
+     '${input_matrix}'
+#end if
+
+
+#if $output_file:
+    --output-file '${output_file}'
+#end if
+
+${transpose}
+
+
+#if $str( $distance ):
+    --distance '${distance}'
+#end if
+
+
+#if $str( $linkage ):
+    --linkage '${linkage}'
+#end if
+
+&> '${GALAXY_ANVIO_LOG}'
+
+ &&
+ls -lahR
+    ]]></command>
+    <inputs>
+        <param name="input_matrix" type="data" label="Input Matrix" format="txt" optional="True" multiple="False" argument="" help="Input matrix"/>
+        <param name="transpose" type="boolean" label="Transpose" truevalue="--transpose" falsevalue="" checked="False" optional="True" argument="--transpose" help="Transpose the input matrix file before clustering."/>
+        <param name="distance" type="text" label="Distance" value="euclidean" optional="True" argument="--distance" help="The distance metric for the hierarchical clustering. The default distance metric is '%(default)s'. You can find the full list of distance metrics either by making a mistake (such as entering a non-existent distance metric and making anvi'o upset), or by taking a look at the help menu of the hierarchy.distance.pdist function in the scipy.cluster module."/>
+        <param name="linkage" type="text" label="Linkage" value="ward" optional="True" argument="--linkage" help="The linkage method for the hierarchical clustering. The default linkage method is '%(default)s', because that is the best one. It really is. We talked to a lot of people and they were all like 'this is the best one available' and it is just all out there. Honestly it is so good that we will build a wall around it and make other linkage methods pay for it. But if you want to see a full list of available ones you can check the hierarcy.linkage function in the scipy.cluster module. Up tp you really. But then you can't use %(default)s anymore, and you would have to leave anvi'o right now."/>
+    </inputs>
+    <outputs>
+        <data name="output_file" format="txt" format_source="input_output_file" metadata_source="input_output_file" label="${tool.name} on ${on_string}: Output File"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-matrix-to-newick [-h] [-o FILE_PATH] [--transpose]
+                              [--distance DISTANCE_METRIC]
+                              [--linkage LINKAGE_METHOD]
+                              PATH
+
+Takes an observation matrix, returns a newick tree.
+
+positional arguments:
+  PATH                  Input matrix
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -o FILE_PATH, --output-file FILE_PATH
+                        File path to store results.
+  --transpose           Transpose the input matrix file before clustering.
+  --distance DISTANCE_METRIC
+                        The distance metric for the hierarchical clustering.
+                        The default distance metric is 'euclidean'. You can
+                        find the full list of distance metrics either by
+                        making a mistake (such as entering a non-existent
+                        distance metric and making anvi'o upset), or by taking
+                        a look at the help menu of the
+                        hierarchy.distance.pdist function in the scipy.cluster
+                        module.
+  --linkage LINKAGE_METHOD
+                        The linkage method for the hierarchical clustering.
+                        The default linkage method is 'ward', because that is
+                        the best one. It really is. We talked to a lot of
+                        people and they were all like 'this is the best one
+                        available' and it is just all out there. Honestly it
+                        is so good that we will build a wall around it and
+                        make other linkage methods pay for it. But if you want
+                        to see a full list of available ones you can check the
+                        hierarcy.linkage function in the scipy.cluster module.
+                        Up tp you really. But then you can't use ward anymore,
+                        and you would have to leave anvi'o right now.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+    </citations>
+</tool>

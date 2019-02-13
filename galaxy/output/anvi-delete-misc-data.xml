@@ -1,0 +1,78 @@
+<tool id="anvi_delete_misc_data" name="anvi-delete-misc-data" version="5.2">
+    <description>Remove stuff from additional data or order tables in pan or profile databases for items or layers</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-delete-misc-data --version</version_command>
+    <command><![CDATA[
+        cp -R '${input_pan_or_profile_db.extra_files_path}' '${output_pan_or_profile_db.extra_files_path}'
+ &&
+ anvi-delete-misc-data
+
+#if $output_pan_or_profile_db:
+    --pan-or-profile-db '${output_pan_or_profile_db.extra_files_path}/${output_pan_or_profile_db.metadata.anvio_basename}'
+#end if
+
+--target-data-table '${target_data_table}'
+
+
+#if $str( $keys_to_remove ):
+    --keys-to-remove '${keys_to_remove}'
+#end if
+
+${list_available_keys}
+
+--just-do-it
+&> '${GALAXY_ANVIO_LOG}'
+
+ &&
+ls -lahR
+    ]]></command>
+    <inputs>
+        <param name="input_pan_or_profile_db" type="data" label="Pan Or Profile Db" format="anvio_profile_db,anvio_pan_db" optional="False" multiple="False" argument="--pan-or-profile-db" help="Anvi'o pan or profile database (and even genes database in appropriate contexts)."/>
+        <param name="target_data_table" type="text" label="Target Data Table" value="" optional="False" argument="--target-data-table" help="The target table is the table you are interested in accessing. Currently it can be 'items','layers', or 'layer_orders'. Please see most up-to-date online documentation for more information."/>
+        <param name="keys_to_remove" type="text" label="Keys To Remove" value="" optional="True" argument="--keys-to-remove" help="A comma-separated list of data keys to remove from the database. If you do not use this parameter, anvi'o will simply remove everything from the target data table immediately."/>
+        <param name="list_available_keys" type="boolean" label="List Available Keys" truevalue="--list-available-keys" falsevalue="" checked="" optional="True" argument="--list-available-keys" help="Using this flag will list available data keys in the target data table and quit without doing anything else."/>
+    </inputs>
+    <outputs>
+        <data name="output_pan_or_profile_db" format="anvio_profile_db" format_source="input_pan_or_profile_db" metadata_source="input_pan_or_profile_db" label="${tool.name} on ${on_string}: Pan Or Profile Db"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-delete-misc-data [-h] -p PAN_OR_PROFILE_DB -t NAME
+                              [--keys-to-remove KEYS_TO_REMOVE]
+                              [--list-available-keys] [--just-do-it]
+
+Remove stuff from additional data or order tables in pan or profile databases
+for items or layers
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p PAN_OR_PROFILE_DB, --pan-or-profile-db PAN_OR_PROFILE_DB
+                        Anvi'o pan or profile database (and even genes
+                        database in appropriate contexts).
+  -t NAME, --target-data-table NAME
+                        The target table is the table you are interested in
+                        accessing. Currently it can be 'items','layers', or
+                        'layer_orders'. Please see most up-to-date online
+                        documentation for more information.
+  --keys-to-remove KEYS_TO_REMOVE
+                        A comma-separated list of data keys to remove from the
+                        database. If you do not use this parameter, anvi'o
+                        will simply remove everything from the target data
+                        table immediately.
+  --list-available-keys
+                        Using this flag will list available data keys in the
+                        target data table and quit without doing anything
+                        else.
+  --just-do-it          Don't bother me with questions or warnings, just do
+                        it.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+    </citations>
+</tool>
