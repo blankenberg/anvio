@@ -1858,7 +1858,6 @@ def K(param_id, params_dict={}):
     for key in params_dict:
         kwargs[key] = params_dict[key]
 
-    print('kwargs %s' %( kwargs))
     return kwargs
 
 # The rest of this file is composed of code that responds to '-v' or '--version' calls from clients,
