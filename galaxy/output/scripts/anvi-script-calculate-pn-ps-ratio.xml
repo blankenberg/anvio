@@ -1,0 +1,121 @@
+<tool id="anvi_script_calculate_pn_ps_ratio" name="anvi-script-calculate-pn-ps-ratio" version="5.2">
+    <description>Extract information for variable positions</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-script-calculate-pn-ps-ratio --version</version_command>
+    <command><![CDATA[
+        cp -R '${input_contigs_db.extra_files_path}' '${output_contigs_db.extra_files_path}'
+ &&
+ anvi-script-calculate-pn-ps-ratio
+
+#if $saav_table:
+    --saav-table '${saav_table}'
+#end if
+
+
+#if $scv_table:
+    --scv-table '${scv_table}'
+#end if
+
+--contigs-db '${output_contigs_db.extra_files_path}/CONTIGS.db'
+
+
+#if $str( $min_departure_from_consensus ):
+    --min-departure-from-consensus '${min_departure_from_consensus}'
+#end if
+
+
+#if $str( $minimum_num_variants ):
+    --minimum-num-variants '${minimum_num_variants}'
+#end if
+
+
+#if $str( $min_coverage ):
+    --min-coverage '${min_coverage}'
+#end if
+
+
+#if $output_dir:
+    --output-dir '${output_dir.extra_files_path}'
+#end if
+
+&> '${GALAXY_ANVIO_LOG}'
+
+    ]]></command>
+    <inputs>
+        <param name="saav_table" type="data" label="Saav Table" format="tabular" optional="True" multiple="False" argument="--saav-table" help="Filepath to the SAAV table."/>
+        <param name="scv_table" type="data" label="Scv Table" format="tabular" optional="True" multiple="False" argument="--scv-table" help="Filepath to the SCV table."/>
+        <param name="input_contigs_db" type="data" label="Contigs Db" format="anvio_contigs_db" optional="False" multiple="False" argument="--contigs-db" help="Filepath to the contigs database used to generate variability tables."/>
+        <param name="min_departure_from_consensus" type="float" label="Min Departure From Consensus" value="0.1" optional="True" argument="--min-departure-from-consensus" help="Variants (either SCVs or SAAVs) will be ignored if they have a departure from consensus less than this value. Note: Keep in mind you may have already supplied this parameter during anvi-gen-variability-profile. Default is 0.1."/>
+        <param name="minimum_num_variants" type="text" label="Minimum Num Variants" value="4" optional="True" argument="--minimum-num-variants" help="Ignore genes with less than this number of single codon variants. This avoids being impressed by pN/pS values of infinite, when really all that happened was a gene had 1 SAAV and 0 synonymous SCVs. The default is 4 to ensure some level of statistical importance."/>
+        <param name="min_coverage" type="text" label="Min Coverage" value="30" optional="True" argument="--min-coverage" help="If the coverage value at a codon is less than this amount, any SAAVs or SCVs associated with it will be ignored."/>
+    </inputs>
+    <outputs>
+        <data name="output_contigs_db" format="anvio_contigs_db" format_source="input_contigs_db" metadata_source="input_contigs_db" label="${tool.name} on ${on_string}: Contigs Db"/>
+        <data name="output_dir" format="anvio_profile_db" format_source="input_output_dir" metadata_source="input_output_dir" label="${tool.name} on ${on_string}: Output Dir"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-script-calculate-pn-ps-ratio [-h] [-a SAAV_FILE] [-b SCV_FILE] -c CONTIGS_DB
+                              [-j FLOAT] [-i MINIMUM_NUM_VARIANTS]
+                              [-m MIN_COVERAGE] -o DIR_PATH
+
+Extract information for variable positions
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -a SAAV_FILE, --saav-table SAAV_FILE
+                        Filepath to the SAAV table.
+  -b SCV_FILE, --scv-table SCV_FILE
+                        Filepath to the SCV table.
+  -c CONTIGS_DB, --contigs-db CONTIGS_DB
+                        Filepath to the contigs database used to generate
+                        variability tables.
+  -j FLOAT, --min-departure-from-consensus FLOAT
+                        Variants (either SCVs or SAAVs) will be ignored if
+                        they have a departure from consensus less than this
+                        value. Note: Keep in mind you may have already
+                        supplied this parameter during anvi-gen-variability-
+                        profile. Default is 0.1.
+  -i MINIMUM_NUM_VARIANTS, --minimum-num-variants MINIMUM_NUM_VARIANTS
+                        Ignore genes with less than this number of single
+                        codon variants. This avoids being impressed by pN/pS
+                        values of infinite, when really all that happened was
+                        a gene had 1 SAAV and 0 synonymous SCVs. The default
+                        is 4 to ensure some level of statistical importance.
+  -m MIN_COVERAGE, --min-coverage MIN_COVERAGE
+                        If the coverage value at a codon is less than this
+                        amount, any SAAVs or SCVs associated with it will be
+                        ignored.
+  -o DIR_PATH, --output-dir DIR_PATH
+                        Directory path for output files
+
+VARIABILITY:
+  Two variability tables generated from anvi-gen-variability-table are
+  required. One of SAAVs (generated with --engine AA) and one of SCVs
+  (generated with --engine CDN). They must be generated with the same
+  profile database and the exact same set of genes in the contigs database.
+  To be safe, it is highly recommended you use the same settings during both
+  commands except for changing --engine AA to --engine CDN and the output
+  filename.
+
+OUTPUT:
+  The output of this program is a folder directory with several tables.
+
+TUNABLES:
+  Successfully tune one or more of these parameters to unlock the "Advanced
+  anvi'an" achievement.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>

@@ -1,0 +1,57 @@
+<tool id="anvi_delete_collection" name="anvi-delete-collection" version="5.2">
+    <description>Remove a collection from a given profile database.</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-delete-collection --version</version_command>
+    <command><![CDATA[
+        cp -R '${input_profile_db.extra_files_path}' '${output_profile_db.extra_files_path}'
+ &&
+ anvi-delete-collection
+--profile-db '${output_profile_db.extra_files_path}/PROFILE.db'
+
+
+#if $str( $collection_name ):
+    --collection-name '${collection_name}'
+#end if
+
+${list_collections}
+
+&> '${GALAXY_ANVIO_LOG}'
+
+    ]]></command>
+    <inputs>
+        <param name="input_profile_db" type="data" label="Profile Db" format="anvio_profile_db" optional="False" multiple="False" argument="--profile-db" help="Anvi'o profile database"/>
+        <param name="collection_name" type="text" label="Collection Name" value="" optional="True" argument="--collection-name" help="Collection name."/>
+        <param name="list_collections" type="boolean" label="List Collections" truevalue="--list-collections" falsevalue="" checked="False" optional="True" argument="--list-collections" help="Show available collections and exit."/>
+    </inputs>
+    <outputs>
+        <data name="output_profile_db" format="anvio_profile_db" format_source="input_profile_db" metadata_source="input_profile_db" label="${tool.name} on ${on_string}: Profile Db"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-delete-collection [-h] -p PROFILE_DB [-C COLLECTION_NAME]
+                              [--list-collections]
+
+Remove a collection from a given profile database.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p PROFILE_DB, --profile-db PROFILE_DB
+                        Anvi'o profile database
+  -C COLLECTION_NAME, --collection-name COLLECTION_NAME
+                        Collection name.
+  --list-collections    Show available collections and exit.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>

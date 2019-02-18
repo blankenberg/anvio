@@ -1,0 +1,89 @@
+<tool id="anvi_export_table" name="anvi-export-table" version="5.2">
+    <description>Export anvi'o database tables as TAB-delimited text files.</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-export-table --version</version_command>
+    <command><![CDATA[
+        
+    #if $input_db_path:
+        cp -R '${input_db_path.extra_files_path}' '${output_db_path.extra_files_path}'
+    #else
+        echo ''
+    #end if
+ &&
+ anvi-export-table
+
+#if $output_db_path:
+     '${output_db_path.extra_files_path}/${output_db_path.metadata.anvio_basename}'
+#end if
+
+
+#if $str( $table ):
+    --table '${table}'
+#end if
+
+${list}
+
+
+#if $str( $fields ):
+    --fields '${fields}'
+#end if
+
+
+#if $output_file:
+    --output-file '${output_file}'
+#end if
+
+&> '${GALAXY_ANVIO_LOG}'
+
+    ]]></command>
+    <inputs>
+        <param name="input_db_path" type="data" label="Db Path" format="anvio_db" optional="True" multiple="False" argument="" help="Anvi'o database to read from."/>
+        <param name="table" type="text" label="Table" value="" optional="True" argument="--table" help="Table name to export."/>
+        <param name="list" type="boolean" label="List" truevalue="--list" falsevalue="" checked="False" optional="True" argument="--list" help="Gives a list of tables in a database and quits. If a table is already declared this time it lists all the fields in a given table, in case you would to export only a specific list of fields from the table using --fields parameter."/>
+        <param name="fields" type="text" label="Fields" value="" optional="True" argument="--fields" help="Fields to report. USe --list-tables parameter with a table name to see available fields You can list fields using this notation: --fields 'field_1, field_2, ... field_N'."/>
+    </inputs>
+    <outputs>
+        <data name="output_db_path" format="anvio_db" format_source="input_db_path" metadata_source="input_db_path" label="${tool.name} on ${on_string}: Db Path"/>
+        <data name="output_file" format="txt" format_source="input_output_file" metadata_source="input_output_file" label="${tool.name} on ${on_string}: Output File"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-export-table [-h] [--table TABLE_NAME] [-l] [-f FIELDS]
+                              [-o FILE_PATH]
+                              DB
+
+Export anvi'o database tables as TAB-delimited text files.
+
+positional arguments:
+  DB                    Anvi'o database to read from.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --table TABLE_NAME    Table name to export.
+  -l, --list            Gives a list of tables in a database and quits. If a
+                        table is already declared this time it lists all the
+                        fields in a given table, in case you would to export
+                        only a specific list of fields from the table using
+                        --fields parameter.
+  -f FIELD(S), --fields FIELD(S)
+                        Fields to report. USe --list-tables parameter with a
+                        table name to see available fields You can list fields
+                        using this notation: --fields 'field_1, field_2, ...
+                        field_N'.
+  -o FILE_PATH, --output-file FILE_PATH
+                        File path to store results.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>

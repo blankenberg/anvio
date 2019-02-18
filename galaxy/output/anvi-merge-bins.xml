@@ -1,0 +1,97 @@
+<tool id="anvi_merge_bins" name="anvi-merge-bins" version="5.2">
+    <description>Merge a given set of bins in an anvi'o collection</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-merge-bins --version</version_command>
+    <command><![CDATA[
+        cp -R '${input_pan_or_profile_db.extra_files_path}' '${output_pan_or_profile_db.extra_files_path}'
+ &&
+ anvi-merge-bins
+
+#if $output_pan_or_profile_db:
+    --pan-or-profile-db '${output_pan_or_profile_db.extra_files_path}/${output_pan_or_profile_db.metadata.anvio_basename}'
+#end if
+
+
+#if $str( $collection_name ):
+    --collection-name '${collection_name}'
+#end if
+
+
+#if $str( $bin_names_list ):
+    --bin-names-list '${bin_names_list}'
+#end if
+
+
+#if $str( $new_bin_name ):
+    --new-bin-name '${new_bin_name}'
+#end if
+
+${list_collections}
+
+${list_bins}
+
+&> '${GALAXY_ANVIO_LOG}'
+
+    ]]></command>
+    <inputs>
+        <param name="input_pan_or_profile_db" type="data" label="Pan Or Profile Db" format="anvio_profile_db,anvio_pan_db" optional="False" multiple="False" argument="--pan-or-profile-db" help="Anvi'o pan or profile database (and even genes database in appropriate contexts)."/>
+        <param name="collection_name" type="text" label="Collection Name" value="" optional="True" argument="--collection-name" help="Collection name."/>
+        <param name="bin_names_list" type="text" label="Bin Names List" value="" optional="True" argument="--bin-names-list" help="Comma-separated list of bin names."/>
+        <param name="new_bin_name" type="text" label="New Bin Name" value="" optional="True" argument="--new-bin-name" help="The new bin name."/>
+        <param name="list_collections" type="boolean" label="List Collections" truevalue="--list-collections" falsevalue="" checked="False" optional="True" argument="--list-collections" help="Show available collections and exit."/>
+        <param name="list_bins" type="boolean" label="List Bins" truevalue="--list-bins" falsevalue="" checked="False" optional="True" argument="--list-bins" help="List available bins in a collection and exit."/>
+    </inputs>
+    <outputs>
+        <data name="output_pan_or_profile_db" format="anvio_profile_db" format_source="input_pan_or_profile_db" metadata_source="input_pan_or_profile_db" label="${tool.name} on ${on_string}: Pan Or Profile Db"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-merge-bins [-h] -p PAN_OR_PROFILE_DB [-C COLLECTION_NAME]
+                              [-b BIN NAMES] [-B BIN NAME]
+                              [--list-collections] [--list-bins]
+
+Merge a given set of bins in an anvi'o collection
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p PAN_OR_PROFILE_DB, --pan-or-profile-db PAN_OR_PROFILE_DB
+                        Anvi'o pan or profile database (and even genes
+                        database in appropriate contexts).
+  -C COLLECTION_NAME, --collection-name COLLECTION_NAME
+                        Collection name.
+  -b BIN NAMES, --bin-names-list BIN NAMES
+                        Comma-separated list of bin names.
+  -B BIN NAME, --new-bin-name BIN NAME
+                        The new bin name.
+  --list-collections    Show available collections and exit.
+  --list-bins           List available bins in a collection and exit.
+
+DB AND COLLECTION:
+  Simple enough. This guy needs a pan or profile database and a collection
+  name. You can get a list of available collections with another flag down
+  below.
+
+BINS TO WORK WITH:
+  Here you need to define a list of bin names to merge, and the new bin name
+  for them to merge under. Your bin names should be comma-separated. Both
+  'name_1, name_2, name_3' and name_1,name_2,name_3 will work. Your new bin
+  name better be a single word, meaningful name so anvi'o does not complain
+  about it later.
+
+SWEET FLAGS OF CONVENIENCE:
+  We gotchu.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>

@@ -1,0 +1,156 @@
+<tool id="anvi_compute_gene_cluster_homogeneity" name="anvi-compute-gene-cluster-homogeneity" version="5.2">
+    <description>Compute homogeneity for gene clusters</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-compute-gene-cluster-homogeneity --version</version_command>
+    <command><![CDATA[
+        cp -R '${input_pan_db.extra_files_path}' '${output_pan_db.extra_files_path}'
+ && 
+
+    #if $input_genomes_storage:
+        cp -R '${input_genomes_storage.extra_files_path}' '${output_genomes_storage.extra_files_path}'
+    #else
+        echo ''
+    #end if
+ &&
+ anvi-compute-gene-cluster-homogeneity
+
+#if $output_pan_db:
+    --pan-db '${output_pan_db.extra_files_path}/${output_pan_db.metadata.anvio_basename}'
+#end if
+
+
+#if $output_genomes_storage:
+    --genomes-storage '${output_genomes_storage.extra_files_path}/${output_genomes_storage.metadata.anvio_basename}'
+#end if
+
+
+#if $output_file:
+    --output-file '${output_file}'
+#end if
+
+${store_in_db}
+
+
+#if $str( $gene_cluster_id ):
+    --gene-cluster-id '${gene_cluster_id}'
+#end if
+
+
+#if $gene_cluster_ids_file:
+    --gene-cluster-ids-file '${gene_cluster_ids_file}'
+#end if
+
+
+#if $str( $collection_name ):
+    --collection-name '${collection_name}'
+#end if
+
+
+#if $str( $bin_id ):
+    --bin-id '${bin_id}'
+#end if
+
+${quick_homogeneity}
+
+--num-threads "\${GALAXY_SLOTS:-1}"
+
+--just-do-it
+&> '${GALAXY_ANVIO_LOG}'
+
+    ]]></command>
+    <inputs>
+        <param name="input_pan_db" type="data" label="Pan Db" format="anvio_pan_db" optional="False" multiple="False" argument="--pan-db" help="Anvi'o pan database"/>
+        <param name="input_genomes_storage" type="data" label="Genomes Storage" format="anvio_genomes_db" optional="True" multiple="False" argument="--genomes-storage" help="Anvi'o genomes storage file"/>
+        <param name="store_in_db" type="boolean" label="Store In Db" truevalue="--store-in-db" falsevalue="" checked="False" optional="True" argument="--store-in-db" help="Store analysis results into the database directly."/>
+        <param name="gene_cluster_id" type="text" label="Gene Cluster Id" value="" optional="True" argument="--gene-cluster-id" help="Gene cluster ID you are interested in."/>
+        <param name="gene_cluster_ids_file" type="data" label="Gene Cluster Ids File" format="txt" optional="True" multiple="False" argument="--gene-cluster-ids-file" help="Text file for gene clusters (each line should contain be a unique gene cluster id)."/>
+        <param name="collection_name" type="text" label="Collection Name" value="" optional="True" argument="--collection-name" help="Collection name."/>
+        <param name="bin_id" type="text" label="Bin Id" value="" optional="True" argument="--bin-id" help="Bin name you are interested in."/>
+        <param name="quick_homogeneity" type="boolean" label="Quick Homogeneity" truevalue="--quick-homogeneity" falsevalue="" checked="False" optional="True" argument="--quick-homogeneity" help="By default, anvi'o will use a homogeneity algorithm that checks for horizontal and vertical geometric homogeneity (along with functional). With this flag, you can tell anvi'o to skip horizontal geometric homogeneity calculations. It will be less accurate but quicker."/>
+    </inputs>
+    <outputs>
+        <data name="output_pan_db" format="anvio_pan_db" format_source="input_pan_db" metadata_source="input_pan_db" label="${tool.name} on ${on_string}: Pan Db"/>
+        <data name="output_genomes_storage" format="anvio_genomes_db" format_source="input_genomes_storage" metadata_source="input_genomes_storage" label="${tool.name} on ${on_string}: Genomes Storage"/>
+        <data name="output_file" format="txt" format_source="input_output_file" metadata_source="input_output_file" label="${tool.name} on ${on_string}: Output File"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-compute-gene-cluster-homogeneity [-h] -p PAN_DB [-g GENOMES_STORAGE]
+                              [-o FILE_PATH] [--store-in-db]
+                              [--gene-cluster-id GENE_CLUSTER_ID]
+                              [--gene-cluster-ids-file FILE_PATH]
+                              [-C COLLECTION_NAME] [-b BIN_NAME]
+                              [--quick-homogeneity] [-T NUM_THREADS]
+                              [--just-do-it]
+
+Compute homogeneity for gene clusters
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p PAN_DB, --pan-db PAN_DB
+                        Anvi'o pan database
+  -g GENOMES_STORAGE, --genomes-storage GENOMES_STORAGE
+                        Anvi'o genomes storage file
+  -o FILE_PATH, --output-file FILE_PATH
+                        File path to store results.
+  --store-in-db         Store analysis results into the database directly.
+  --gene-cluster-id GENE_CLUSTER_ID
+                        Gene cluster ID you are interested in.
+  --gene-cluster-ids-file FILE_PATH
+                        Text file for gene clusters (each line should contain
+                        be a unique gene cluster id).
+  -C COLLECTION_NAME, --collection-name COLLECTION_NAME
+                        Collection name.
+  -b BIN_NAME, --bin-id BIN_NAME
+                        Bin name you are interested in.
+  --quick-homogeneity   By default, anvi'o will use a homogeneity algorithm
+                        that checks for horizontal and vertical geometric
+                        homogeneity (along with functional). With this flag,
+                        you can tell anvi'o to skip horizontal geometric
+                        homogeneity calculations. It will be less accurate but
+                        quicker.
+  -T NUM_THREADS, --num-threads NUM_THREADS
+                        Maximum number of threads to use for multithreading
+                        whenever possible. Very conservatively, the default is
+                        1. It is a good idea to not exceed the number of CPUs
+                        / cores on your system. Plus, please be careful with
+                        this option if you are running your commands on a SGE
+                        --if you are clusterizing your runs, and asking for
+                        multiple threads to use, you may deplete your
+                        resources very fast.
+  --just-do-it          Don't bother me with questions or warnings, just do
+                        it.
+
+INPUT FILES:
+  Input files from the pangenome analysis.
+
+REPORTING:
+  How do you want results to be reported? Anvi'o can produce a TAB-delimited
+  output file for you (for which you would have to provide an output file
+  name). Or the results can be stored in the pan database directly, for
+  which you would have to explicitly ask for it. You can get both as well in
+  case you are a fan of redundancy and poor data analysis practices. Anvi'o
+  does not judge.
+
+SELECTION:
+  Which gene clusters should be analyzed. You can ask for a single gene
+  cluster, or multiple ones listed in a file, or you can use a collection
+  and bin name to list gene clusters of interest.
+
+OPTIONAL:
+  Optional stuff available for you to use
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>

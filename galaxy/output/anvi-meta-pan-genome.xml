@@ -1,0 +1,122 @@
+<tool id="anvi_meta_pan_genome" name="anvi-meta-pan-genome" version="5.2">
+    <description>Convert a pangenome into a metapangenome.</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-meta-pan-genome --version</version_command>
+    <command><![CDATA[
+        cp -R '${input_pan_db.extra_files_path}' '${output_pan_db.extra_files_path}'
+ && 
+
+    #if $input_genomes_storage:
+        cp -R '${input_genomes_storage.extra_files_path}' '${output_genomes_storage.extra_files_path}'
+    #else
+        echo ''
+    #end if
+ &&
+ anvi-meta-pan-genome
+
+#if $output_pan_db:
+    --pan-db '${output_pan_db.extra_files_path}/${output_pan_db.metadata.anvio_basename}'
+#end if
+
+
+#if $output_genomes_storage:
+    --genomes-storage '${output_genomes_storage.extra_files_path}/${output_genomes_storage.metadata.anvio_basename}'
+#end if
+
+
+#if $internal_genomes:
+    --internal-genomes '${internal_genomes}'
+#end if
+
+
+#if $str( $fraction_of_median_coverage ):
+    --fraction-of-median-coverage '${fraction_of_median_coverage}'
+#end if
+
+
+#if $str( $min_detection ):
+    --min-detection '${min_detection}'
+#end if
+
+&> '${GALAXY_ANVIO_LOG}'
+
+    ]]></command>
+    <inputs>
+        <param name="input_pan_db" type="data" label="Pan Db" format="anvio_pan_db" optional="False" multiple="False" argument="--pan-db" help="Anvi'o pan database"/>
+        <param name="input_genomes_storage" type="data" label="Genomes Storage" format="anvio_genomes_db" optional="True" multiple="False" argument="--genomes-storage" help="Anvi'o genomes storage file"/>
+        <param name="internal_genomes" type="data" label="Internal Genomes" format="txt" optional="True" multiple="False" argument="--internal-genomes" help="A four-column TAB-delimited flat text file. This file should be identical to the internal genomes file you used for your pangenomics analysis. Anvi'o will use this file to find all profile and contigs databases that contain the information for each gene and genome across metagenomes."/>
+        <param name="fraction_of_median_coverage" type="float" label="Fraction Of Median Coverage" value="0.25" optional="True" argument="--fraction-of-median-coverage" help="The value set here will be used to remove a gene if its total coverage across environments is less than the median coverage of all genes multiplied by this value. The default is 0.25, which means, if the median total coverage of all genes across all samples is 100X, then, a gene with a total coverage of less than 25X across all samples will be assumed not a part of the 'environmental core'."/>
+        <param name="min_detection" type="float" label="Min Detection" value="0.5" optional="True" argument="--min-detection" help="For this entire thing to work, the genome you are focusing on should be detected in at least one metagenome. If that is not the case, it would mean that you do not have any sample that represents the niche for this organism (or you do not have enough depth of coverage) to investigate the detection of genes in the environment. By default, this script requires at least '0.5' of the genome to be detected in at least one metagenome. This parameter allows you to change that. 0 would mean no detection test required, 1 would mean the entire genome must be detected."/>
+    </inputs>
+    <outputs>
+        <data name="output_pan_db" format="anvio_pan_db" format_source="input_pan_db" metadata_source="input_pan_db" label="${tool.name} on ${on_string}: Pan Db"/>
+        <data name="output_genomes_storage" format="anvio_genomes_db" format_source="input_genomes_storage" metadata_source="input_genomes_storage" label="${tool.name} on ${on_string}: Genomes Storage"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-meta-pan-genome [-h] -p PAN_DB [-g GENOMES_STORAGE] [-i FILE]
+                              [--fraction-of-median-coverage FLOAT]
+                              [--min-detection FLOAT]
+
+Convert a pangenome into a metapangenome.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p PAN_DB, --pan-db PAN_DB
+                        Anvi'o pan database
+  -g GENOMES_STORAGE, --genomes-storage GENOMES_STORAGE
+                        Anvi'o genomes storage file
+  -i FILE, --internal-genomes FILE
+                        A four-column TAB-delimited flat text file. This file
+                        should be identical to the internal genomes file you
+                        used for your pangenomics analysis. Anvi'o will use
+                        this file to find all profile and contigs databases
+                        that contain the information for each gene and genome
+                        across metagenomes.
+  --fraction-of-median-coverage FLOAT
+                        The value set here will be used to remove a gene if
+                        its total coverage across environments is less than
+                        the median coverage of all genes multiplied by this
+                        value. The default is 0.25, which means, if the median
+                        total coverage of all genes across all samples is
+                        100X, then, a gene with a total coverage of less than
+                        25X across all samples will be assumed not a part of
+                        the 'environmental core'.
+  --min-detection FLOAT
+                        For this entire thing to work, the genome you are
+                        focusing on should be detected in at least one
+                        metagenome. If that is not the case, it would mean
+                        that you do not have any sample that represents the
+                        niche for this organism (or you do not have enough
+                        depth of coverage) to investigate the detection of
+                        genes in the environment. By default, this script
+                        requires at least '0.5' of the genome to be detected
+                        in at least one metagenome. This parameter allows you
+                        to change that. 0 would mean no detection test
+                        required, 1 would mean the entire genome must be
+                        detected.
+
+PANGENOME:
+  Files for the pangenome.
+
+METAGENOME:
+  Genome bins stored in an anvi'o profile databases as collections.
+
+CRITERION FOR DETECTION:
+  This is tricky. What we want to do is to identify genes that are occurring
+  uniformly across samples.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>

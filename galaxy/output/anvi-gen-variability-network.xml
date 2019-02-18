@@ -1,0 +1,70 @@
+<tool id="anvi_gen_variability_network" name="anvi-gen-variability-network" version="5.2">
+    <description>A program to generate a network description from an anvi'o                                                  variability profile.</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-gen-variability-network --version</version_command>
+    <command><![CDATA[
+        anvi-gen-variability-network
+--input-file '${input_file}'
+
+
+#if $str( $max_num_unique_positions ):
+    --max-num-unique-positions '${max_num_unique_positions}'
+#end if
+
+
+#if $output_file:
+    --output-file '${output_file}'
+#end if
+
+&> '${GALAXY_ANVIO_LOG}'
+
+    ]]></command>
+    <inputs>
+        <param name="input_file" type="data" label="Input File" format="anvio_variability" optional="False" multiple="False" argument="--input-file" help="The anvi'o variability profile. Please see `anvi-gen-variability-profile` to generate one."/>
+        <param name="max_num_unique_positions" type="integer" label="Max Num Unique Positions" value="0" optional="True" argument="--max-num-unique-positions" help="Maximum number of unique positions to be used in the network. This may be one way to avoid extremely large network descriptions that would defeat the purpose of a quick visualization. If there are more unique positions in the variability profile, the program will randomly select a subset of them to match the `max-num-unique-positions`. The default is %(default)d, which means all positions should be reported. Remember that the number of nodes in the network will also depend on the number of samples described in the variability profile."/>
+    </inputs>
+    <outputs>
+        <data name="output_file" format="txt" format_source="input_output_file" metadata_source="input_output_file" label="${tool.name} on ${on_string}: Output File"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-gen-variability-network [-h] -i VARIABILITY_PROFILE [-n NUM_POSITIONS]
+                              [-o FILE_PATH]
+
+A program to generate a network description from an anvi'o variability
+profile.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i VARIABILITY_PROFILE, --input-file VARIABILITY_PROFILE
+                        The anvi'o variability profile. Please see `anvi-gen-
+                        variability-profile` to generate one.
+  -n NUM_POSITIONS, --max-num-unique-positions NUM_POSITIONS
+                        Maximum number of unique positions to be used in the
+                        network. This may be one way to avoid extremely large
+                        network descriptions that would defeat the purpose of
+                        a quick visualization. If there are more unique
+                        positions in the variability profile, the program will
+                        randomly select a subset of them to match the `max-
+                        num-unique-positions`. The default is 0, which means
+                        all positions should be reported. Remember that the
+                        number of nodes in the network will also depend on the
+                        number of samples described in the variability
+                        profile.
+  -o FILE_PATH, --output-file FILE_PATH
+                        File path to store results.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>

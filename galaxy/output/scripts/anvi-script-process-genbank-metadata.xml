@@ -1,0 +1,74 @@
+<tool id="anvi_script_process_genbank_metadata" name="anvi-script-process-genbank-metadata" version="5.2">
+    <description>This script takes the 'metadata' output of the program `ncbi-genome-download` (see                                                  https://github.com/kblin/ncbi-genome-download for details), and processes each                                                  GenBank file found in the metadata file to generate a FASTA file, as well as genes                                                  and functions files for each entry. Plus, it autmatically generates a FASTA TXT                                                  file descriptor for anvi'o snakemake workfloes. So it is a multi-talented program                                                  like that.</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-script-process-genbank-metadata --version</version_command>
+    <command><![CDATA[
+        anvi-script-process-genbank-metadata
+--metadata '${metadata}'
+
+
+#if $output_dir:
+    --output-dir '${output_dir.extra_files_path}'
+#end if
+
+
+#if $output_fasta_txt:
+    --output-fasta-txt '${output_fasta_txt}'
+#end if
+
+&> '${GALAXY_ANVIO_LOG}'
+
+    ]]></command>
+    <inputs>
+        <param name="metadata" type="data" label="Metadata" format="txt" optional="False" multiple="False" argument="--metadata" help="This is the file you get from the program `ncbi-genome-download` when you use the parameter `--metadata-table`."/>
+    </inputs>
+    <outputs>
+        <data name="output_dir" format="anvio_profile_db" format_source="input_output_dir" metadata_source="input_output_dir" label="${tool.name} on ${on_string}: Output Dir"/>
+        <data name="output_fasta_txt" format="txt" format_source="input_output_fasta_txt" metadata_source="input_output_fasta_txt" label="${tool.name} on ${on_string}: Output Fasta Txt"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-script-process-genbank-metadata [-h] -m GENBANK_METADATA [-o DIR_PATH]
+                              [--output-fasta-txt OUTPUT_FASTA_TXT]
+
+This script takes the 'metadata' output of the program `ncbi-genome-download`
+(see https://github.com/kblin/ncbi-genome-download for details), and processes
+each GenBank file found in the metadata file to generate a FASTA file, as well
+as genes and functions files for each entry. Plus, it autmatically generates a
+FASTA TXT file descriptor for anvi'o snakemake workfloes. So it is a multi-
+talented program like that.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -m GENBANK_METADATA, --metadata GENBANK_METADATA
+                        This is the file you get from the program `ncbi-
+                        genome-download` when you use the parameter
+                        `--metadata-table`.
+  -o DIR_PATH, --output-dir DIR_PATH
+                        Directory path for output files
+  --output-fasta-txt OUTPUT_FASTA_TXT
+                        This is not a FASTA file, but a TAB-delimited file
+                        with all the file names and paths processed by this
+                        program. This output can directly go into the anvi'o
+                        snakemake workflows because magic.
+
+INPUT:
+  Give us the preciousss...
+
+OUTPUT:
+  Where to find your precioussesss...
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>

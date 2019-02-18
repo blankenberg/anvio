@@ -1,0 +1,79 @@
+<tool id="anvi_export_misc_data" name="anvi-export-misc-data" version="5.2">
+    <description>Export additional data or order tables in pan or profile databases for items or layers.</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-export-misc-data --version</version_command>
+    <command><![CDATA[
+        cp -R '${input_pan_or_profile_db.extra_files_path}' '${output_pan_or_profile_db.extra_files_path}'
+ &&
+ anvi-export-misc-data
+
+#if $output_pan_or_profile_db:
+    --pan-or-profile-db '${output_pan_or_profile_db.extra_files_path}/${output_pan_or_profile_db.metadata.anvio_basename}'
+#end if
+
+--target-data-table '${target_data_table}'
+
+
+#if $str( $target_data_group ):
+    --target-data-group '${target_data_group}'
+#end if
+
+
+#if $output_file:
+    --output-file '${output_file}'
+#end if
+
+&> '${GALAXY_ANVIO_LOG}'
+
+    ]]></command>
+    <inputs>
+        <param name="input_pan_or_profile_db" type="data" label="Pan Or Profile Db" format="anvio_profile_db,anvio_pan_db" optional="False" multiple="False" argument="--pan-or-profile-db" help="Anvi'o pan or profile database (and even genes database in appropriate contexts)."/>
+        <param name="target_data_table" type="text" label="Target Data Table" value="" optional="False" argument="--target-data-table" help="The target table is the table you are interested in accessing. Currently it can be 'items','layers', or 'layer_orders'. Please see most up-to-date online documentation for more information."/>
+        <param name="target_data_group" type="text" label="Target Data Group" value="" optional="True" argument="--target-data-group" help="Data group to focus. Anvi'o misc data tables support associating a set of data keys with a data group. If you have no idea what this is, then probably you don't need it, and anvi'o will take care of you. Note: this flag is IRRELEVANT if you are working with additioanl order data tables."/>
+    </inputs>
+    <outputs>
+        <data name="output_pan_or_profile_db" format="anvio_profile_db" format_source="input_pan_or_profile_db" metadata_source="input_pan_or_profile_db" label="${tool.name} on ${on_string}: Pan Or Profile Db"/>
+        <data name="output_file" format="txt" format_source="input_output_file" metadata_source="input_output_file" label="${tool.name} on ${on_string}: Output File"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-export-misc-data [-h] -p PAN_OR_PROFILE_DB -t NAME [-D NAME]
+                              [-o FILE_PATH]
+
+Export additional data or order tables in pan or profile databases for items
+or layers.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p PAN_OR_PROFILE_DB, --pan-or-profile-db PAN_OR_PROFILE_DB
+                        Anvi'o pan or profile database (and even genes
+                        database in appropriate contexts).
+  -t NAME, --target-data-table NAME
+                        The target table is the table you are interested in
+                        accessing. Currently it can be 'items','layers', or
+                        'layer_orders'. Please see most up-to-date online
+                        documentation for more information.
+  -D NAME, --target-data-group NAME
+                        Data group to focus. Anvi'o misc data tables support
+                        associating a set of data keys with a data group. If
+                        you have no idea what this is, then probably you don't
+                        need it, and anvi'o will take care of you. Note: this
+                        flag is IRRELEVANT if you are working with additioanl
+                        order data tables.
+  -o FILE_PATH, --output-file FILE_PATH
+                        File path to store results.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>

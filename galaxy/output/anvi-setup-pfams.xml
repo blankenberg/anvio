@@ -1,0 +1,66 @@
+<tool id="anvi_setup_pfams" name="anvi-setup-pfams" version="5.2">
+    <description>Download Pfam data from the EBI</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-setup-pfams --version</version_command>
+    <command><![CDATA[
+        
+    #if $input_pfam_data_dir:
+        cp -R '${input_pfam_data_dir.extra_files_path}' '${output_pfam_data_dir.extra_files_path}'
+    #else
+        echo ''
+    #end if
+ &&
+ anvi-setup-pfams
+--pfam-data-dir '${output_pfam_data_dir.extra_files_path}'
+
+${reset}
+
+&> '${GALAXY_ANVIO_LOG}'
+
+    ]]></command>
+    <inputs>
+        <param name="input_pfam_data_dir" type="data" label="Pfam Data Dir" format="anvio_pfam_profile" optional="True" multiple="False" argument="--pfam-data-dir" help="The directory for Pfam data to be stored. If you leave it as is without specifying anything, the default destination for the data directory will be used to set things up. The advantage of it is that everyone will be using a single data directory, but then you may need superuser privileges to do it. Using this parameter you can choose the location of the data directory somewhere you like. However, when it is time to run Pfam, you will need to remember that path and provide it to the program."/>
+        <param name="reset" type="boolean" label="Reset" truevalue="--reset" falsevalue="" checked="False" optional="True" argument="--reset" help="This program by default attempts to use previously downloaded files in your Pfam data directory if there are any. If something is wrong for some reason you can use this to tell anvi'o to remove everything, and start over."/>
+    </inputs>
+    <outputs>
+        <data name="output_pfam_data_dir" format="anvio_pfam_profile" format_source="input_pfam_data_dir" metadata_source="input_pfam_data_dir" label="${tool.name} on ${on_string}: Pfam Data Dir"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-setup-pfams [-h] [--pfam-data-dir PFAM_DATA_DIR] [--reset]
+
+Download Pfam data from the EBI
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --pfam-data-dir PFAM_DATA_DIR
+                        The directory for Pfam data to be stored. If you leave
+                        it as is without specifying anything, the default
+                        destination for the data directory will be used to set
+                        things up. The advantage of it is that everyone will
+                        be using a single data directory, but then you may
+                        need superuser privileges to do it. Using this
+                        parameter you can choose the location of the data
+                        directory somewhere you like. However, when it is time
+                        to run Pfam, you will need to remember that path and
+                        provide it to the program.
+  --reset               This program by default attempts to use previously
+                        downloaded files in your Pfam data directory if there
+                        are any. If something is wrong for some reason you can
+                        use this to tell anvi'o to remove everything, and
+                        start over.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>

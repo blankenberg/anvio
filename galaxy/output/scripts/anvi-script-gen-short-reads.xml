@@ -1,0 +1,53 @@
+<tool id="anvi_script_gen_short_reads" name="anvi-script-gen-short-reads" version="5.2">
+    <description>Generate short reads from contigs</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-script-gen-short-reads --version</version_command>
+    <command><![CDATA[
+        anvi-script-gen-short-reads
+
+#if $configuration:
+     '${configuration}'
+#end if
+
+
+#if $output_file_path:
+    --output-file-path '${output_file_path}'
+#end if
+
+&> '${GALAXY_ANVIO_LOG}'
+
+    ]]></command>
+    <inputs>
+        <param name="configuration" type="data" label="Configuration" format="txt" optional="True" multiple="False" argument="" help="Configuration file"/>
+    </inputs>
+    <outputs>
+        <data name="output_file_path" format="fasta" format_source="input_output_file_path" metadata_source="input_output_file_path" label="${tool.name} on ${on_string}: Output File Path"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-script-gen-short-reads [-h] [--output-file-path FASTA_FILE] CONFIG_FILE
+
+Generate short reads from contigs
+
+positional arguments:
+  CONFIG_FILE           Configuration file
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --output-file-path FASTA_FILE
+                        Output FASTA file path
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>

@@ -1,0 +1,66 @@
+<tool id="anvi_migrate_db" name="anvi-migrate-db" version="5.2">
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-migrate-db --version</version_command>
+    <command><![CDATA[
+        
+    #if $input_input:
+        
+                #for $gxy_input_input in $input_input:
+                    cp -R '${gxy_input_input.extra_files_path}' '${output_input.extra_files_path}'
+                #end for
+                
+    #else
+        echo ''
+    #end if
+ &&
+ anvi-migrate-db
+
+            #for $gxy_output_input in $output_input:
+                 "${gxy_output_input.extra_files_path}/${gxy_output_input.metadata.anvio_basename}"
+            #end for
+            
+--just-do-it
+
+#if $str( $target_version ):
+    --target-version '${target_version}'
+#end if
+
+&> '${GALAXY_ANVIO_LOG}'
+
+    ]]></command>
+    <inputs>
+        <param name="input_input" type="data" label="Input" format="anvio_db" optional="True" multiple="True" argument="" help="Anvi'o database for migration"/>
+        <param name="target_version" type="text" label="Target Version" value="" optional="True" argument="--target-version" help="Anvi'o will stop upgrading your database when it reaches to this version."/>
+    </inputs>
+    <outputs>
+        <data name="output_input" format="anvio_db" format_source="input_input" metadata_source="input_input" label="${tool.name} on ${on_string}: Input"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-migrate-db [-h] [--just-do-it] [-t VERSION]
+                              DATABASE [DATABASE ...]
+
+positional arguments:
+  DATABASE              Anvi'o database for migration
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --just-do-it          Do not bother me with warnings
+  -t VERSION, --target-version VERSION
+                        Anvi'o will stop upgrading your database when it
+                        reaches to this version.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>

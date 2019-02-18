@@ -1,0 +1,167 @@
+<tool id="anvi_get_enriched_functions_per_pan_group" name="anvi-get-enriched-functions-per-pan-group" version="5.2">
+    <description>A program that takes a pangenome, and a categorical layer additional data item, and                                                  reports back the functions enriched in per category.</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-get-enriched-functions-per-pan-group --version</version_command>
+    <command><![CDATA[
+        cp -R '${input_pan_db.extra_files_path}' '${output_pan_db.extra_files_path}'
+ && 
+
+    #if $input_genomes_storage:
+        cp -R '${input_genomes_storage.extra_files_path}' '${output_genomes_storage.extra_files_path}'
+    #else
+        echo ''
+    #end if
+ &&
+ anvi-get-enriched-functions-per-pan-group
+
+#if $output_pan_db:
+    --pan-db '${output_pan_db.extra_files_path}/${output_pan_db.metadata.anvio_basename}'
+#end if
+
+
+#if $output_genomes_storage:
+    --genomes-storage '${output_genomes_storage.extra_files_path}/${output_genomes_storage.metadata.anvio_basename}'
+#end if
+
+
+#if $str( $category_variable ):
+    --category-variable '${category_variable}'
+#end if
+
+
+#if $str( $annotation_source ):
+    --annotation-source '${annotation_source}'
+#end if
+
+${list_annotation_sources}
+
+--output-file '${output_file}'
+
+
+#if $functional_occurrence_table_output:
+    --functional-occurrence-table-output '${functional_occurrence_table_output}'
+#end if
+
+
+#if $str( $min_function_enrichment ):
+    --min-function-enrichment '${min_function_enrichment}'
+#end if
+
+
+#if $str( $core_threshold ):
+    --core-threshold '${core_threshold}'
+#end if
+
+
+#if $str( $min_portion_occurrence_of_function_in_group ):
+    --min-portion-occurrence-of-function-in-group '${min_portion_occurrence_of_function_in_group}'
+#end if
+
+
+#if $str( $FDR ):
+    --FDR '${FDR}'
+#end if
+
+&> '${GALAXY_ANVIO_LOG}'
+
+    ]]></command>
+    <inputs>
+        <param name="input_pan_db" type="data" label="Pan Db" format="anvio_pan_db" optional="False" multiple="False" argument="--pan-db" help="Anvi'o pan database"/>
+        <param name="input_genomes_storage" type="data" label="Genomes Storage" format="anvio_genomes_db" optional="True" multiple="False" argument="--genomes-storage" help="Anvi'o genomes storage file"/>
+        <param name="category_variable" type="text" label="Category Variable" value="" optional="True" argument="--category-variable" help="The additional layers data variable name that divides layers into multiple categories."/>
+        <param name="annotation_source" type="text" label="Annotation Source" value="" optional="True" argument="--annotation-source" help="Get functional annotations for a specific annotation source. You can use the flag '--list-annotation-sources' to learn about what sources are available."/>
+        <param name="list_annotation_sources" type="boolean" label="List Annotation Sources" truevalue="--list-annotation-sources" falsevalue="" checked="False" optional="True" argument="--list-annotation-sources" help="List available functional annotation sources."/>
+        <param name="functional_occurrence_table_output" type="data" label="Functional Occurrence Table Output" format="txt" optional="True" multiple="False" argument="--functional-occurrence-table-output" help="Saves the presence/absence information for functions in genomes in a TAB-delimited format. A file name must be provided. To learn more about how the presence/absence is computed, please refer to the tutorial."/>
+        <param name="min_function_enrichment" type="float" label="Min Function Enrichment" value="0" optional="True" argument="--min-function-enrichment" help="Only report functions for which the min enrichment is above the provided value. Default is %(default).1f."/>
+        <param name="core_threshold" type="float" label="Core Threshold" value="1" optional="True" argument="--core-threshold" help="Takes a value between 0 and 1, where 1 means that only functions occuring in all genomes of a group would be considered as core functions of that group. Default is %(default).1f."/>
+        <param name="min_portion_occurrence_of_function_in_group" type="float" label="Min Portion Occurrence Of Function In Group" value="0" optional="True" argument="--min-portion-occurrence-of-function-in-group" help="Takes a value between 0 and 1, where 1 means that only functions that occur in all members of one of the compared groups will be included in the output. Default is %(default).1f."/>
+        <param name="FDR" type="float" label="Fdr" value="0.05" optional="True" argument="--FDR" help="Takes a value between 0 and 1, to determine the false detection rate that will be used for the Benjamini–Hochberg procedure. Default is %(default).1f."/>
+    </inputs>
+    <outputs>
+        <data name="output_pan_db" format="anvio_pan_db" format_source="input_pan_db" metadata_source="input_pan_db" label="${tool.name} on ${on_string}: Pan Db"/>
+        <data name="output_genomes_storage" format="anvio_genomes_db" format_source="input_genomes_storage" metadata_source="input_genomes_storage" label="${tool.name} on ${on_string}: Genomes Storage"/>
+        <data name="output_file" format="txt" format_source="input_output_file" metadata_source="input_output_file" label="${tool.name} on ${on_string}: Output File"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-get-enriched-functions-per-pan-group [-h] -p PAN_DB [-g GENOMES_STORAGE]
+                              [--category-variable CATEGORY]
+                              [--annotation-source SOURCE NAME] [-l] -o
+                              FILE_PATH [-F FILE] [-E FLOAT]
+                              [--core-threshold FLOAT] [-P FLOAT]
+                              [--false-detection-rate FLOAT]
+
+A program that takes a pangenome, and a categorical layer additional data
+item, and reports back the functions enriched in per category.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p PAN_DB, --pan-db PAN_DB
+                        Anvi'o pan database
+  -g GENOMES_STORAGE, --genomes-storage GENOMES_STORAGE
+                        Anvi'o genomes storage file
+  --category-variable CATEGORY
+                        The additional layers data variable name that divides
+                        layers into multiple categories.
+  --annotation-source SOURCE NAME
+                        Get functional annotations for a specific annotation
+                        source. You can use the flag '--list-annotation-
+                        sources' to learn about what sources are available.
+  -l, --list-annotation-sources
+                        List available functional annotation sources.
+  -o FILE_PATH, --output-file FILE_PATH
+                        File path to store results.
+  -F FILE, --functional-occurrence-table-output FILE
+                        Saves the presence/absence information for functions
+                        in genomes in a TAB-delimited format. A file name must
+                        be provided. To learn more about how the
+                        presence/absence is computed, please refer to the
+                        tutorial.
+  -E FLOAT, --min-function-enrichment FLOAT
+                        Only report functions for which the min enrichment is
+                        above the provided value. Default is 0.0.
+  --core-threshold FLOAT
+                        Takes a value between 0 and 1, where 1 means that only
+                        functions occuring in all genomes of a group would be
+                        considered as core functions of that group. Default is
+                        1.0.
+  -P FLOAT, --min-portion-occurrence-of-function-in-group FLOAT
+                        Takes a value between 0 and 1, where 1 means that only
+                        functions that occur in all members of one of the
+                        compared groups will be included in the output.
+                        Default is 0.0.
+  --false-detection-rate FLOAT, --FDR FLOAT
+                        Takes a value between 0 and 1, to determine the false
+                        detection rate that will be used for the
+                        Benjamini–Hochberg procedure. Default is 0.1.
+
+INPUT FILES:
+  Input files from the pangenome analysis.
+
+CATEGORY VARIABLE AND FUNCTIONAL ANNOTATION SOURCE:
+  This is the additional layer data item in which your genomes are split
+  into multiple groups. So anvi'o can figure out what functions are specific
+  to each group of genomes in your pangenomic analysis. If this is not
+  making any sense, please take a look at the online tutorial for
+  pangenomics (http://merenlab.org/2016/11/08/pangenomics-v2/).
+
+REPORTING:
+  Output and stuff.
+
+OPTIONAL PARAMETERS:
+  Parameters to help you filter the output.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>

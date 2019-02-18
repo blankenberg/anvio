@@ -1,0 +1,83 @@
+<tool id="anvi_export_collection" name="anvi-export-collection" version="5.2">
+    <description>Export a collection from an anvi'o database</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-export-collection --version</version_command>
+    <command><![CDATA[
+        cp -R '${input_pan_or_profile_db.extra_files_path}' '${output_pan_or_profile_db.extra_files_path}'
+ && 
+mkdir ${output_file_prefix.extra_files_path}
+ &&
+ anvi-export-collection
+
+#if $output_pan_or_profile_db:
+    --pan-or-profile-db '${output_pan_or_profile_db.extra_files_path}/${output_pan_or_profile_db.metadata.anvio_basename}'
+#end if
+
+
+#if $str( $collection_name ):
+    --collection-name '${collection_name}'
+#end if
+
+
+#if $str( $output_file_prefix ):
+    --output-file-prefix 'output_file_prefix'
+#end if
+
+${list_collections}
+
+${include_unbinned}
+
+&> '${GALAXY_ANVIO_LOG}'
+
+ &&
+ ( cp output_file_prefix* '${output_file_prefix.extra_files_path}/' || echo '' )
+    ]]></command>
+    <inputs>
+        <param name="input_pan_or_profile_db" type="data" label="Pan Or Profile Db" format="anvio_profile_db,anvio_pan_db" optional="False" multiple="False" argument="--pan-or-profile-db" help="Anvi'o pan or profile database (and even genes database in appropriate contexts)."/>
+        <param name="collection_name" type="text" label="Collection Name" value="" optional="True" argument="--collection-name" help="Collection name."/>
+        <param name="list_collections" type="boolean" label="List Collections" truevalue="--list-collections" falsevalue="" checked="False" optional="True" argument="--list-collections" help="Show available collections and exit."/>
+        <param name="include_unbinned" type="boolean" label="Include Unbinned" truevalue="--include-unbinned" falsevalue="" checked="False" optional="True" argument="--include-unbinned" help="When this flag is used, anvi'o will also store in the output file the items that do not appear in any of your bins. This new bin will be called 'UNBINNED_ITEMS_BIN'. Yes. The ugly name is intentional."/>
+    </inputs>
+    <outputs>
+        <data name="output_pan_or_profile_db" format="anvio_profile_db" format_source="input_pan_or_profile_db" metadata_source="input_pan_or_profile_db" label="${tool.name} on ${on_string}: Pan Or Profile Db"/>
+        <data name="output_file_prefix" format="anvio_composite" format_source="input_output_file_prefix" metadata_source="input_output_file_prefix" label="${tool.name} on ${on_string}: Output File Prefix"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-export-collection [-h] -p PAN_OR_PROFILE_DB [-C COLLECTION_NAME]
+                              [-O FILENAME_PREFIX] [--list-collections]
+                              [--include-unbinned]
+
+Export a collection from an anvi'o database
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p PAN_OR_PROFILE_DB, --pan-or-profile-db PAN_OR_PROFILE_DB
+                        Anvi'o pan or profile database (and even genes
+                        database in appropriate contexts).
+  -C COLLECTION_NAME, --collection-name COLLECTION_NAME
+                        Collection name.
+  -O FILENAME_PREFIX, --output-file-prefix FILENAME_PREFIX
+                        A prefix to be used while naming the output files (no
+                        file type extensions please; just a prefix).
+  --list-collections    Show available collections and exit.
+  --include-unbinned    When this flag is used, anvi'o will also store in the
+                        output file the items that do not appear in any of
+                        your bins. This new bin will be called
+                        'UNBINNED_ITEMS_BIN'. Yes. The ugly name is
+                        intentional.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>

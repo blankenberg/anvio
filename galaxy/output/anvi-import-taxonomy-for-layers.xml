@@ -1,0 +1,73 @@
+<tool id="anvi_import_taxonomy_for_layers" name="anvi-import-taxonomy-for-layers" version="5.2">
+    <description>Import layers-level taxonomy into an anvi'o additional layer data                                                  table in an anvi'o single-profile database.</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-import-taxonomy-for-layers --version</version_command>
+    <command><![CDATA[
+        cp -R '${input_profile_db.extra_files_path}' '${output_profile_db.extra_files_path}'
+ &&
+ anvi-import-taxonomy-for-layers
+--profile-db '${output_profile_db.extra_files_path}/PROFILE.db'
+
+
+#if $str( $parser ):
+    --parser '${parser}'
+#end if
+
+--input-files '${input_files}'
+
+
+#if $str( $min_abundance ):
+    --min-abundance '${min_abundance}'
+#end if
+
+&> '${GALAXY_ANVIO_LOG}'
+
+    ]]></command>
+    <inputs>
+        <param name="input_profile_db" type="data" label="Profile Db" format="anvio_profile_db" optional="False" multiple="False" argument="--profile-db" help="Anvi'o profile database"/>
+        <param name="parser" type="text" label="Parser" value="" optional="True" argument="--parser" help="Parser to make sense of the input files. There are 1 parsers readily available: ['kraken_hll']."/>
+        <param name="input_files" type="data" label="Input Files" format="data" optional="False" multiple="True" argument="--input-files" help='Input file(s) for selected parser. Each parser (except "blank") requires input files to process that you generate before running anvio. Please see the documentation for details.'/>
+        <param name="min_abundance" type="text" label="Min Abundance" value="0.1" optional="True" argument="--min-abundance" help="Short read-based taxonomy can be extremely noisy. Therefore, here we have defeault minimum percentage cutoff of 0.1%% to eliminate any taxon that occurs less than that in a given input file."/>
+    </inputs>
+    <outputs>
+        <data name="output_profile_db" format="anvio_profile_db" format_source="input_profile_db" metadata_source="input_profile_db" label="${tool.name} on ${on_string}: Profile Db"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-import-taxonomy-for-layers [-h] -p PROFILE_DB [--parser PARSER] -i FILES)
+                              [FILE(S ...] [--min-abundance PERCENTAGE]
+
+Import layers-level taxonomy into an anvi'o additional layer data table in an
+anvi'o single-profile database.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p PROFILE_DB, --profile-db PROFILE_DB
+                        Anvi'o profile database
+  --parser PARSER       Parser to make sense of the input files. There are 1
+                        parsers readily available: ['kraken_hll'].
+  -i FILE(S) [FILE(S) ...], --input-files FILE(S) [FILE(S) ...]
+                        Input file(s) for selected parser. Each parser (except
+                        "blank") requires input files to process that you
+                        generate before running anvio. Please see the
+                        documentation for details.
+  --min-abundance PERCENTAGE
+                        Short read-based taxonomy can be extremely noisy.
+                        Therefore, here we have defeault minimum percentage
+                        cutoff of 0.1% to eliminate any taxon that occurs less
+                        than that in a given input file.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>

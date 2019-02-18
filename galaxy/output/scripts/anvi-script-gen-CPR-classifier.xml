@@ -1,0 +1,56 @@
+<tool id="anvi_script_gen_CPR_classifier" name="anvi-script-gen-CPR-classifier" version="5.2">
+    <description>Train a classifier for CPR prediction</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-script-gen-CPR-classifier --version</version_command>
+    <command><![CDATA[
+        anvi-script-gen-CPR-classifier
+
+#if $matrix:
+     '${matrix}'
+#end if
+
+
+#if $output:
+    --output '${output}'
+#end if
+
+&> '${GALAXY_ANVIO_LOG}'
+
+    ]]></command>
+    <inputs>
+        <param name="matrix" type="data" label="Matrix" format="tabular" optional="True" multiple="False" argument="" help='TAB-delimited matrix of CPR genome names, classes, and presence absence of single-copy genes. Headers of the first two rows should be "genome", and "class". The rest of the rows shold be single-copy genes.'/>
+    </inputs>
+    <outputs>
+        <data name="output" format="anvio_classifier" format_source="input_output" metadata_source="input_output" label="${tool.name} on ${on_string}: Output"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-script-gen-CPR-classifier [-h] [-o CLASSIFIER_FILE] MATRIX_FILE
+
+Train a classifier for CPR prediction
+
+positional arguments:
+  MATRIX_FILE           TAB-delimited matrix of CPR genome names, classes, and
+                        presence absence of single-copy genes. Headers of the
+                        first two rows should be "genome", and "class". The
+                        rest of the rows shold be single-copy genes.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -o CLASSIFIER_FILE, --output CLASSIFIER_FILE
+                        Output file name for the classifier.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>

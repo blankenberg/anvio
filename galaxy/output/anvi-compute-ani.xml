@@ -1,0 +1,216 @@
+<tool id="anvi_compute_ani" name="anvi-compute-ani" version="5.2">
+    <description>Export sequences from external genomes and compute                                     ANI. If Pan Database is given anvi'o will write computed output                                     to misc data tables of Pan Database.</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-compute-ani --version</version_command>
+    <command><![CDATA[
+        
+    #if $input_pan_db:
+        cp -R '${input_pan_db.extra_files_path}' '${output_pan_db.extra_files_path}'
+    #else
+        echo ''
+    #end if
+ &&
+ anvi-compute-ani
+
+#if $internal_genomes:
+    --internal-genomes '${internal_genomes}'
+#end if
+
+
+#if $external_genomes:
+    --external-genomes '${external_genomes}'
+#end if
+
+
+#if $output_dir:
+    --output-dir '${output_dir.extra_files_path}'
+#end if
+
+
+#if $output_pan_db:
+    --pan-db '${output_pan_db.extra_files_path}/${output_pan_db.metadata.anvio_basename}'
+#end if
+
+
+#if $str( $min_alignment_fraction ):
+    --min-alignment-fraction '${min_alignment_fraction}'
+#end if
+
+
+#if $str( $significant_alignment_length ):
+    --significant-alignment-length '${significant_alignment_length}'
+#end if
+
+
+#if $str( $method ):
+    --method '${method}'
+#end if
+
+
+#if $str( $distance ):
+    --distance '${distance}'
+#end if
+
+
+#if $str( $linkage ):
+    --linkage '${linkage}'
+#end if
+
+--num-threads "\${GALAXY_SLOTS:-1}"
+
+--just-do-it
+&> '${GALAXY_ANVIO_LOG}'
+
+    ]]></command>
+    <inputs>
+        <param name="internal_genomes" type="data" label="Internal Genomes" format="txt" optional="True" multiple="False" argument="--internal-genomes" help="A five-column TAB-delimited flat text file. The header line must contain thse columns: 'name', 'bin_id', 'collection_id', 'profile_db_path', 'contigs_db_path'. Each line should list a single entry, where 'name' can be any name to describe the anvi'o bin identified as 'bin_id' that is stored in a collection."/>
+        <param name="external_genomes" type="data" label="External Genomes" format="txt" optional="True" multiple="False" argument="--external-genomes" help="A two-column TAB-delimited flat text file that lists anvi'o contigs databases. The first item in the header line should read 'name', and the second should read 'contigs_db_path'. Each line in the file should describe a single entry, where the first column is the name of the genome (or MAG), and the second column is the anvi'o contigs database generated for this genome."/>
+        <param name="input_pan_db" type="data" label="Pan Db" format="anvio_pan_db" optional="True" multiple="False" argument="--pan-db" help="This is totally ooptional, but very useful when applicable. If you are running ANI for genomes for which you already have an anvi'o pangeome, then you can show where the pan database is and anvi'o would automatically add the results into the misc data tables of your pangenome. Those data can then be shown as ANI heatmaps on the pan interactive interface through the 'layers' tab."/>
+        <param name="min_alignment_fraction" type="text" label="Min Alignment Fraction" value="0.0" optional="True" argument="--min-alignment-fraction" help="In some cases you may get high raw ANI estimates between two genomes that have nothing to do with each other simply because only a small fraction of their content may be aligned. This filter will eliminate ANI scores between two genomes if the alignment fraction is less than you deem trustable. When you set a value, anvi'o will go through the ANI results, and set percent identity scores between two genomes to 0 if the alignment fraction *between either of them* is less than the parameter described here. The default is 0.0, so every hit is reported, but you can go rebel, and choose any value between 0.0 and 1.0."/>
+        <param name="significant_alignment_length" type="text" label="Significant Alignment Length" value="" optional="True" argument="--significant-alignment-length" help="So --min-alignmnet-fraction discards any hit that is coming from alignments that represent shorter fractions of genomes, but what if you still don't want to miss an alignment that is longer than an X number of nucleotides regardless of what fraction of the genome it represents? Well, this parameter is to recover things that may be lost due to --min-alignment-fraction parameter. Let's say, if you set --min-alignment-fraction to '0.05', and this parameter to '5000', anvi'o will keep hits from alignments that are longer than 5000 nts, EVEN IF THEY REPRESENT less than 5%% of a given genome pair. Basically if --min-alignment-fraction is your shield to protect yourself from incoming garbage, --significant-alignment-length is your chopstick to pick out those that may be interesting, and you are a true warrior here."/>
+        <param name="method" type="text" label="Method" value="ANIb" optional="True" argument="--method" help="Method for pyANI. The default is %(default)s. You must have the necessary binary in path for whichever method you choose. According to the pyANI help for v0.2.7 at https://github.com/widdowquinn/pyani, the method 'ANIm' uses MUMmer (NUCmer) to align the input sequences. 'ANIb' uses BLASTN+ to align 1020nt fragments of the input sequences. 'ANIblastall': uses the legacy BLASTN to align 1020nt fragments Finally, 'TETRA': calculates tetranucleotide frequencies of each input sequence"/>
+        <param name="distance" type="text" label="Distance" value="euclidean" optional="True" argument="--distance" help='The distance metric for the hierarchical clustering. The default is "%(default)s".'/>
+        <param name="linkage" type="text" label="Linkage" value="ward" optional="True" argument="--linkage" help='The linkage method for the hierarchical clustering. The default is "%(default)s".'/>
+    </inputs>
+    <outputs>
+        <data name="output_dir" format="anvio_profile_db" format_source="input_output_dir" metadata_source="input_output_dir" label="${tool.name} on ${on_string}: Output Dir"/>
+        <data name="output_pan_db" format="anvio_pan_db" format_source="input_pan_db" metadata_source="input_pan_db" label="${tool.name} on ${on_string}: Pan Db"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-compute-ani [-h] [-i FILE_PATH] [-e FILE_PATH] -o DIR_PATH
+                              [-p PAN_DB]
+                              [--min-alignment-fraction MIN_ALIGNMENT_FRACTION]
+                              [--significant-alignment-length SIGNIFICANT_ALIGNMENT_LENGTH]
+                              [--method {ANIm,ANIb,ANIblastall,TETRA}]
+                              [--distance DISTANCE_METRIC]
+                              [--linkage LINKAGE_METHOD] [-T NUM_THREADS]
+                              [--just-do-it] [--log-file FILE_PATH]
+
+Export sequences from external genomes and compute ANI. If Pan Database is
+given anvi'o will write computed output to misc data tables of Pan Database.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i FILE_PATH, --internal-genomes FILE_PATH
+                        A five-column TAB-delimited flat text file. The header
+                        line must contain thse columns: 'name', 'bin_id',
+                        'collection_id', 'profile_db_path', 'contigs_db_path'.
+                        Each line should list a single entry, where 'name' can
+                        be any name to describe the anvi'o bin identified as
+                        'bin_id' that is stored in a collection.
+  -e FILE_PATH, --external-genomes FILE_PATH
+                        A two-column TAB-delimited flat text file that lists
+                        anvi'o contigs databases. The first item in the header
+                        line should read 'name', and the second should read
+                        'contigs_db_path'. Each line in the file should
+                        describe a single entry, where the first column is the
+                        name of the genome (or MAG), and the second column is
+                        the anvi'o contigs database generated for this genome.
+  -o DIR_PATH, --output-dir DIR_PATH
+                        Directory path for output files
+  -p PAN_DB, --pan-db PAN_DB
+                        This is totally ooptional, but very useful when
+                        applicable. If you are running ANI for genomes for
+                        which you already have an anvi'o pangeome, then you
+                        can show where the pan database is and anvi'o would
+                        automatically add the results into the misc data
+                        tables of your pangenome. Those data can then be shown
+                        as ANI heatmaps on the pan interactive interface
+                        through the 'layers' tab.
+  --min-alignment-fraction MIN_ALIGNMENT_FRACTION
+                        In some cases you may get high raw ANI estimates
+                        between two genomes that have nothing to do with each
+                        other simply because only a small fraction of their
+                        content may be aligned. This filter will eliminate ANI
+                        scores between two genomes if the alignment fraction
+                        is less than you deem trustable. When you set a value,
+                        anvi'o will go through the ANI results, and set
+                        percent identity scores between two genomes to 0 if
+                        the alignment fraction *between either of them* is
+                        less than the parameter described here. The default is
+                        0.0, so every hit is reported, but you can go rebel,
+                        and choose any value between 0.0 and 1.0.
+  --significant-alignment-length SIGNIFICANT_ALIGNMENT_LENGTH
+                        So --min-alignmnet-fraction discards any hit that is
+                        coming from alignments that represent shorter
+                        fractions of genomes, but what if you still don't want
+                        to miss an alignment that is longer than an X number
+                        of nucleotides regardless of what fraction of the
+                        genome it represents? Well, this parameter is to
+                        recover things that may be lost due to --min-
+                        alignment-fraction parameter. Let's say, if you set
+                        --min-alignment-fraction to '0.05', and this parameter
+                        to '5000', anvi'o will keep hits from alignments that
+                        are longer than 5000 nts, EVEN IF THEY REPRESENT less
+                        than 5% of a given genome pair. Basically if --min-
+                        alignment-fraction is your shield to protect yourself
+                        from incoming garbage, --significant-alignment-length
+                        is your chopstick to pick out those that may be
+                        interesting, and you are a true warrior here.
+  --method {ANIm,ANIb,ANIblastall,TETRA}
+                        Method for pyANI. The default is ANIb. You must have
+                        the necessary binary in path for whichever method you
+                        choose. According to the pyANI help for v0.2.7 at
+                        https://github.com/widdowquinn/pyani, the method
+                        'ANIm' uses MUMmer (NUCmer) to align the input
+                        sequences. 'ANIb' uses BLASTN+ to align 1020nt
+                        fragments of the input sequences. 'ANIblastall': uses
+                        the legacy BLASTN to align 1020nt fragments Finally,
+                        'TETRA': calculates tetranucleotide frequencies of
+                        each input sequence
+  --distance DISTANCE_METRIC
+                        The distance metric for the hierarchical clustering.
+                        The default is "euclidean".
+  --linkage LINKAGE_METHOD
+                        The linkage method for the hierarchical clustering.
+                        The default is "ward".
+  -T NUM_THREADS, --num-threads NUM_THREADS
+                        Maximum number of threads to use for multithreading
+                        whenever possible. Very conservatively, the default is
+                        1. It is a good idea to not exceed the number of CPUs
+                        / cores on your system. Plus, please be careful with
+                        this option if you are running your commands on a SGE
+                        --if you are clusterizing your runs, and asking for
+                        multiple threads to use, you may deplete your
+                        resources very fast.
+  --just-do-it          Don't bother me with questions or warnings, just do
+                        it.
+  --log-file FILE_PATH  File path to store debug/output messages.
+
+INPUT OPTIONS:
+  Tell anvi'o what you want.
+
+OUTPUT OPTIONS:
+  Tell anvi'o where to store your results.
+
+FILTERING HITS:
+  These filters can save lives. Ask Luke.
+
+pyANI METHOD:
+  Tell anvi'o to tell pyANI what method you wish to use.
+
+HIERARCHICAL CLUSTERING:
+  Once pyANI is done with its magic, it reports ANI between genomes as
+  distance matrix files, which can be clustered into nice looking
+  dendrograms to display the relationships between genomes nicely (in the
+  anvi'o interface and elsewhere). Here you can set the distance metric and
+  the linkage algorithm for that.
+
+OTHER IMPORTANT STUFF:
+  Yes. You're almost done.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>

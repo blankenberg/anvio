@@ -1,0 +1,114 @@
+<tool id="anvi_script_process_genbank" name="anvi-script-process-genbank" version="5.2">
+    <description>This script takes a GenBank file, and outputs a FASTA file, as well as two                                                  additional TAB-delimited output files for external gene calls and gene                                                  functions that can be used with the programs `anvi-gen-contigs-database`                                                  and `anvi-import-functions`.</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-script-process-genbank --version</version_command>
+    <command><![CDATA[
+        mkdir ${output_file_prefix.extra_files_path}
+ &&
+ anvi-script-process-genbank
+--input-genbank '${input_genbank}'
+
+
+#if $str( $output_file_prefix ):
+    --output-file-prefix 'output_file_prefix'
+#end if
+
+
+#if $output_fasta:
+    --output-fasta '${output_fasta}'
+#end if
+
+
+#if $output_gene_calls:
+    --output-gene-calls '${output_gene_calls}'
+#end if
+
+
+#if $output_functions:
+    --output-functions '${output_functions}'
+#end if
+
+
+#if $str( $annotation_source ):
+    --annotation-source '${annotation_source}'
+#end if
+
+
+#if $str( $annotation_version ):
+    --annotation-version '${annotation_version}'
+#end if
+
+&> '${GALAXY_ANVIO_LOG}'
+
+ &&
+ ( cp output_file_prefix* '${output_file_prefix.extra_files_path}/' || echo '' )
+    ]]></command>
+    <inputs>
+        <param name="input_genbank" type="data" label="Input Genbank" format="genbank" optional="False" multiple="False" argument="--input-genbank" help="Input GenBank file"/>
+        <param name="annotation_source" type="text" label="Annotation Source" value="NCBI_PGAP" optional="True" argument="--annotation-source" help='Annotation source (default: "NCBI_PGAP")'/>
+        <param name="annotation_version" type="text" label="Annotation Version" value="v4.6" optional="True" argument="--annotation-version" help='Annotation source version to be stored in the database (default: "v4.6")'/>
+    </inputs>
+    <outputs>
+        <data name="output_file_prefix" format="anvio_composite" format_source="input_output_file_prefix" metadata_source="input_output_file_prefix" label="${tool.name} on ${on_string}: Output File Prefix"/>
+        <data name="output_fasta" format="fasta" format_source="input_output_fasta" metadata_source="input_output_fasta" label="${tool.name} on ${on_string}: Output Fasta"/>
+        <data name="output_gene_calls" format="tabular" format_source="input_output_gene_calls" metadata_source="input_output_gene_calls" label="${tool.name} on ${on_string}: Output Gene Calls"/>
+        <data name="output_functions" format="tabular" format_source="input_output_functions" metadata_source="input_output_functions" label="${tool.name} on ${on_string}: Output Functions"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-script-process-genbank [-h] -i GENBANK [-O FILENAME_PREFIX]
+                              [--output-fasta FASTA]
+                              [--output-gene-calls TAB DELIMITED FILE]
+                              [--output-functions TAB DELIMITED FILE]
+                              [--annotation-source ANNOTATION_SOURCE]
+                              [--annotation-version ANNOTATION_VERSION]
+
+This script takes a GenBank file, and outputs a FASTA file, as well as two
+additional TAB-delimited output files for external gene calls and gene
+functions that can be used with the programs `anvi-gen-contigs-database` and
+`anvi-import-functions`.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i GENBANK, --input-genbank GENBANK
+                        Input GenBank file
+  -O FILENAME_PREFIX, --output-file-prefix FILENAME_PREFIX
+                        A prefix to be used while naming the output files (no
+                        file type extensions please; just a prefix).
+  --output-fasta FASTA  Output FASTA file path.
+  --output-gene-calls TAB DELIMITED FILE
+                        Output file path for external gene calls
+  --output-functions TAB DELIMITED FILE
+                        Output file path for anvi'o-importable gene functions
+                        file
+  --annotation-source ANNOTATION_SOURCE
+                        Annotation source (default: "NCBI_PGAP")
+  --annotation-version ANNOTATION_VERSION
+                        Annotation source version to be stored in the database
+                        (default: "v4.6")
+
+INPUT:
+  Give us the preciousss...
+
+OUTPUT:
+  You either provide a 'prefix', or provide specific output file
+  names/paths. You can't mix the two (well, you can try).
+
+DETAILS:
+  Setting the annotation source and version data to appear in the output
+  file for functional annotations file.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>

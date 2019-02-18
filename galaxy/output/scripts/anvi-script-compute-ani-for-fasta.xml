@@ -1,0 +1,119 @@
+<tool id="anvi_script_compute_ani_for_fasta" name="anvi-script-compute-ani-for-fasta" version="5.2">
+    <description>Run ANI between contigs in a single FASTA file.</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-script-compute-ani-for-fasta --version</version_command>
+    <command><![CDATA[
+        
+    #if $input_pan_db:
+        cp -R '${input_pan_db.extra_files_path}' '${output_pan_db.extra_files_path}'
+    #else
+        echo ''
+    #end if
+ &&
+ anvi-script-compute-ani-for-fasta
+--fasta-file '${fasta_file}'
+
+
+#if $output_dir:
+    --output-dir '${output_dir.extra_files_path}'
+#end if
+
+
+#if $output_pan_db:
+    --pan-db '${output_pan_db.extra_files_path}/${output_pan_db.metadata.anvio_basename}'
+#end if
+
+--num-threads "\${GALAXY_SLOTS:-1}"
+
+
+#if $str( $method ):
+    --method '${method}'
+#end if
+
+
+#if $str( $distance ):
+    --distance '${distance}'
+#end if
+
+
+#if $str( $linkage ):
+    --linkage '${linkage}'
+#end if
+
+--just-do-it
+&> '${GALAXY_ANVIO_LOG}'
+
+    ]]></command>
+    <inputs>
+        <param name="fasta_file" type="data" label="Fasta File" format="fasta" optional="False" multiple="False" argument="--fasta-file" help="A FASTA-formatted input file"/>
+        <param name="input_pan_db" type="data" label="Pan Db" format="anvio_pan_db" optional="True" multiple="False" argument="--pan-db" help="Anvi'o pan database"/>
+        <param name="method" type="text" label="Method" value="ANIb" optional="True" argument="--method" help="Method for pyANI. The default is %(default)s. You must have the necessary binary in path for whichever method you choose. According to the pyANI help for v0.2.7 at https://github.com/widdowquinn/pyani, the method 'ANIm' uses MUMmer (NUCmer) to align the input sequences. 'ANIb' uses BLASTN+ to align 1020nt fragments of the input sequences. 'ANIblastall': uses the legacy BLASTN to align 1020nt fragments Finally, 'TETRA': calculates tetranucleotide frequencies of each input sequence"/>
+        <param name="distance" type="text" label="Distance" value="euclidean" optional="True" argument="--distance" help='The distance metric for the hierarchical clustering. The default is "%(default)s".'/>
+        <param name="linkage" type="text" label="Linkage" value="ward" optional="True" argument="--linkage" help='The linkage method for the hierarchical clustering. The default is "%(default)s".'/>
+    </inputs>
+    <outputs>
+        <data name="output_dir" format="anvio_profile_db" format_source="input_output_dir" metadata_source="input_output_dir" label="${tool.name} on ${on_string}: Output Dir"/>
+        <data name="output_pan_db" format="anvio_pan_db" format_source="input_pan_db" metadata_source="input_pan_db" label="${tool.name} on ${on_string}: Pan Db"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-script-compute-ani-for-fasta [-h] -f FASTA -o DIR_PATH [-p PAN_DB]
+                              [-T NUM_THREADS] [--log-file FILE_PATH]
+                              [--method {ANIm,ANIb,ANIblastall,TETRA}]
+                              [--distance DISTANCE_METRIC]
+                              [--linkage LINKAGE_METHOD] [--just-do-it]
+
+Run ANI between contigs in a single FASTA file.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -f FASTA, --fasta-file FASTA
+                        A FASTA-formatted input file
+  -o DIR_PATH, --output-dir DIR_PATH
+                        Directory path for output files
+  -p PAN_DB, --pan-db PAN_DB
+                        Anvi'o pan database
+  -T NUM_THREADS, --num-threads NUM_THREADS
+                        Maximum number of threads to use for multithreading
+                        whenever possible. Very conservatively, the default is
+                        1. It is a good idea to not exceed the number of CPUs
+                        / cores on your system. Plus, please be careful with
+                        this option if you are running your commands on a SGE
+                        --if you are clusterizing your runs, and asking for
+                        multiple threads to use, you may deplete your
+                        resources very fast.
+  --log-file FILE_PATH  File path to store debug/output messages.
+  --method {ANIm,ANIb,ANIblastall,TETRA}
+                        Method for pyANI. The default is ANIb. You must have
+                        the necessary binary in path for whichever method you
+                        choose. According to the pyANI help for v0.2.7 at
+                        https://github.com/widdowquinn/pyani, the method
+                        'ANIm' uses MUMmer (NUCmer) to align the input
+                        sequences. 'ANIb' uses BLASTN+ to align 1020nt
+                        fragments of the input sequences. 'ANIblastall': uses
+                        the legacy BLASTN to align 1020nt fragments Finally,
+                        'TETRA': calculates tetranucleotide frequencies of
+                        each input sequence
+  --distance DISTANCE_METRIC
+                        The distance metric for the hierarchical clustering.
+                        The default is "euclidean".
+  --linkage LINKAGE_METHOD
+                        The linkage method for the hierarchical clustering.
+                        The default is "ward".
+  --just-do-it          Don't bother me with questions or warnings, just do
+                        it.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>

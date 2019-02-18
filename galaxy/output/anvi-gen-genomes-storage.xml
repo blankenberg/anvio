@@ -1,0 +1,106 @@
+<tool id="anvi_gen_genomes_storage" name="anvi-gen-genomes-storage" version="5.2">
+    <description>Create a genome storage from internal or external genomes for a pan genome analysis.</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-gen-genomes-storage --version</version_command>
+    <command><![CDATA[
+        mkdir '${output_file.extra_files_path}'
+
+ &&
+ anvi-gen-genomes-storage
+
+#if $external_genomes:
+    --external-genomes '${external_genomes}'
+#end if
+
+
+#if $internal_genomes:
+    --internal-genomes '${internal_genomes}'
+#end if
+
+
+#if $str( $gene_caller ):
+    --gene-caller '${gene_caller}'
+#end if
+
+
+#if $output_file:
+    --output-file '${output_file.extra_files_path}/${output_file.metadata.anvio_basename}'
+#end if
+
+&> '${GALAXY_ANVIO_LOG}'
+
+    ]]></command>
+    <inputs>
+        <param name="external_genomes" type="data" label="External Genomes" format="txt" optional="True" multiple="False" argument="--external-genomes" help="A two-column TAB-delimited flat text file that lists anvi'o contigs databases. The first item in the header line should read 'name', and the second should read 'contigs_db_path'. Each line in the file should describe a single entry, where the first column is the name of the genome (or MAG), and the second column is the anvi'o contigs database generated for this genome."/>
+        <param name="internal_genomes" type="data" label="Internal Genomes" format="txt" optional="True" multiple="False" argument="--internal-genomes" help="A five-column TAB-delimited flat text file. The header line must contain thse columns: 'name', 'bin_id', 'collection_id', 'profile_db_path', 'contigs_db_path'. Each line should list a single entry, where 'name' can be any name to describe the anvi'o bin identified as 'bin_id' that is stored in a collection."/>
+        <param name="gene_caller" type="text" label="Gene Caller" value="" optional="True" argument="--gene-caller" help="The gene caller to utilize. Anvi'o supports multiple gene callers, and some operations (including this one) requires an explicit mentioning of which one to use. The default is 'prodigal', but it will not be enough if you if you were a rebel adn have used `--external-gene-callers` or something."/>
+    </inputs>
+    <outputs>
+        <data name="output_file" format="anvio_genomes_db" format_source="input_output_file" metadata_source="input_output_file" label="${tool.name} on ${on_string}: Output File"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-gen-genomes-storage [-h] [-e FILE_PATH] [-i FILE_PATH]
+                              [--gene-caller GENE-CALLER] -o GENOMES_STORAGE
+
+Create a genome storage from internal or external genomes for a pan genome
+analysis.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -e FILE_PATH, --external-genomes FILE_PATH
+                        A two-column TAB-delimited flat text file that lists
+                        anvi'o contigs databases. The first item in the header
+                        line should read 'name', and the second should read
+                        'contigs_db_path'. Each line in the file should
+                        describe a single entry, where the first column is the
+                        name of the genome (or MAG), and the second column is
+                        the anvi'o contigs database generated for this genome.
+  -i FILE_PATH, --internal-genomes FILE_PATH
+                        A five-column TAB-delimited flat text file. The header
+                        line must contain thse columns: 'name', 'bin_id',
+                        'collection_id', 'profile_db_path', 'contigs_db_path'.
+                        Each line should list a single entry, where 'name' can
+                        be any name to describe the anvi'o bin identified as
+                        'bin_id' that is stored in a collection.
+  --gene-caller GENE-CALLER
+                        The gene caller to utilize. Anvi'o supports multiple
+                        gene callers, and some operations (including this one)
+                        requires an explicit mentioning of which one to use.
+                        The default is 'prodigal', but it will not be enough
+                        if you if you were a rebel adn have used `--external-
+                        gene-callers` or something.
+  -o GENOMES_STORAGE, --output-file GENOMES_STORAGE
+                        File path to store results.
+
+EXTERNAL GENOMES:
+  External genomes listed as anvi'o contigs databases. As in, you have one
+  or more genomes say from NCBI you want to work with, and you created an
+  anvi'o contigs database for each one of them.
+
+INTERNAL GENOMES:
+  Genome bins stored in an anvi'o profile databases as collections.
+
+PRO STUFF:
+  Things you may not have to change. But you never know (unless you read the
+  help).
+
+OUTPUT:
+  Give it a nice name. Must end with '-GENOMES.db'. This is primarily due to
+  the fact that there are other .db files used throughout anvi'o and it
+  would be better to distinguish this very special file from them.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>

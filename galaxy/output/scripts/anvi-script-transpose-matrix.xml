@@ -1,0 +1,50 @@
+<tool id="anvi_script_transpose_matrix" name="anvi-script-transpose-matrix" version="5.2">
+    <description>Transpose a TAB-delimited file</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-script-transpose-matrix --version</version_command>
+    <command><![CDATA[
+        anvi-script-transpose-matrix
+
+#if $input_file:
+     '${input_file}'
+#end if
+
+--output-file '${output_file}'
+
+&> '${GALAXY_ANVIO_LOG}'
+
+    ]]></command>
+    <inputs>
+        <param name="input_file" type="data" label="Input File" format="tabular" optional="True" multiple="False" argument="" help="Input matrix."/>
+    </inputs>
+    <outputs>
+        <data name="output_file" format="tabular" format_source="input_output_file" metadata_source="input_output_file" label="${tool.name} on ${on_string}: Output File"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-script-transpose-matrix [-h] -o MATRIX_FILE MATRIX_FILE
+
+Transpose a TAB-delimited file
+
+positional arguments:
+  MATRIX_FILE           Input matrix.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -o MATRIX_FILE, --output-file MATRIX_FILE
+                        File path to store results.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>

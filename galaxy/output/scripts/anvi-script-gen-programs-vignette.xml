@@ -1,0 +1,53 @@
+<tool id="anvi_script_gen_programs_vignette" name="anvi-script-gen-programs-vignette" version="5.2">
+    <description>Generate a vignette for anvi'o programs</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-script-gen-programs-vignette --version</version_command>
+    <command><![CDATA[
+        anvi-script-gen-programs-vignette
+
+#if $output_file:
+    --output-file '${output_file}'
+#end if
+
+
+#if $str( $program_names_to_focus ):
+    --program-names-to-focus '${program_names_to_focus}'
+#end if
+
+&> '${GALAXY_ANVIO_LOG}'
+
+    ]]></command>
+    <inputs>
+        <param name="program_names_to_focus" type="text" label="Program Names To Focus" value="" optional="True" argument="--program-names-to-focus" help="Comma-spearated list of program names to focus Mostly for debugging purposes."/>
+    </inputs>
+    <outputs>
+        <data name="output_file" format="txt" format_source="input_output_file" metadata_source="input_output_file" label="${tool.name} on ${on_string}: Output File"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-script-gen-programs-vignette [-h] [-o FILE_PATH] [-p PROGRAM_NAMES_TO_FOCUS]
+
+Generate a vignette for anvi'o programs
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -o FILE_PATH, --output-file FILE_PATH
+                        File path to store results.
+  -p PROGRAM_NAMES_TO_FOCUS, --program-names-to-focus PROGRAM_NAMES_TO_FOCUS
+                        Comma-spearated list of program names to focus Mostly
+                        for debugging purposes.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>

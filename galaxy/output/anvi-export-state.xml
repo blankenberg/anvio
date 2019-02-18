@@ -1,0 +1,69 @@
+<tool id="anvi_export_state" name="anvi-export-state" version="5.2">
+    <description>Export an anvi'o state into a profile database.</description>
+    <requirements>
+        <requirement type="package" version="5.2">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-export-state --version</version_command>
+    <command><![CDATA[
+        cp -R '${input_pan_or_profile_db.extra_files_path}' '${output_pan_or_profile_db.extra_files_path}'
+ &&
+ anvi-export-state
+
+#if $output_pan_or_profile_db:
+    --pan-or-profile-db '${output_pan_or_profile_db.extra_files_path}/${output_pan_or_profile_db.metadata.anvio_basename}'
+#end if
+
+
+#if $output_file:
+    --output-file '${output_file}'
+#end if
+
+
+#if $str( $state ):
+    --state '${state}'
+#end if
+
+${list_states}
+
+&> '${GALAXY_ANVIO_LOG}'
+
+    ]]></command>
+    <inputs>
+        <param name="input_pan_or_profile_db" type="data" label="Pan Or Profile Db" format="anvio_profile_db,anvio_pan_db" optional="False" multiple="False" argument="--pan-or-profile-db" help="Anvi'o pan or profile database (and even genes database in appropriate contexts)."/>
+        <param name="state" type="text" label="State" value="" optional="True" argument="--state" help="The state name to export."/>
+        <param name="list_states" type="boolean" label="List States" truevalue="--list-states" falsevalue="" checked="False" optional="True" argument="--list-states" help="Show available states and exit."/>
+    </inputs>
+    <outputs>
+        <data name="output_pan_or_profile_db" format="anvio_profile_db" format_source="input_pan_or_profile_db" metadata_source="input_pan_or_profile_db" label="${tool.name} on ${on_string}: Pan Or Profile Db"/>
+        <data name="output_file" format="txt" format_source="input_output_file" metadata_source="input_output_file" label="${tool.name} on ${on_string}: Output File"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-export-state [-h] -p PAN_OR_PROFILE_DB [-o FILE_PATH]
+                              [-s STATE_NAME] [--list-states]
+
+Export an anvi'o state into a profile database.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p PAN_OR_PROFILE_DB, --pan-or-profile-db PAN_OR_PROFILE_DB
+                        Anvi'o pan or profile database (and even genes
+                        database in appropriate contexts).
+  -o FILE_PATH, --output-file FILE_PATH
+                        File path to store results.
+  -s STATE_NAME, --state STATE_NAME
+                        The state name to export.
+  --list-states         Show available states and exit.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>
