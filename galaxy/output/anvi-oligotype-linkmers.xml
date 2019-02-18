@@ -18,8 +18,6 @@
 
 &> '${GALAXY_ANVIO_LOG}'
 
- &&
-ls -lahR
     ]]></command>
     <inputs>
         <param name="input_file" type="data" label="Input File" format="txt" optional="False" multiple="False" argument="--input-file" help="Output file of `anvi-report-linkmers`."/>
@@ -43,5 +41,9 @@ optional arguments:
     ]]></help>
     <citations>
         <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
     </citations>
 </tool>

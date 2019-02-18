@@ -66,8 +66,6 @@
 --just-do-it
 &> '${GALAXY_ANVIO_LOG}'
 
- &&
-ls -lahR
     ]]></command>
     <inputs>
         <param name="internal_genomes" type="data" label="Internal Genomes" format="txt" optional="True" multiple="False" argument="--internal-genomes" help="A five-column TAB-delimited flat text file. The header line must contain thse columns: 'name', 'bin_id', 'collection_id', 'profile_db_path', 'contigs_db_path'. Each line should list a single entry, where 'name' can be any name to describe the anvi'o bin identified as 'bin_id' that is stored in a collection."/>
@@ -210,5 +208,9 @@ OTHER IMPORTANT STUFF:
     ]]></help>
     <citations>
         <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
     </citations>
 </tool>

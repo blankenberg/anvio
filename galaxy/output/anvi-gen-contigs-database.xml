@@ -54,8 +54,6 @@ ${skip_mindful_splitting}
 
 &> '${GALAXY_ANVIO_LOG}'
 
- &&
-ls -lahR
     ]]></command>
     <inputs>
         <param name="contigs_fasta" type="data" label="Contigs Fasta" format="fasta" optional="False" multiple="False" argument="--contigs-fasta" help="The FASTA file that contains reference sequences you mapped your samples against. This could be a reference genome, or contigs from your assembler. Contig names in this file must match to those in other input files. If there is a problem anvi'o will gracefully complain about it."/>
@@ -202,5 +200,9 @@ GENES IN CONTIGS:
     ]]></help>
     <citations>
         <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
     </citations>
 </tool>

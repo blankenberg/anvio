@@ -144,6 +144,12 @@ MACROS_TEMPLATE = """<macros>
 </macros>
 """
 
+galaxy_tool_citation ='''@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }'''
+
+
 SHED_YML ="""name: anvio
 owner: blankenberg
 description: "Anvi’o: an advanced analysis and visualization platform for ‘omics data"
@@ -151,7 +157,7 @@ homepage_url: https://github.com/merenlab/anvio
 long_description: |
     Anvi’o is an analysis and visualization platform for ‘omics data. 
     It brings together many aspects of today’s cutting-edge genomic, metagenomic, and metatranscriptomic analysis practices to address a wide array of needs.
-remote_repository_url: https://github.com/blankenberg/
+remote_repository_url: https://github.com/blankenberg/anvio-galaxy
 type: unrestricted
 categories:
 - Metagenomics
@@ -477,6 +483,10 @@ class ParameterFASTA( ParameterFILE_PATH ):
     def get_format( self ):
         return "fasta"
 
+class ParameterFASTQ( ParameterFILE_PATH ):
+    def get_format( self ):
+        return "fastq"
+
 class ParameterGENBANK( ParameterFILE_PATH ):
     def get_format( self ):
         return "genbank"
@@ -484,6 +494,10 @@ class ParameterGENBANK( ParameterFILE_PATH ):
 class ParameterVARIABILITY_TABLE(ParameterFILE_PATH):
     def get_format(self):
         return 'anvio_variability'
+
+class ParameterClassifierFile(ParameterFILE_PATH):
+    def get_format(self):
+        return 'anvio_classifier'
 
 class ParameterProfileDB( ParameterDB ):
     def __init__( self, *args, **kwd ):
@@ -1056,7 +1070,17 @@ PARAMETER_BY_METAVAR = {
     'REPORT FILE': ParameterREPORT_FILE_PATH,
     'GENBANK': ParameterGENBANK,
     'GENBANK_METADATA': ParameterFILE_PATH,
-    
+    'OUTPUT_FASTA_TXT': ParameterFILE_PATH,
+    'EMAPPER_ANNOTATION_FILE': ParameterFILE_PATH,
+    'MATRIX_FILE': ParameterTABULAR,
+    'CLASSIFIER_FILE': ParameterClassifierFile,
+    'SAAV_FILE': ParameterTABULAR,
+    'SCV_FILE': ParameterTABULAR,
+    'OUTPUT_FILE': ParameterFILE_PATH,
+    'CHECKM TREE': ParameterFILE_PATH,
+    'CONFIG_FILE': ParameterFILE_PATH,
+    'FASTA_FILE': ParameterFASTA,
+    'FASTQ_FILES': ParameterFASTQ,
 }
 
 PARAMETER_BY_NAME = {
@@ -1202,7 +1226,7 @@ class FakeArg( argparse_original.ArgumentParser ):
         rval = "%s\n&> '${GALAXY_ANVIO_LOG}'\n" % (rval)
         if post_cmd:
             rval = "%s\n &&\n %s" % ( rval, post_cmd )
-        return rval + "\n &&\nls -lahR"
+        return rval #+ "\n && \nls -lahR" #Debug with showing directory listing in stdout
     def blankenberg_to_inputs( self, params ):
         rval = []
         for param in self.blankenberg_get_params( params ):
@@ -1247,6 +1271,8 @@ if __name__ == '__main__':
     outpath = os.path.join( os.curdir, 'output' )
     if not os.path.exists( outpath ):
         os.mkdir( outpath )
+    with open(os.path.join(outpath, '.shed.yml'), 'w') as fh:
+        fh.write(SHED_YML)
 
     scripts_outpath = os.path.join( outpath, 'scripts' )
     if not os.path.exists( scripts_outpath ):
@@ -1335,7 +1361,7 @@ blankenberg_parameters = blankenberg_parsing()""" % output
                                 #'tests': { output:'' },
                                 'help': blankenberg_parameters.format_help().replace( os.path.basename(__file__), filename),
                                 'doi': ['10.7717/peerj.1319'],
-                                #'bibtex_citations': None
+                                'bibtex_citations': [galaxy_tool_citation]
                                 }
                             print('template_dict', template_dict)
                             tool_xml = Template(TOOL_TEMPLATE).render( **template_dict )

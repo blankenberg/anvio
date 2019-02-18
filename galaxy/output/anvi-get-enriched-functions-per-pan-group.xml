@@ -69,8 +69,6 @@ ${list_annotation_sources}
 
 &> '${GALAXY_ANVIO_LOG}'
 
- &&
-ls -lahR
     ]]></command>
     <inputs>
         <param name="input_pan_db" type="data" label="Pan Db" format="anvio_pan_db" optional="False" multiple="False" argument="--pan-db" help="Anvi'o pan database"/>
@@ -161,5 +159,9 @@ OPTIONAL PARAMETERS:
     ]]></help>
     <citations>
         <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
     </citations>
 </tool>

@@ -10,7 +10,7 @@
     <command><![CDATA[
         anvi-script-get-short-reads-matching-something
 
-#if $str( $fastq_files ):
+#if $fastq_files:
      '${fastq_files}'
 #end if
 
@@ -37,11 +37,9 @@ ${report_raw}
 
 &> '${GALAXY_ANVIO_LOG}'
 
- &&
-ls -lahR
     ]]></command>
     <inputs>
-        <param name="fastq_files" type="text" label="Fastq Files" value="" optional="True" argument="" help="One or more FASTQ formatted files"/>
+        <param name="fastq_files" type="data" label="Fastq Files" format="fastq" optional="True" multiple="True" argument="" help="One or more FASTQ formatted files"/>
         <param name="match_sequence" type="text" label="Match Sequence" value="" optional="False" argument="--match-sequence" help="Short sequence to look for.."/>
         <param name="min_remainder_length" type="integer" label="Min Remainder Length" value="60" optional="True" argument="--min-remainder-length" help="Minimum lenght of the remainder of the read after the match. If your short read is XXXMMMMMMYYYYYYYYYYYYYY, where M indicates nucleotides of matchhing sequence, min remainder length is len(Y)."/>
         <param name="sample_name" type="text" label="Sample Name" value="" optional="False" argument="--sample-name" help="A short sample name (use a single word without spaces or fancy chars)"/>
@@ -55,7 +53,7 @@ ls -lahR
     <help><![CDATA[
         usage: anvi-script-get-short-reads-matching-something [-h] --match-sequence SHORT SEQUENCE [-m INT] -s
                               NAME [-O PATH] [--report-raw] [--stop-after INT]
-                              fastq_files [fastq_files ...]
+                              FASTQ_FILES [FASTQ_FILES ...]
 
 You give this program one or more FASTQ files and a short sequence, and it
 returns all short reads from the FASTQ file that matches to it. The purpose of
@@ -68,7 +66,7 @@ take a better look at those regions at the short read level without any
 mapping.
 
 positional arguments:
-  fastq_files           One or more FASTQ formatted files
+  FASTQ_FILES           One or more FASTQ formatted files
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -91,5 +89,9 @@ optional arguments:
     ]]></help>
     <citations>
         <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
     </citations>
 </tool>

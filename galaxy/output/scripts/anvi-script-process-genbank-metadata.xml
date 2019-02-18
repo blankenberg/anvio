@@ -17,21 +17,19 @@
 #end if
 
 
-#if $str( $output_fasta_txt ):
+#if $output_fasta_txt:
     --output-fasta-txt '${output_fasta_txt}'
 #end if
 
 &> '${GALAXY_ANVIO_LOG}'
 
- &&
-ls -lahR
     ]]></command>
     <inputs>
         <param name="metadata" type="data" label="Metadata" format="txt" optional="False" multiple="False" argument="--metadata" help="This is the file you get from the program `ncbi-genome-download` when you use the parameter `--metadata-table`."/>
     </inputs>
     <outputs>
         <data name="output_dir" format="anvio_profile_db" format_source="input_output_dir" metadata_source="input_output_dir" label="${tool.name} on ${on_string}: Output Dir"/>
-        
+        <data name="output_fasta_txt" format="txt" format_source="input_output_fasta_txt" metadata_source="input_output_fasta_txt" label="${tool.name} on ${on_string}: Output Fasta Txt"/>
         <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
     </outputs>
     <help><![CDATA[
@@ -68,5 +66,9 @@ OUTPUT:
     ]]></help>
     <citations>
         <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
     </citations>
 </tool>

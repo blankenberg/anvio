@@ -1,0 +1,20 @@
+name: anvio
+owner: blankenberg
+description: "Anvi’o: an advanced analysis and visualization platform for ‘omics data"
+homepage_url: https://github.com/merenlab/anvio
+long_description: |
+    Anvi’o is an analysis and visualization platform for ‘omics data. 
+    It brings together many aspects of today’s cutting-edge genomic, metagenomic, and metatranscriptomic analysis practices to address a wide array of needs.
+remote_repository_url: https://github.com/blankenberg/anvio-galaxy
+type: unrestricted
+categories:
+- Metagenomics
+auto_tool_repositories:
+  name_template: "{{ tool_id }}"
+  description_template: "Wrapper for the Anvi'o tool suite: {{ tool_name }}"
+suite:
+  name: "suite_anvio"
+  description: "Anvi’o: an advanced analysis and visualization platform for ‘omics data"
+  long_description: |
+    Anvi’o is an analysis and visualization platform for ‘omics data. 
+    It brings together many aspects of today’s cutting-edge genomic, metagenomic, and metatranscriptomic analysis practices to address a wide array of needs.

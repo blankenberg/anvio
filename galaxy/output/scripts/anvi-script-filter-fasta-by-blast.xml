@@ -29,8 +29,6 @@
 --just-do-it
 &> '${GALAXY_ANVIO_LOG}'
 
- &&
-ls -lahR
     ]]></command>
     <inputs>
         <param name="fasta_file" type="data" label="Fasta File" format="fasta" optional="True" multiple="False" argument="--fasta-file" help="A FASTA-formatted input file"/>
@@ -95,5 +93,9 @@ optional arguments:
     ]]></help>
     <citations>
         <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
     </citations>
 </tool>

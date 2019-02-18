@@ -25,8 +25,6 @@
 
 &> '${GALAXY_ANVIO_LOG}'
 
- &&
-ls -lahR
     ]]></command>
     <inputs>
         <param name="input_db_path" type="data" label="Db Path" format="anvio_db" optional="True" multiple="False" argument="" help="An anvi'o database."/>
@@ -56,5 +54,9 @@ optional arguments:
     ]]></help>
     <citations>
         <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
     </citations>
 </tool>

@@ -21,8 +21,6 @@
 
 &> '${GALAXY_ANVIO_LOG}'
 
- &&
-ls -lahR
     ]]></command>
     <inputs>
         <param name="program_names_to_focus" type="text" label="Program Names To Focus" value="" optional="True" argument="--program-names-to-focus" help="Comma-spearated list of program names to focus Mostly for debugging purposes."/>
@@ -47,5 +45,9 @@ optional arguments:
     ]]></help>
     <citations>
         <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
     </citations>
 </tool>

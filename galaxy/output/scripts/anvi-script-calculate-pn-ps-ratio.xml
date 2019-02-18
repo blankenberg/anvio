@@ -12,12 +12,12 @@
  &&
  anvi-script-calculate-pn-ps-ratio
 
-#if $str( $saav_table ):
+#if $saav_table:
     --saav-table '${saav_table}'
 #end if
 
 
-#if $str( $scv_table ):
+#if $scv_table:
     --scv-table '${scv_table}'
 #end if
 
@@ -45,12 +45,10 @@
 
 &> '${GALAXY_ANVIO_LOG}'
 
- &&
-ls -lahR
     ]]></command>
     <inputs>
-        <param name="saav_table" type="text" label="Saav Table" value="" optional="True" argument="--saav-table" help="Filepath to the SAAV table."/>
-        <param name="scv_table" type="text" label="Scv Table" value="" optional="True" argument="--scv-table" help="Filepath to the SCV table."/>
+        <param name="saav_table" type="data" label="Saav Table" format="tabular" optional="True" multiple="False" argument="--saav-table" help="Filepath to the SAAV table."/>
+        <param name="scv_table" type="data" label="Scv Table" format="tabular" optional="True" multiple="False" argument="--scv-table" help="Filepath to the SCV table."/>
         <param name="input_contigs_db" type="data" label="Contigs Db" format="anvio_contigs_db" optional="False" multiple="False" argument="--contigs-db" help="Filepath to the contigs database used to generate variability tables."/>
         <param name="min_departure_from_consensus" type="float" label="Min Departure From Consensus" value="0.1" optional="True" argument="--min-departure-from-consensus" help="Variants (either SCVs or SAAVs) will be ignored if they have a departure from consensus less than this value. Note: Keep in mind you may have already supplied this parameter during anvi-gen-variability-profile. Default is 0.1."/>
         <param name="minimum_num_variants" type="text" label="Minimum Num Variants" value="4" optional="True" argument="--minimum-num-variants" help="Ignore genes with less than this number of single codon variants. This avoids being impressed by pN/pS values of infinite, when really all that happened was a gene had 1 SAAV and 0 synonymous SCVs. The default is 4 to ensure some level of statistical importance."/>
@@ -62,17 +60,17 @@ ls -lahR
         <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
     </outputs>
     <help><![CDATA[
-        usage: anvi-script-calculate-pn-ps-ratio [-h] [-a SAAV_TABLE] [-b SCV_TABLE] -c
-                              CONTIGS_DB [-j FLOAT] [-i MINIMUM_NUM_VARIANTS]
+        usage: anvi-script-calculate-pn-ps-ratio [-h] [-a SAAV_FILE] [-b SCV_FILE] -c CONTIGS_DB
+                              [-j FLOAT] [-i MINIMUM_NUM_VARIANTS]
                               [-m MIN_COVERAGE] -o DIR_PATH
 
 Extract information for variable positions
 
 optional arguments:
   -h, --help            show this help message and exit
-  -a SAAV_TABLE, --saav-table SAAV_TABLE
+  -a SAAV_FILE, --saav-table SAAV_FILE
                         Filepath to the SAAV table.
-  -b SCV_TABLE, --scv-table SCV_TABLE
+  -b SCV_FILE, --scv-table SCV_FILE
                         Filepath to the SCV table.
   -c CONTIGS_DB, --contigs-db CONTIGS_DB
                         Filepath to the contigs database used to generate
@@ -115,5 +113,9 @@ TUNABLES:
     ]]></help>
     <citations>
         <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
     </citations>
 </tool>

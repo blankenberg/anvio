@@ -22,8 +22,6 @@ ${reset}
 
 &> '${GALAXY_ANVIO_LOG}'
 
- &&
-ls -lahR
     ]]></command>
     <inputs>
         <param name="input_pfam_data_dir" type="data" label="Pfam Data Dir" format="anvio_pfam_profile" optional="True" multiple="False" argument="--pfam-data-dir" help="The directory for Pfam data to be stored. If you leave it as is without specifying anything, the default destination for the data directory will be used to set things up. The advantage of it is that everyone will be using a single data directory, but then you may need superuser privileges to do it. Using this parameter you can choose the location of the data directory somewhere you like. However, when it is time to run Pfam, you will need to remember that path and provide it to the program."/>
@@ -60,5 +58,9 @@ optional arguments:
     ]]></help>
     <citations>
         <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
     </citations>
 </tool>

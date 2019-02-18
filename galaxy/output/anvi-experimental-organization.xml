@@ -58,8 +58,6 @@ ${dry_run}
 
 &> '${GALAXY_ANVIO_LOG}'
 
- &&
-ls -lahR
     ]]></command>
     <inputs>
         <param name="config_file" type="data" label="Config File" format="txt" optional="True" multiple="False" argument="" help="Config file for clustering of contigs. See documentation for help."/>
@@ -129,5 +127,9 @@ optional arguments:
     ]]></help>
     <citations>
         <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
     </citations>
 </tool>

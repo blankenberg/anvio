@@ -10,7 +10,7 @@
     <command><![CDATA[
         anvi-script-transpose-matrix
 
-#if $str( $input_file ):
+#if $input_file:
      '${input_file}'
 #end if
 
@@ -18,31 +18,33 @@
 
 &> '${GALAXY_ANVIO_LOG}'
 
- &&
-ls -lahR
     ]]></command>
     <inputs>
-        <param name="input_file" type="text" label="Input File" value="" optional="True" argument="" help="Input matrix."/>
+        <param name="input_file" type="data" label="Input File" format="tabular" optional="True" multiple="False" argument="" help="Input matrix."/>
     </inputs>
     <outputs>
-        <data name="output_file" format="txt" format_source="input_output_file" metadata_source="input_output_file" label="${tool.name} on ${on_string}: Output File"/>
+        <data name="output_file" format="tabular" format_source="input_output_file" metadata_source="input_output_file" label="${tool.name} on ${on_string}: Output File"/>
         <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
     </outputs>
     <help><![CDATA[
-        usage: anvi-script-transpose-matrix [-h] -o FILE_PATH input_file
+        usage: anvi-script-transpose-matrix [-h] -o MATRIX_FILE MATRIX_FILE
 
 Transpose a TAB-delimited file
 
 positional arguments:
-  input_file            Input matrix.
+  MATRIX_FILE           Input matrix.
 
 optional arguments:
   -h, --help            show this help message and exit
-  -o FILE_PATH, --output-file FILE_PATH
+  -o MATRIX_FILE, --output-file MATRIX_FILE
                         File path to store results.
 
     ]]></help>
     <citations>
         <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
     </citations>
 </tool>

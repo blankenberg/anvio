@@ -33,8 +33,6 @@ ${transpose}
 --just-do-it
 &> '${GALAXY_ANVIO_LOG}'
 
- &&
-ls -lahR
     ]]></command>
     <inputs>
         <param name="data_file" type="data" label="Data File" format="tabular" optional="True" multiple="False" argument="" help='The input file that describes an additional data for layers or items. The expected format of this file depends on the data table you will target. This can feel complicated, but we promise it is not (you probably have a PhD or working on one, so trust us when we say "it is not complicated"). You need to read the online documentation if this is your first time with this.'/>
@@ -89,5 +87,9 @@ optional arguments:
     ]]></help>
     <citations>
         <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
     </citations>
 </tool>

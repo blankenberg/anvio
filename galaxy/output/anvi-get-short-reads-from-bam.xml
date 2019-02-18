@@ -73,8 +73,6 @@ ${split_R1_and_R2}
 
  &&
  ( cp output_file_prefix* '${output_file_prefix.extra_files_path}/' || echo '' )
- &&
-ls -lahR
     ]]></command>
     <inputs>
         <param name="input_bams" type="data" label="Input Bams" format="bam" optional="True" multiple="True" argument="" help="BAM file(s) to access to recover short reads"/>
@@ -133,5 +131,9 @@ optional arguments:
     ]]></help>
     <citations>
         <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
     </citations>
 </tool>
