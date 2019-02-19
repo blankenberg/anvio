@@ -1,7 +1,7 @@
-<tool id="anvi_script_get_collection_info" name="anvi-script-get-collection-info" version="5.2">
+<tool id="anvi_script_get_collection_info" name="anvi-script-get-collection-info" version="5.3">
     <description>Provides information about each bin in a given collection.</description>
     <requirements>
-        <requirement type="package" version="5.2">anvio</requirement>
+        <requirement type="package" version="5.3">anvio</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />

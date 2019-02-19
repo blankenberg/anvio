@@ -1,7 +1,7 @@
-<tool id="anvi_script_gen_programs_vignette" name="anvi-script-gen-programs-vignette" version="5.2">
+<tool id="anvi_script_gen_programs_vignette" name="anvi-script-gen-programs-vignette" version="5.3">
     <description>Generate a vignette for anvi'o programs</description>
     <requirements>
-        <requirement type="package" version="5.2">anvio</requirement>
+        <requirement type="package" version="5.3">anvio</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />

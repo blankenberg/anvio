@@ -1,7 +1,7 @@
-<tool id="anvi_export_table" name="anvi-export-table" version="5.2">
+<tool id="anvi_export_table" name="anvi-export-table" version="5.3">
     <description>Export anvi'o database tables as TAB-delimited text files.</description>
     <requirements>
-        <requirement type="package" version="5.2">anvio</requirement>
+        <requirement type="package" version="5.3">anvio</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />

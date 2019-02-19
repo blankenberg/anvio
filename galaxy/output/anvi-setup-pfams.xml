@@ -1,7 +1,7 @@
-<tool id="anvi_setup_pfams" name="anvi-setup-pfams" version="5.2">
+<tool id="anvi_setup_pfams" name="anvi-setup-pfams" version="5.3">
     <description>Download Pfam data from the EBI</description>
     <requirements>
-        <requirement type="package" version="5.2">anvio</requirement>
+        <requirement type="package" version="5.3">anvio</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />

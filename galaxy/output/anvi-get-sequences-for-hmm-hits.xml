@@ -1,7 +1,7 @@
-<tool id="anvi_get_sequences_for_hmm_hits" name="anvi-get-sequences-for-hmm-hits" version="5.2">
+<tool id="anvi_get_sequences_for_hmm_hits" name="anvi-get-sequences-for-hmm-hits" version="5.3">
     <description>Get sequences for HMM hits from many inputs.</description>
     <requirements>
-        <requirement type="package" version="5.2">anvio</requirement>
+        <requirement type="package" version="5.3">anvio</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />

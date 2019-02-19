@@ -1,7 +1,7 @@
-<tool id="anvi_script_merge_collections" name="anvi-script-merge-collections" version="5.2">
+<tool id="anvi_script_merge_collections" name="anvi-script-merge-collections" version="5.3">
     <description>Generate an additional data file from multiple collections.</description>
     <requirements>
-        <requirement type="package" version="5.2">anvio</requirement>
+        <requirement type="package" version="5.3">anvio</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />

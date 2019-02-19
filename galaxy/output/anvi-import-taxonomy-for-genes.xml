@@ -1,7 +1,7 @@
-<tool id="anvi_import_taxonomy_for_genes" name="anvi-import-taxonomy-for-genes" version="5.2">
+<tool id="anvi_import_taxonomy_for_genes" name="anvi-import-taxonomy-for-genes" version="5.3">
     <description>Import gene-level taxonomy into an anvi'o contigs database.</description>
     <requirements>
-        <requirement type="package" version="5.2">anvio</requirement>
+        <requirement type="package" version="5.3">anvio</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />

@@ -1,7 +1,7 @@
-<tool id="anvi_get_codon_frequencies" name="anvi-get-codon-frequencies" version="5.2">
+<tool id="anvi_get_codon_frequencies" name="anvi-get-codon-frequencies" version="5.3">
     <description>Frequencies of AA linkmers</description>
     <requirements>
-        <requirement type="package" version="5.2">anvio</requirement>
+        <requirement type="package" version="5.3">anvio</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />

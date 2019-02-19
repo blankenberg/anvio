@@ -1,0 +1,45 @@
+<tool id="anvi_upgrade" name="anvi-upgrade" version="5.3">
+    <description>Download and install minor releases of anvi'o from a Github repository.</description>
+    <requirements>
+        <requirement type="package" version="5.3">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-upgrade --version</version_command>
+    <command><![CDATA[
+        anvi-upgrade
+
+#if $str( $repository ):
+    --repository '${repository}'
+#end if
+
+&> '${GALAXY_ANVIO_LOG}'
+
+    ]]></command>
+    <inputs>
+        <param name="repository" type="text" label="Repository" value="merenlab/anvio" optional="True" argument="--repository" help="Source repository to download releases, currently only Github is supported. Enter in 'merenlab/anvio' format."/>
+    </inputs>
+    <outputs>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-upgrade [-h] [--repository REPOSITORY]
+
+Download and install minor releases of anvi'o from a Github repository.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --repository REPOSITORY
+                        Source repository to download releases, currently only
+                        Github is supported. Enter in 'merenlab/anvio' format.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>

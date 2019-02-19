@@ -14,7 +14,7 @@ sys.path.append( os.path.abspath(os.path.join(os.path.dirname(__file__), os.pard
 import anvio
 
 
-ANVIO_VERSION = '5.2'#'2.1.0' #FIXME! change to real version
+ANVIO_VERSION = '5.3'#'2.1.0' #FIXME! change to real version
 
 TOOLS_TO_SKIP = ["anvi-display-contigs-stats","anvi-init-bam", "anvi-display-structure", "anvi-self-test", "anvi-run-workflow"]
 #anvi-self-test is kept, may be useful, it does launch a server and webbrowser, and then wait...so maybe not keep
@@ -582,8 +582,6 @@ class ParameterUnknownDB( ParameterFILE_PATH ):
         if multiple:
             return "${gxy_%s.metadata.anvio_basename}" % self.get_output_cmd_name()
         return "${%s.metadata.anvio_basename}" % self.get_output_cmd_name()
-        
-        return 'RUNINFO.cp'
     def to_cmd_line( self ):
         text = ''
         if self.multiple:

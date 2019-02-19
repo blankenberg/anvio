@@ -1,7 +1,7 @@
-<tool id="anvi_rename_bins" name="anvi-rename-bins" version="5.2">
+<tool id="anvi_rename_bins" name="anvi-rename-bins" version="5.3">
     <description>Rename all bins in a given collection (so they have pretty names).</description>
     <requirements>
-        <requirement type="package" version="5.2">anvio</requirement>
+        <requirement type="package" version="5.3">anvio</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />

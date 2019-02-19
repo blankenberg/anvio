@@ -1,7 +1,7 @@
-<tool id="anvi_gen_structure_database" name="anvi-gen-structure-database" version="5.2">
+<tool id="anvi_gen_structure_database" name="anvi-gen-structure-database" version="5.3">
     <description>Identifies genes in your contigs database that encode proteins that are                                                   homologous to proteins with solved structures. If sufficiently similar                                                   homologs are identified, they are used as structural templates to predict                                                   the 3D structure of proteins in your contigs database. This means we are                                                   at the mercy of structural biologists: if they have not solved a structure                                                   of a protein sufficiently similar in AA sequence to yours, this isn't going                                                   to work. But it's worth a try! The software we are using is MODELLER, more                                                   of which can be learned about at https://salilab.org/modeller/, or in our                                                   tutorial, which doesn't exist yet FIXME</description>
     <requirements>
-        <requirement type="package" version="5.2">anvio</requirement>
+        <requirement type="package" version="5.3">anvio</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />

@@ -1,7 +1,7 @@
-<tool id="anvi_pan_genome" name="anvi-pan-genome" version="5.2">
+<tool id="anvi_pan_genome" name="anvi-pan-genome" version="5.3">
     <description>A DIAMOND and MCL-based anvi'o pangenome workflow. You provide genomes from anywhere                                                  (whether they are external genomes, or anvi'o genome bins in collections), and it                                                  gives you back a pangenome analysis.</description>
     <requirements>
-        <requirement type="package" version="5.2">anvio</requirement>
+        <requirement type="package" version="5.3">anvio</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />

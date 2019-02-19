@@ -1,7 +1,7 @@
-<tool id="anvi_split" name="anvi-split" version="5.2">
+<tool id="anvi_split" name="anvi-split" version="5.3">
     <description>Split an anvi'o profile into smaller profiles. This is usually great when                                                  you want to share a subset of an anvi'o profile. You give this guy an anvi'o                                                  profile databsae, a contigs database, and a collection id, and it gives                                                  you back directories of profiles for each bin that can be treated as                                                  individual anvi'o profiles.</description>
     <requirements>
-        <requirement type="package" version="5.2">anvio</requirement>
+        <requirement type="package" version="5.3">anvio</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />

@@ -1,7 +1,7 @@
-<tool id="anvi_gen_gene_level_stats_databases" name="anvi-gen-gene-level-stats-databases" version="5.2">
+<tool id="anvi_gen_gene_level_stats_databases" name="anvi-gen-gene-level-stats-databases" version="5.3">
     <description>A program to compute genes databases for a ginen set of bins stored in                                                  an anvi'o collection. Genes databases store gene-level coverage and                                                  detection statistics, and they are usually computed and generated                                                  automatically when they are required (such as running anvi-interactive                                                  with `--gene-mode` flag). This program allows you to pre-compute them                                                  if you don't want them to be done all at once.</description>
     <requirements>
-        <requirement type="package" version="5.2">anvio</requirement>
+        <requirement type="package" version="5.3">anvio</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />

@@ -1,7 +1,7 @@
-<tool id="anvi_export_functions" name="anvi-export-functions" version="5.2">
+<tool id="anvi_export_functions" name="anvi-export-functions" version="5.3">
     <description>Export gene function calls from an anvi'o contigs database</description>
     <requirements>
-        <requirement type="package" version="5.2">anvio</requirement>
+        <requirement type="package" version="5.3">anvio</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />

@@ -1,7 +1,7 @@
-<tool id="anvi_get_sequences_for_gene_clusters" name="anvi-get-sequences-for-gene-clusters" version="5.2">
+<tool id="anvi_get_sequences_for_gene_clusters" name="anvi-get-sequences-for-gene-clusters" version="5.3">
     <description>Do cool stuff with gene clusters in anvi'o pan genomes</description>
     <requirements>
-        <requirement type="package" version="5.2">anvio</requirement>
+        <requirement type="package" version="5.3">anvio</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />

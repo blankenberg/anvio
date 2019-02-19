@@ -1,7 +1,7 @@
-<tool id="anvi_script_run_eggnog_mapper" name="anvi-script-run-eggnog-mapper" version="5.2">
+<tool id="anvi_script_run_eggnog_mapper" name="anvi-script-run-eggnog-mapper" version="5.3">
     <description>Run eggnog-mapper on a contigs database, and store results</description>
     <requirements>
-        <requirement type="package" version="5.2">anvio</requirement>
+        <requirement type="package" version="5.3">anvio</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />

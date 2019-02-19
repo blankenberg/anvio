@@ -1,7 +1,7 @@
-<tool id="anvi_gen_variability_matrix" name="anvi-gen-variability-matrix" version="5.2">
+<tool id="anvi_gen_variability_matrix" name="anvi-gen-variability-matrix" version="5.3">
     <description>Generate Variability Matrix</description>
     <requirements>
-        <requirement type="package" version="5.2">anvio</requirement>
+        <requirement type="package" version="5.3">anvio</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />

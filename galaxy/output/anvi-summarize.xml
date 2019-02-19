@@ -1,7 +1,7 @@
-<tool id="anvi_summarize" name="anvi-summarize" version="5.2">
+<tool id="anvi_summarize" name="anvi-summarize" version="5.3">
     <description>Summarize an anvi'o collection. Fun stuff.</description>
     <requirements>
-        <requirement type="package" version="5.2">anvio</requirement>
+        <requirement type="package" version="5.3">anvio</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />

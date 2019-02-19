@@ -1,7 +1,7 @@
-<tool id="anvi_script_snvs_to_interactive" name="anvi-script-snvs-to-interactive" version="5.2">
+<tool id="anvi_script_snvs_to_interactive" name="anvi-script-snvs-to-interactive" version="5.3">
     <description>Take the output of anvi-gen-variability-profile, prepare an output for interactive interface</description>
     <requirements>
-        <requirement type="package" version="5.2">anvio</requirement>
+        <requirement type="package" version="5.3">anvio</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />
