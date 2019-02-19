@@ -1,7 +1,7 @@
-<tool id="anvi_compute_completeness" name="anvi-compute-completeness" version="5.3">
+<tool id="anvi_compute_completeness" name="anvi-compute-completeness" version="5.3.0">
     <description>A script to generate completeness info for a given list of _splits_</description>
     <requirements>
-        <requirement type="package" version="5.3">anvio</requirement>
+        <requirement type="package" version="5.3.0">anvio</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />

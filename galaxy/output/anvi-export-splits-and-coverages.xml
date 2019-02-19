@@ -1,7 +1,7 @@
-<tool id="anvi_export_splits_and_coverages" name="anvi-export-splits-and-coverages" version="5.3">
+<tool id="anvi_export_splits_and_coverages" name="anvi-export-splits-and-coverages" version="5.3.0">
     <description>Export sequences and mean coverages across samples for splits or contigs</description>
     <requirements>
-        <requirement type="package" version="5.3">anvio</requirement>
+        <requirement type="package" version="5.3.0">anvio</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />

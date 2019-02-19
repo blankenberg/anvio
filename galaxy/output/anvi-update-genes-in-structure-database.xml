@@ -1,7 +1,7 @@
-<tool id="anvi_update_genes_in_structure_database" name="anvi-update-genes-in-structure-database" version="5.3">
+<tool id="anvi_update_genes_in_structure_database" name="anvi-update-genes-in-structure-database" version="5.3.0">
     <description>Add or remove genes from an already existing                                                   structure database. All settings used to generate                                                   your database will be used in this program.</description>
     <requirements>
-        <requirement type="package" version="5.3">anvio</requirement>
+        <requirement type="package" version="5.3.0">anvio</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />

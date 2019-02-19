@@ -1,7 +1,7 @@
-<tool id="anvi_saavs_and_protein_structures_summary" name="anvi-saavs-and-protein-structures-summary" version="5.3">
+<tool id="anvi_saavs_and_protein_structures_summary" name="anvi-saavs-and-protein-structures-summary" version="5.3.0">
     <description>Generate a static web site for SAAVs and protein structures.</description>
     <requirements>
-        <requirement type="package" version="5.3">anvio</requirement>
+        <requirement type="package" version="5.3.0">anvio</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />

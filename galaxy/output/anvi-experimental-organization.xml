@@ -1,7 +1,7 @@
-<tool id="anvi_experimental_organization" name="anvi-experimental-organization" version="5.3">
+<tool id="anvi_experimental_organization" name="anvi-experimental-organization" version="5.3.0">
     <description>why yes we do stuff here.</description>
     <requirements>
-        <requirement type="package" version="5.3">anvio</requirement>
+        <requirement type="package" version="5.3.0">anvio</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />

@@ -1,7 +1,7 @@
-<tool id="anvi_run_ncbi_cogs" name="anvi-run-ncbi-cogs" version="5.3">
+<tool id="anvi_run_ncbi_cogs" name="anvi-run-ncbi-cogs" version="5.3.0">
     <description>Run NCBI COGs on stuff.</description>
     <requirements>
-        <requirement type="package" version="5.3">anvio</requirement>
+        <requirement type="package" version="5.3.0">anvio</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />

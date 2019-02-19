@@ -1,7 +1,7 @@
-<tool id="anvi_gen_variability_profile" name="anvi-gen-variability-profile" version="5.3">
+<tool id="anvi_gen_variability_profile" name="anvi-gen-variability-profile" version="5.3.0">
     <description>Extract information for variable positions</description>
     <requirements>
-        <requirement type="package" version="5.3">anvio</requirement>
+        <requirement type="package" version="5.3.0">anvio</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />

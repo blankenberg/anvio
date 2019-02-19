@@ -1,7 +1,7 @@
-<tool id="anvi_script_process_genbank" name="anvi-script-process-genbank" version="5.3">
+<tool id="anvi_script_process_genbank" name="anvi-script-process-genbank" version="5.3.0">
     <description>This script takes a GenBank file, and outputs a FASTA file, as well as two                                                  additional TAB-delimited output files for external gene calls and gene                                                  functions that can be used with the programs `anvi-gen-contigs-database`                                                  and `anvi-import-functions`.</description>
     <requirements>
-        <requirement type="package" version="5.3">anvio</requirement>
+        <requirement type="package" version="5.3.0">anvio</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />
