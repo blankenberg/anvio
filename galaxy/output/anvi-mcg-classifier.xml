@@ -1,4 +1,4 @@
-<tool id="anvi_mcg_classifier" name="anvi-mcg-classifier" version="5.3.0">
+<tool id="anvi_mcg_classifier" name="anvi-mcg-classifier" version="5.3.0" tool_type="default">
     <description>A program to classify genes according to coverage across multiple metagenomes</description>
     <requirements>
         <requirement type="package" version="5.3.0">anvio</requirement>

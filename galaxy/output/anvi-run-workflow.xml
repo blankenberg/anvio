@@ -1,0 +1,125 @@
+<tool id="anvi_run_workflow" name="anvi-run-workflow" version="5.3.0" tool_type="default">
+    <requirements>
+        <requirement type="package" version="5.3.0">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-run-workflow --version</version_command>
+    <command><![CDATA[
+        anvi-run-workflow
+
+#if $str( $workflow ):
+    --workflow '${workflow}'
+#end if
+
+
+#if $str( $get_default_config ):
+    --get-default-config '${get_default_config}'
+#end if
+
+${list_workflows}
+
+${list_dependencies}
+
+
+#if $str( $config_file ):
+    --config-file '${config_file}'
+#end if
+
+${dry_run}
+
+${save_workflow_graph}
+
+
+#if $str( $additional_params ):
+    --additional-params '${additional_params}'
+#end if
+
+&> '${GALAXY_ANVIO_LOG}'
+
+    ]]></command>
+    <inputs>
+        <param name="workflow" type="text" label="Workflow" value="" optional="True" argument="--workflow" help="You must specify a workflow name. To see a list of available workflows run --list-workflows."/>
+        <param name="get_default_config" type="text" label="Get Default Config" value="" optional="True" argument="--get-default-config" help="Store a json formatted config file with all the default settings of the workflow. This is a good draft you could use in order to write your own config file. This config file contains all parameters that could be configured for this workflow. NOTICE: the config file is provided with default values only for parameters that are set by us in the workflow. The values for the rest of the parameters are determined by the relevant program."/>
+        <param name="list_workflows" type="boolean" label="List Workflows" truevalue="--list-workflows" falsevalue="" checked="" optional="True" argument="--list-workflows" help="Print a list of available snakemake workflows"/>
+        <param name="list_dependencies" type="boolean" label="List Dependencies" truevalue="--list-dependencies" falsevalue="" checked="" optional="True" argument="--list-dependencies" help="Print a list of the dependencies of this workflow. You must provide a workflow name and a config file. snakemake will figure out which rules need to be run according to your config file, and according to the files available on your disk. According to the rules that need to be run, we will let you know which programs are going to be used, so that you can make sure you have all of them installed and loaded."/>
+        <param name="config_file" type="text" label="Config File" value="" optional="True" argument="--config-file" help="TBD"/>
+        <param name="dry_run" type="boolean" label="Dry Run" truevalue="--dry-run" falsevalue="" checked="False" optional="True" argument="--dry-run" help="Don't do anything real. Test everything, and stop right before wherever the developer said 'well, this is enough testing', and decided to print out results."/>
+        <param name="save_workflow_graph" type="boolean" label="Save Workflow Graph" truevalue="--save-workflow-graph" falsevalue="" checked="" optional="True" argument="--save-workflow-graph" help="Save a graph representation of the workflow. If you are using this flag and if your system is unable to generate such graph outputs, you will hear anvi'o complaining (still, totally worth trying)."/>
+        <param name="additional_params" type="text" label="Additional Params" value="" optional="True" argument="--additional-params" help='Additional snakemake parameters to add when running snakemake. NOTICE: --additional-params HAS TO BE THE LAST ARGUMENT THAT IS PASSED TO anvi-run-workflow, ANYTHING THAT FOLLOWS WILL BE CONSIDERED AS PART OF THE ADDITIONAL PARAMETERS THAT ARE PASSED TO SNAKEMAKE. Any parameter that is accepted by snakemake should be fair game here, but it is your responsibility to make sure that whatever you added makes sense. To see what parameters are available please refer to the snakemake documentation. For example, you could use this to set up cluster submission using --additional-params --cluster "YOUR-CLUSTER-SUBMISSION-CMD"'/>
+    </inputs>
+    <outputs>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-run-workflow [-h] [-w WORKFLOW]
+                              [--get-default-config OUTPUT_FILENAME]
+                              [--list-workflows] [--list-dependencies]
+                              [-c CONFIG_FILE] [--dry-run]
+                              [--save-workflow-graph] [-A ...]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -w WORKFLOW, --workflow WORKFLOW
+                        You must specify a workflow name. To see a list of
+                        available workflows run --list-workflows.
+  --get-default-config OUTPUT_FILENAME
+                        Store a json formatted config file with all the
+                        default settings of the workflow. This is a good draft
+                        you could use in order to write your own config file.
+                        This config file contains all parameters that could be
+                        configured for this workflow. NOTICE: the config file
+                        is provided with default values only for parameters
+                        that are set by us in the workflow. The values for the
+                        rest of the parameters are determined by the relevant
+                        program.
+  --list-workflows      Print a list of available snakemake workflows
+  --list-dependencies   Print a list of the dependencies of this workflow. You
+                        must provide a workflow name and a config file.
+                        snakemake will figure out which rules need to be run
+                        according to your config file, and according to the
+                        files available on your disk. According to the rules
+                        that need to be run, we will let you know which
+                        programs are going to be used, so that you can make
+                        sure you have all of them installed and loaded.
+  -c CONFIG_FILE, --config-file CONFIG_FILE
+                        TBD
+  --dry-run             Don't do anything real. Test everything, and stop
+                        right before wherever the developer said 'well, this
+                        is enough testing', and decided to print out results.
+  --save-workflow-graph
+                        Save a graph representation of the workflow. If you
+                        are using this flag and if your system is unable to
+                        generate such graph outputs, you will hear anvi'o
+                        complaining (still, totally worth trying).
+  -A ..., --additional-params ...
+                        Additional snakemake parameters to add when running
+                        snakemake. NOTICE: --additional-params HAS TO BE THE
+                        LAST ARGUMENT THAT IS PASSED TO anvi-run-workflow,
+                        ANYTHING THAT FOLLOWS WILL BE CONSIDERED AS PART OF
+                        THE ADDITIONAL PARAMETERS THAT ARE PASSED TO
+                        SNAKEMAKE. Any parameter that is accepted by snakemake
+                        should be fair game here, but it is your
+                        responsibility to make sure that whatever you added
+                        makes sense. To see what parameters are available
+                        please refer to the snakemake documentation. For
+                        example, you could use this to set up cluster
+                        submission using --additional-params --cluster "YOUR-
+                        CLUSTER-SUBMISSION-CMD"
+
+ESSENTIAL INPUTS:
+  Things you must provide or this won't work
+
+ADDITIONAL STUFF:
+  additional stuff
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>

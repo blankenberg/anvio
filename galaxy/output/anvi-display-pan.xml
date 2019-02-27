@@ -1,0 +1,261 @@
+<tool id="anvi_display_pan" name="anvi-display-pan" version="5.3.0" tool_type="interactive">
+    <description>Start an anvi'o server to display a pan-genome</description>
+    <requirements>
+        <requirement type="package" version="5.3.0">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-display-pan --version</version_command>
+    <command><![CDATA[
+        cp -R '${input_pan_db.extra_files_path}' '${output_pan_db.extra_files_path}'
+ && 
+
+    #if $input_genomes_storage:
+        cp -R '${input_genomes_storage.extra_files_path}' '${output_genomes_storage.extra_files_path}'
+    #else
+        echo ''
+    #end if
+ &&
+ anvi-display-pan
+
+#if $output_pan_db:
+    --pan-db '${output_pan_db.extra_files_path}/${output_pan_db.metadata.anvio_basename}'
+#end if
+
+
+#if $output_genomes_storage:
+    --genomes-storage '${output_genomes_storage.extra_files_path}/${output_genomes_storage.metadata.anvio_basename}'
+#end if
+
+
+#if $view_data:
+    --view-data '${view_data}'
+#end if
+
+
+#if $tree:
+    --tree '${tree}'
+#end if
+
+
+#if $additional_view:
+    --additional-view '${additional_view}'
+#end if
+
+
+#if $additional_layers:
+    --additional-layers '${additional_layers}'
+#end if
+
+
+#if $str( $view ):
+    --view '${view}'
+#end if
+
+
+#if $str( $title ):
+    --title '${title}'
+#end if
+
+
+#if $str( $state_autoload ):
+    --state-autoload '${state_autoload}'
+#end if
+
+
+#if $str( $collection_autoload ):
+    --collection-autoload '${collection_autoload}'
+#end if
+
+
+#if $export_svg:
+    --export-svg '${export_svg}'
+#end if
+
+${skip_init_functions}
+
+${dry_run}
+
+${skip_auto_ordering}
+
+
+#if $str( $ip_address ):
+    --ip-address '${ip_address}'
+#end if
+
+
+#if $str( $port_number ):
+    --port-number '${port_number}'
+#end if
+
+
+#if $browser_path:
+    --browser-path '${browser_path}'
+#end if
+
+${read_only}
+
+${server_only}
+
+${password_protected}
+
+&> '${GALAXY_ANVIO_LOG}'
+
+    ]]></command>
+    <inputs>
+        <param name="input_pan_db" type="data" label="Pan Db" format="anvio_pan_db" optional="False" multiple="False" argument="--pan-db" help="Anvi'o pan database"/>
+        <param name="input_genomes_storage" type="data" label="Genomes Storage" format="anvio_genomes_db" optional="True" multiple="False" argument="--genomes-storage" help="Anvi'o genomes storage file"/>
+        <param name="view_data" type="data" label="View Data" format="tabular" optional="True" multiple="False" argument="--view-data" help="A TAB-delimited file for view data"/>
+        <param name="tree" type="data" label="Tree" format="newick" optional="True" multiple="False" argument="--tree" help="NEWICK formatted tree structure"/>
+        <param name="additional_view" type="data" label="Additional View" format="tabular" optional="True" multiple="False" argument="--additional-view" help="A TAB-delimited file for an additional view to be used in the interface. This file file should contain all split names, and values for each of them in all samples. Each column in this file must correspond to a sample name. Content of this file will be called 'user_view', which will be available as a new item in the 'views' combo box in the interface"/>
+        <param name="additional_layers" type="data" label="Additional Layers" format="tabular" optional="True" multiple="False" argument="--additional-layers" help="A TAB-delimited file for additional layers for splits. The first column of this file must be split names, and the remaining columns should be unique attributes. The file does not need to contain all split names, or values for each split in every column. Anvi'o will try to deal with missing data nicely. Each column in this file will be visualized as a new layer in the tree."/>
+        <param name="view" type="text" label="View" value="" optional="True" argument="--view" help="Start the interface with a pre-selected view. To see a list of available views, use --show-views flag."/>
+        <param name="title" type="text" label="Title" value="" optional="True" argument="--title" help="Title for the interface. If you are working with a RUNINFO dict, the title will be determined based on information stored in that file. Regardless, you can override that value using this parameter. If you are not using a anvio RUNINFO dictionary, a meaningful title will appear in the interface only if you define one using this parameter."/>
+        <param name="state_autoload" type="text" label="State Autoload" value="" optional="True" argument="--state-autoload" help="Automatically load previous saved state and draw tree. To see a list of available states, use --show-states flag."/>
+        <param name="collection_autoload" type="text" label="Collection Autoload" value="" optional="True" argument="--collection-autoload" help="Automatically load a collection and draw tree. To see a list of available collections, use --list-collections flag."/>
+        <param name="export_svg" type="data" label="Export Svg" format="txt" optional="True" multiple="False" argument="--export-svg" help="The SVG output file path."/>
+        <param name="skip_init_functions" type="boolean" label="Skip Init Functions" truevalue="--skip-init-functions" falsevalue="" checked="False" optional="True" argument="--skip-init-functions" help="When declared, function calls for genes will not be initialized (therefore will be missing from all relevant interfaces or output files). The use of this flag may reduce the memory fingerprint and processing time for large datasets."/>
+        <param name="dry_run" type="boolean" label="Dry Run" truevalue="--dry-run" falsevalue="" checked="False" optional="True" argument="--dry-run" help="Don't do anything real. Test everything, and stop right before wherever the developer said 'well, this is enough testing', and decided to print out results."/>
+        <param name="skip_auto_ordering" type="boolean" label="Skip Auto Ordering" truevalue="--skip-auto-ordering" falsevalue="" checked="False" optional="True" argument="--skip-auto-ordering" help="When declared, the attempt to include automatically generated orders of items based on additional data is skipped. In case those buggers cause issues with your data, and you still want to see your stuff and deal with the other issue maybe later."/>
+        <param name="ip_address" type="text" label="Ip Address" value="0.0.0.0" optional="True" argument="--ip-address" help="IP address for the HTTP server. The default ip address (%(default)s) should work just fine for most."/>
+        <param name="port_number" type="integer" label="Port Number" value="" optional="True" argument="--port-number" help="Port number to use for anvi'o services. If nothing is declared, anvi'o will try to find a suitable port number, starting from the default port number, 8080."/>
+        <param name="browser_path" type="data" label="Browser Path" format="txt" optional="True" multiple="False" argument="--browser-path" help="By default, anvi'o will use your default browser to launch the interactive interface. If you would like to use something else than your system default, you can provide a full path for an alternative browser using this parameter, and hope for the best. For instance we are using this parameter to call Google's experimental browser, Canary, which performs better with demanding visualizations."/>
+        <param name="read_only" type="boolean" label="Read Only" truevalue="--read-only" falsevalue="" checked="False" optional="True" argument="--read-only" help="When the interactive interface is started with this flag, all 'database write' operations will be disabled."/>
+        <param name="server_only" type="boolean" label="Server Only" truevalue="--server-only" falsevalue="" checked="False" optional="True" argument="--server-only" help="The default behavior is to start the local server, and fire up a browser that connects to the server. If you have other plans, and want to start the server without calling the browser, this is the flag you need."/>
+        <param name="password_protected" type="boolean" label="Password Protected" truevalue="--password-protected" falsevalue="" checked="False" optional="True" argument="--password-protected" help="If this flag is set, command line tool will ask you to enter a password and interactive interface will be only accessible after entering same password. This option is recommended for shared machines like clusters or shared networks where computers are not isolated."/>
+    </inputs>
+    <outputs>
+        <data name="output_pan_db" format="anvio_pan_db" format_source="input_pan_db" metadata_source="input_pan_db" label="${tool.name} on ${on_string}: Pan Db"/>
+        <data name="output_genomes_storage" format="anvio_genomes_db" format_source="input_genomes_storage" metadata_source="input_genomes_storage" label="${tool.name} on ${on_string}: Genomes Storage"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-display-pan [-h] -p PAN_DB [-g GENOMES_STORAGE]
+                              [-d VIEW_DATA] [-t NEWICK] [-V ADDITIONAL_VIEW]
+                              [-A ADDITIONAL_LAYERS] [--view NAME]
+                              [--title NAME] [--state-autoload NAME]
+                              [--collection-autoload NAME]
+                              [--export-svg FILE_PATH] [--skip-init-functions]
+                              [--dry-run] [--skip-auto-ordering] [-I IP_ADDR]
+                              [-P INT] [--browser-path PATH] [--read-only]
+                              [--server-only] [--password-protected]
+
+Start an anvi'o server to display a pan-genome
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p PAN_DB, --pan-db PAN_DB
+                        Anvi'o pan database
+  -g GENOMES_STORAGE, --genomes-storage GENOMES_STORAGE
+                        Anvi'o genomes storage file
+  -d VIEW_DATA, --view-data VIEW_DATA
+                        A TAB-delimited file for view data
+  -t NEWICK, --tree NEWICK
+                        NEWICK formatted tree structure
+  -V ADDITIONAL_VIEW, --additional-view ADDITIONAL_VIEW
+                        A TAB-delimited file for an additional view to be used
+                        in the interface. This file file should contain all
+                        split names, and values for each of them in all
+                        samples. Each column in this file must correspond to a
+                        sample name. Content of this file will be called
+                        'user_view', which will be available as a new item in
+                        the 'views' combo box in the interface
+  -A ADDITIONAL_LAYERS, --additional-layers ADDITIONAL_LAYERS
+                        A TAB-delimited file for additional layers for splits.
+                        The first column of this file must be split names, and
+                        the remaining columns should be unique attributes. The
+                        file does not need to contain all split names, or
+                        values for each split in every column. Anvi'o will try
+                        to deal with missing data nicely. Each column in this
+                        file will be visualized as a new layer in the tree.
+  --view NAME           Start the interface with a pre-selected view. To see a
+                        list of available views, use --show-views flag.
+  --title NAME          Title for the interface. If you are working with a
+                        RUNINFO dict, the title will be determined based on
+                        information stored in that file. Regardless, you can
+                        override that value using this parameter. If you are
+                        not using a anvio RUNINFO dictionary, a meaningful
+                        title will appear in the interface only if you define
+                        one using this parameter.
+  --state-autoload NAME
+                        Automatically load previous saved state and draw tree.
+                        To see a list of available states, use --show-states
+                        flag.
+  --collection-autoload NAME
+                        Automatically load a collection and draw tree. To see
+                        a list of available collections, use --list-
+                        collections flag.
+  --export-svg FILE_PATH
+                        The SVG output file path.
+  --skip-init-functions
+                        When declared, function calls for genes will not be
+                        initialized (therefore will be missing from all
+                        relevant interfaces or output files). The use of this
+                        flag may reduce the memory fingerprint and processing
+                        time for large datasets.
+  --dry-run             Don't do anything real. Test everything, and stop
+                        right before wherever the developer said 'well, this
+                        is enough testing', and decided to print out results.
+  --skip-auto-ordering  When declared, the attempt to include automatically
+                        generated orders of items based on additional data is
+                        skipped. In case those buggers cause issues with your
+                        data, and you still want to see your stuff and deal
+                        with the other issue maybe later.
+  -I IP_ADDR, --ip-address IP_ADDR
+                        IP address for the HTTP server. The default ip address
+                        (0.0.0.0) should work just fine for most.
+  -P INT, --port-number INT
+                        Port number to use for anvi'o services. If nothing is
+                        declared, anvi'o will try to find a suitable port
+                        number, starting from the default port number, 8080.
+  --browser-path PATH   By default, anvi'o will use your default browser to
+                        launch the interactive interface. If you would like to
+                        use something else than your system default, you can
+                        provide a full path for an alternative browser using
+                        this parameter, and hope for the best. For instance we
+                        are using this parameter to call Google's experimental
+                        browser, Canary, which performs better with demanding
+                        visualizations.
+  --read-only           When the interactive interface is started with this
+                        flag, all 'database write' operations will be
+                        disabled.
+  --server-only         The default behavior is to start the local server, and
+                        fire up a browser that connects to the server. If you
+                        have other plans, and want to start the server without
+                        calling the browser, this is the flag you need.
+  --password-protected  If this flag is set, command line tool will ask you to
+                        enter a password and interactive interface will be
+                        only accessible after entering same password. This
+                        option is recommended for shared machines like
+                        clusters or shared networks where computers are not
+                        isolated.
+
+INPUT FILES:
+  Input files from the pangenome analysis.
+
+OPTIONAL INPUTS:
+  Where the yay factor becomes a reality.
+
+ADDITIONAL STUFF:
+  Parameters to provide additional layers, views, or layer data.
+
+VISUALS RELATED:
+  Parameters that give access to various adjustements regarding the
+  interface.
+
+SWEET PARAMS OF CONVENIENCE:
+  Parameters and flags that are not quite essential (but nice to have).
+
+SERVER CONFIGURATION:
+  For power users.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>

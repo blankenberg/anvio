@@ -1,4 +1,4 @@
-<tool id="anvi_export_collection" name="anvi-export-collection" version="5.3.0">
+<tool id="anvi_export_collection" name="anvi-export-collection" version="5.3.0" tool_type="default">
     <description>Export a collection from an anvi'o database</description>
     <requirements>
         <requirement type="package" version="5.3.0">anvio</requirement>

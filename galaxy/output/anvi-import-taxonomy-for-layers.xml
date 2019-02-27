@@ -1,4 +1,4 @@
-<tool id="anvi_import_taxonomy_for_layers" name="anvi-import-taxonomy-for-layers" version="5.3.0">
+<tool id="anvi_import_taxonomy_for_layers" name="anvi-import-taxonomy-for-layers" version="5.3.0" tool_type="default">
     <description>Import layers-level taxonomy into an anvi'o additional layer data                                                  table in an anvi'o single-profile database.</description>
     <requirements>
         <requirement type="package" version="5.3.0">anvio</requirement>

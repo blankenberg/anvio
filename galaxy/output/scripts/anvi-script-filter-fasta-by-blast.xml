@@ -1,4 +1,4 @@
-<tool id="anvi_script_filter_fasta_by_blast" name="anvi-script-filter-fasta-by-blast" version="5.3.0">
+<tool id="anvi_script_filter_fasta_by_blast" name="anvi-script-filter-fasta-by-blast" version="5.3.0" tool_type="default">
     <description>Filter FASTA file according to BLAST table (remove sequences with bad
     BLAST alignment.</description>
     <requirements>

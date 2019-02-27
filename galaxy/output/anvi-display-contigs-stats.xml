@@ -1,0 +1,127 @@
+<tool id="anvi_display_contigs_stats" name="anvi-display-contigs-stats" version="5.3.0" tool_type="interactive">
+    <description>Start the anvi'o interactive interactive for viewing or comparing contigs statistics</description>
+    <requirements>
+        <requirement type="package" version="5.3.0">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-display-contigs-stats --version</version_command>
+    <command><![CDATA[
+        
+    #if $input_input:
+        cp -R '${input_input.extra_files_path}' '${output_input.extra_files_path}'
+    #else
+        echo ''
+    #end if
+ &&
+ anvi-display-contigs-stats
+ '${output_input.extra_files_path}/CONTIGS.db'
+
+${report_as_text}
+
+
+#if $output_file:
+    --output-file '${output_file}'
+#end if
+
+
+#if $str( $ip_address ):
+    --ip-address '${ip_address}'
+#end if
+
+
+#if $str( $port_number ):
+    --port-number '${port_number}'
+#end if
+
+
+#if $browser_path:
+    --browser-path '${browser_path}'
+#end if
+
+${server_only}
+
+${password_protected}
+
+&> '${GALAXY_ANVIO_LOG}'
+
+    ]]></command>
+    <inputs>
+        <param name="input_input" type="data" label="Input" format="anvio_contigs_db" optional="True" multiple="True" argument="" help="Anvio'o Contig databases to display statistics, you can give multiple databases by seperating them with space."/>
+        <param name="report_as_text" type="boolean" label="Report As Text" truevalue="--report-as-text" falsevalue="" checked="False" optional="True" argument="--report-as-text" help="If you give this flag, Anvi'o will not open new browser to show Contigs database statistics and write all stats to TAB separated file and you should also give --output-file with this flag otherwise Anvi'o will complain."/>
+        <param name="ip_address" type="text" label="Ip Address" value="0.0.0.0" optional="True" argument="--ip-address" help="IP address for the HTTP server. The default ip address (%(default)s) should work just fine for most."/>
+        <param name="port_number" type="integer" label="Port Number" value="" optional="True" argument="--port-number" help="Port number to use for anvi'o services. If nothing is declared, anvi'o will try to find a suitable port number, starting from the default port number, 8080."/>
+        <param name="browser_path" type="data" label="Browser Path" format="txt" optional="True" multiple="False" argument="--browser-path" help="By default, anvi'o will use your default browser to launch the interactive interface. If you would like to use something else than your system default, you can provide a full path for an alternative browser using this parameter, and hope for the best. For instance we are using this parameter to call Google's experimental browser, Canary, which performs better with demanding visualizations."/>
+        <param name="server_only" type="boolean" label="Server Only" truevalue="--server-only" falsevalue="" checked="False" optional="True" argument="--server-only" help="The default behavior is to start the local server, and fire up a browser that connects to the server. If you have other plans, and want to start the server without calling the browser, this is the flag you need."/>
+        <param name="password_protected" type="boolean" label="Password Protected" truevalue="--password-protected" falsevalue="" checked="False" optional="True" argument="--password-protected" help="If this flag is set, command line tool will ask you to enter a password and interactive interface will be only accessible after entering same password. This option is recommended for shared machines like clusters or shared networks where computers are not isolated."/>
+    </inputs>
+    <outputs>
+        <data name="output_input" format="anvio_contigs_db" format_source="input_input" metadata_source="input_input" label="${tool.name} on ${on_string}: Input"/>
+        <data name="output_file" format="txt" format_source="input_output_file" metadata_source="input_output_file" label="${tool.name} on ${on_string}: Output File"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-display-contigs-stats [-h] [--report-as-text] [-o FILE_PATH]
+                              [-I IP_ADDR] [-P INT] [--browser-path PATH]
+                              [--server-only] [--password-protected]
+                              CONTIG DATABASES) [CONTIG DATABASE(S ...]
+
+Start the anvi'o interactive interactive for viewing or comparing contigs
+statistics
+
+positional arguments:
+  CONTIG DATABASE(S)    Anvio'o Contig databases to display statistics, you
+                        can give multiple databases by seperating them with
+                        space.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --report-as-text      If you give this flag, Anvi'o will not open new
+                        browser to show Contigs database statistics and write
+                        all stats to TAB separated file and you should also
+                        give --output-file with this flag otherwise Anvi'o
+                        will complain.
+  -o FILE_PATH, --output-file FILE_PATH
+                        File path to store results.
+  -I IP_ADDR, --ip-address IP_ADDR
+                        IP address for the HTTP server. The default ip address
+                        (0.0.0.0) should work just fine for most.
+  -P INT, --port-number INT
+                        Port number to use for anvi'o services. If nothing is
+                        declared, anvi'o will try to find a suitable port
+                        number, starting from the default port number, 8080.
+  --browser-path PATH   By default, anvi'o will use your default browser to
+                        launch the interactive interface. If you would like to
+                        use something else than your system default, you can
+                        provide a full path for an alternative browser using
+                        this parameter, and hope for the best. For instance we
+                        are using this parameter to call Google's experimental
+                        browser, Canary, which performs better with demanding
+                        visualizations.
+  --server-only         The default behavior is to start the local server, and
+                        fire up a browser that connects to the server. If you
+                        have other plans, and want to start the server without
+                        calling the browser, this is the flag you need.
+  --password-protected  If this flag is set, command line tool will ask you to
+                        enter a password and interactive interface will be
+                        only accessible after entering same password. This
+                        option is recommended for shared machines like
+                        clusters or shared networks where computers are not
+                        isolated.
+
+REPORT CONFIGURATION:
+  Specify what kind of output you want.
+
+SERVER CONFIGURATION:
+  For power users.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>

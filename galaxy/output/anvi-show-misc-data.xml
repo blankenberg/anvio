@@ -1,4 +1,4 @@
-<tool id="anvi_show_misc_data" name="anvi-show-misc-data" version="5.3.0">
+<tool id="anvi_show_misc_data" name="anvi-show-misc-data" version="5.3.0" tool_type="default">
     <description>Show all misc data keys in all misc data tables</description>
     <requirements>
         <requirement type="package" version="5.3.0">anvio</requirement>

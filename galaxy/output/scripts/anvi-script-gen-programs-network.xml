@@ -1,4 +1,4 @@
-<tool id="anvi_script_gen_programs_network" name="anvi-script-gen-programs-network" version="5.3.0">
+<tool id="anvi_script_gen_programs_network" name="anvi-script-gen-programs-network" version="5.3.0" tool_type="default">
     <description>Generate a network of anvi'o programs</description>
     <requirements>
         <requirement type="package" version="5.3.0">anvio</requirement>

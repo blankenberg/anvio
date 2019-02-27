@@ -1,0 +1,94 @@
+<tool id="anvi_script_gen_hmm_hits_matrix_across_genomes" name="anvi-script-gen-hmm-hits-matrix-across-genomes" version="5.3.0" tool_type="default">
+    <description>A simple script to generate a TAB-delimited file for the presence                                                  or absence of HMM hits in a given set of contigs databases and an                                                  HMM source.</description>
+    <requirements>
+        <requirement type="package" version="5.3.0">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-script-gen-hmm-hits-matrix-across-genomes --version</version_command>
+    <command><![CDATA[
+        anvi-script-gen-hmm-hits-matrix-across-genomes
+
+#if $external_genomes:
+    --external-genomes '${external_genomes}'
+#end if
+
+
+#if $internal_genomes:
+    --internal-genomes '${internal_genomes}'
+#end if
+
+
+#if $str( $hmm_source ):
+    --hmm-source '${hmm_source}'
+#end if
+
+${list_hmm_sources}
+
+--output-file '${output_file}'
+
+&> '${GALAXY_ANVIO_LOG}'
+
+    ]]></command>
+    <inputs>
+        <param name="external_genomes" type="data" label="External Genomes" format="txt" optional="True" multiple="False" argument="--external-genomes" help="A two-column TAB-delimited flat text file that lists anvi'o contigs databases. The first item in the header line should read 'name', and the second should read 'contigs_db_path'. Each line in the file should describe a single entry, where the first column is the name of the genome (or MAG), and the second column is the anvi'o contigs database generated for this genome."/>
+        <param name="internal_genomes" type="data" label="Internal Genomes" format="txt" optional="True" multiple="False" argument="--internal-genomes" help="A five-column TAB-delimited flat text file. The header line must contain thse columns: 'name', 'bin_id', 'collection_id', 'profile_db_path', 'contigs_db_path'. Each line should list a single entry, where 'name' can be any name to describe the anvi'o bin identified as 'bin_id' that is stored in a collection."/>
+        <param name="hmm_source" type="text" label="Hmm Source" value="" optional="True" argument="--hmm-source" help="Use a specific HMM source. You can use '--list-hmm-sources' flag to see a list of available resources. The default is '%(default)s'."/>
+        <param name="list_hmm_sources" type="boolean" label="List Hmm Sources" truevalue="--list-hmm-sources" falsevalue="" checked="False" optional="True" argument="--list-hmm-sources" help="List available HMM sources in the contigs database and quit."/>
+    </inputs>
+    <outputs>
+        <data name="output_file" format="txt" format_source="input_output_file" metadata_source="input_output_file" label="${tool.name} on ${on_string}: Output File"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-script-gen-hmm-hits-matrix-across-genomes [-h] [-e FILE_PATH] [-i FILE_PATH]
+                              [--hmm-source SOURCE NAME] [-l] -o FILE_PATH
+
+A simple script to generate a TAB-delimited file for the presence or absence
+of HMM hits in a given set of contigs databases and an HMM source.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -e FILE_PATH, --external-genomes FILE_PATH
+                        A two-column TAB-delimited flat text file that lists
+                        anvi'o contigs databases. The first item in the header
+                        line should read 'name', and the second should read
+                        'contigs_db_path'. Each line in the file should
+                        describe a single entry, where the first column is the
+                        name of the genome (or MAG), and the second column is
+                        the anvi'o contigs database generated for this genome.
+  -i FILE_PATH, --internal-genomes FILE_PATH
+                        A five-column TAB-delimited flat text file. The header
+                        line must contain thse columns: 'name', 'bin_id',
+                        'collection_id', 'profile_db_path', 'contigs_db_path'.
+                        Each line should list a single entry, where 'name' can
+                        be any name to describe the anvi'o bin identified as
+                        'bin_id' that is stored in a collection.
+  --hmm-source SOURCE NAME
+                        Use a specific HMM source. You can use '--list-hmm-
+                        sources' flag to see a list of available resources.
+                        The default is 'None'.
+  -l, --list-hmm-sources
+                        List available HMM sources in the contigs database and
+                        quit.
+  -o FILE_PATH, --output-file FILE_PATH
+                        File path to store results.
+
+INPUT: INTERNAL/EXTERNAL GENOMES FILE:
+  Yes. You need to use an internal and/or external genomes file to tell
+  anvi'o where your contigs databases are.
+
+HMM STUFF:
+  This is where you can specify an HMM source, and/or a list of genes to
+  filter your results.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>

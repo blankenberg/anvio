@@ -1,4 +1,4 @@
-<tool id="anvi_script_gen_short_reads" name="anvi-script-gen-short-reads" version="5.3.0">
+<tool id="anvi_script_gen_short_reads" name="anvi-script-gen-short-reads" version="5.3.0" tool_type="default">
     <description>Generate short reads from contigs</description>
     <requirements>
         <requirement type="package" version="5.3.0">anvio</requirement>

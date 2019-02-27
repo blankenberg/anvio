@@ -1,4 +1,4 @@
-<tool id="anvi_gen_gene_consensus_sequences" name="anvi-gen-gene-consensus-sequences" version="5.3.0">
+<tool id="anvi_gen_gene_consensus_sequences" name="anvi-gen-gene-consensus-sequences" version="5.3.0" tool_type="default">
     <description>Collapse variability for a set of genes across samples</description>
     <requirements>
         <requirement type="package" version="5.3.0">anvio</requirement>

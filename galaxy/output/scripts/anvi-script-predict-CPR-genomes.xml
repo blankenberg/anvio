@@ -1,4 +1,4 @@
-<tool id="anvi_script_predict_CPR_genomes" name="anvi-script-predict-CPR-genomes" version="5.3.0">
+<tool id="anvi_script_predict_CPR_genomes" name="anvi-script-predict-CPR-genomes" version="5.3.0" tool_type="default">
     <description>Screen for genomes to find likely members of CPR</description>
     <requirements>
         <requirement type="package" version="5.3.0">anvio</requirement>

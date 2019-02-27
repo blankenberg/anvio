@@ -1,4 +1,4 @@
-<tool id="anvi_script_gen_distribution_of_genes_in_a_bin" name="anvi-script-gen-distribution-of-genes-in-a-bin" version="5.3.0">
+<tool id="anvi_script_gen_distribution_of_genes_in_a_bin" name="anvi-script-gen-distribution-of-genes-in-a-bin" version="5.3.0" tool_type="default">
     <description>Quantify the detection of genes in genomes in metagenomes to identify the environmental                                                  core. This is a helper script for anvi'o metapangenomic workflow.</description>
     <requirements>
         <requirement type="package" version="5.3.0">anvio</requirement>

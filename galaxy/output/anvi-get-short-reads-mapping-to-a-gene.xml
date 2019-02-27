@@ -1,4 +1,4 @@
-<tool id="anvi_get_short_reads_mapping_to_a_gene" name="anvi-get-short-reads-mapping-to-a-gene" version="5.3.0">
+<tool id="anvi_get_short_reads_mapping_to_a_gene" name="anvi-get-short-reads-mapping-to-a-gene" version="5.3.0" tool_type="default">
     <description>Access reads in contigs and positions in a BAM file</description>
     <requirements>
         <requirement type="package" version="5.3.0">anvio</requirement>

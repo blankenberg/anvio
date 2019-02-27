@@ -4,6 +4,7 @@
 """A script to convert anvi'o python scripts to Galaxy Tools."""
 import sys
 import os
+from collections import OrderedDict
 from xml.sax.saxutils import quoteattr
 
 from jinja2 import Template
@@ -16,7 +17,8 @@ import anvio
 
 ANVIO_VERSION = '5.3.0'#'2.1.0' #FIXME! change to real version
 
-TOOLS_TO_SKIP = ["anvi-display-contigs-stats","anvi-init-bam", "anvi-display-structure", "anvi-self-test", "anvi-run-workflow"]
+TOOLS_TO_SKIP = []#["anvi-display-contigs-stats","anvi-init-bam", "anvi-display-structure", "anvi-self-test", "anvi-run-workflow"]
+INTERACTIVE_TOOLS = ["anvi-display-contigs-stats","anvi-init-bam", "anvi-display-structure", "anvi-self-test", "anvi-run-workflow"]
 #anvi-self-test is kept, may be useful, it does launch a server and webbrowser, and then wait...so maybe not keep
 #waits on anvi-display-contigs-stats, add a shutdown button for server?
 
@@ -24,7 +26,12 @@ ONLY_DO_TOOLS = []#["anvi-import-state"]
 
 GALAXY_ANVIO_LOG_XML = '<data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>'
 
-TOOL_TEMPLATE = """<tool id="{{id}}" name="{{name}}" version="{{version}}">
+PROVIDES_TO_TOOL_TYPE=OrderedDict(interactive='interactive')
+DEFAULT_TOOL_TYPE = 'default'
+
+
+#profile="19.01"
+TOOL_TEMPLATE = """<tool id="{{id}}" name="{{name}}" version="{{version}}" tool_type="{{tool_type}}">
 {%- if description %}
     <description>{{ description }}</description>
 {%- endif %}
@@ -1079,6 +1086,7 @@ PARAMETER_BY_METAVAR = {
     'CONFIG_FILE': ParameterFILE_PATH,
     'FASTA_FILE': ParameterFASTA,
     'FASTQ_FILES': ParameterFASTQ,
+    'CONTIG DATABASE(S)': ParameterContigsDB,
 }
 
 PARAMETER_BY_NAME = {
@@ -1294,6 +1302,11 @@ if __name__ == '__main__':
                         print('python')
                         if "if __name__ == '__main__':" in input:
                             input = input.replace( "if __name__ == '__main__':", "def blankenberg_parsing():", 1)
+                        elif 'if __name__ == "__main__":' in input:
+                            input = input.replace('if __name__ == "__main__":', "def blankenberg_parsing():", 1)
+                        #elif 'anvio.get_args(parser)' in input:
+                        #    input = input.replace( "anvio.get_args(parser)", "def blankenberg_parsing():\n    anvio.get_args(parser)\n    return parser\n\n", 1)
+                        if True:
                             input = input.replace( "argparse.ArgumentParser", "FakeArg")
                             #assert 'parser.parse_args()' in input, "Can't find end! %s" % ( filename )
                             assert 'anvio.get_args(parser)' in input or 'parser.parse_args()' in input or 'parser.parse_known_args()' in input, "Can't find end! %s" % ( filename )
@@ -1334,6 +1347,12 @@ blankenberg_parameters = blankenberg_parsing()""" % output
                             print('blankenberg_parameters', blankenberg_parameters)
                             print(dir( blankenberg_parameters ))
                             print('desc', blankenberg_parameters.description)
+                            print( '__provides__ %s' % __provides__)
+                            tool_type = DEFAULT_TOOL_TYPE
+                            for provides, ttype in PROVIDES_TO_TOOL_TYPE.items():
+                                if provides in __provides__:
+                                    tool_type = ttype
+                                    break
                             #for a in dir( blankenberg_parameters ):
                             #    print '~', a, getattr( blankenberg_parameters, a )
                             #usage = blankenberg_parameters.format_help()
@@ -1345,6 +1364,7 @@ blankenberg_parameters = blankenberg_parsing()""" % output
                             #print '__name__', __name__
                             template_dict = {
                                 'id': filename.replace( '-', '_'),
+                                'tool_type': tool_type,
                                 'name': filename,
                                 'version': ANVIO_VERSION,
                                 'description': blankenberg_parameters.description,

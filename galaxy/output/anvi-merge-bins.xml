@@ -1,4 +1,4 @@
-<tool id="anvi_merge_bins" name="anvi-merge-bins" version="5.3.0">
+<tool id="anvi_merge_bins" name="anvi-merge-bins" version="5.3.0" tool_type="default">
     <description>Merge a given set of bins in an anvi'o collection</description>
     <requirements>
         <requirement type="package" version="5.3.0">anvio</requirement>

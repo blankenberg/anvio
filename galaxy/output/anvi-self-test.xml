@@ -1,0 +1,48 @@
+<tool id="anvi_self_test" name="anvi-self-test" version="5.3.0" tool_type="default">
+    <description>A script for anvi'o to test itself</description>
+    <requirements>
+        <requirement type="package" version="5.3.0">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-self-test --version</version_command>
+    <command><![CDATA[
+        anvi-self-test
+
+#if $str( $suite ):
+    --suite '${suite}'
+#end if
+
+&> '${GALAXY_ANVIO_LOG}'
+
+    ]]></command>
+    <inputs>
+        <param name="suite" type="text" label="Suite" value="full" optional="True" argument="--suite" help="Suite of tests to execute. By default this program will execute a full suite of example anvi'o commands to ensure your installation is ready to run all scenarios anvi'o developers could think of. Alternatively you can choose a specific test to run. Here is a full list of available options: mini, full, pangenomics, alons-classifier."/>
+    </inputs>
+    <outputs>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-self-test [-h] [--suite SUITE]
+
+A script for anvi'o to test itself
+
+optional arguments:
+  -h, --help     show this help message and exit
+  --suite SUITE  Suite of tests to execute. By default this program will
+                 execute a full suite of example anvi'o commands to ensure
+                 your installation is ready to run all scenarios anvi'o
+                 developers could think of. Alternatively you can choose a
+                 specific test to run. Here is a full list of available
+                 options: mini, full, pangenomics, alons-classifier.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>

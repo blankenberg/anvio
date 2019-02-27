@@ -1,0 +1,72 @@
+<tool id="anvi_db_info" name="anvi-db-info" version="5.3.0" tool_type="default">
+    <description>Access self tables, display values, or set new ones totally on your own risk.</description>
+    <requirements>
+        <requirement type="package" version="5.3.0">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-db-info --version</version_command>
+    <command><![CDATA[
+        anvi-db-info
+
+#if $str( $input ):
+     '${input}'
+#end if
+
+
+#if $str( $self_key ):
+    --self-key '${self_key}'
+#end if
+
+
+#if $str( $self_value ):
+    --self-value '${self_value}'
+#end if
+
+--just-do-it
+&> '${GALAXY_ANVIO_LOG}'
+
+    ]]></command>
+    <inputs>
+        <param name="input" type="text" label="Input" value="" optional="True" argument="" help="An anvi'o database for pan, profile, contigs, or auxiliary data"/>
+        <param name="self_key" type="text" label="Self Key" value="" optional="True" argument="--self-key" help="The key you wish to set or change."/>
+        <param name="self_value" type="text" label="Self Value" value="" optional="True" argument="--self-value" help="The value you wish to set for the self key."/>
+    </inputs>
+    <outputs>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-db-info [-h] [--self-key SELF_KEY]
+                              [--self-value SELF_VALUE] [--just-do-it]
+                              DATABASE_PATH
+
+Access self tables, display values, or set new ones totally on your own risk.
+
+positional arguments:
+  DATABASE_PATH         An anvi'o database for pan, profile, contigs, or
+                        auxiliary data
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --self-key SELF_KEY   The key you wish to set or change.
+  --self-value SELF_VALUE
+                        The value you wish to set for the self key.
+  --just-do-it          Don't bother me with questions or warnings, just do
+                        it.
+
+Input:
+  The database path you wish to access.
+
+Very dangerous zone:
+  For power users with extreme self-control and maturity.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>

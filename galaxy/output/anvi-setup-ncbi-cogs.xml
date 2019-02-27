@@ -1,4 +1,4 @@
-<tool id="anvi_setup_ncbi_cogs" name="anvi-setup-ncbi-cogs" version="5.3.0">
+<tool id="anvi_setup_ncbi_cogs" name="anvi-setup-ncbi-cogs" version="5.3.0" tool_type="default">
     <description>Download COG data from the NCBI</description>
     <requirements>
         <requirement type="package" version="5.3.0">anvio</requirement>

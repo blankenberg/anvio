@@ -1,4 +1,4 @@
-<tool id="anvi_gen_network" name="anvi-gen-network" version="5.3.0">
+<tool id="anvi_gen_network" name="anvi-gen-network" version="5.3.0" tool_type="default">
     <description>Generate a Gephi network for functions based on non-normalized gene coverage values</description>
     <requirements>
         <requirement type="package" version="5.3.0">anvio</requirement>

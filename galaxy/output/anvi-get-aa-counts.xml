@@ -1,4 +1,4 @@
-<tool id="anvi_get_aa_counts" name="anvi-get-aa-counts" version="5.3.0">
+<tool id="anvi_get_aa_counts" name="anvi-get-aa-counts" version="5.3.0" tool_type="default">
     <description>Collects AA counts information from a contigs database                                                  for a given bin, set of contigs, or set of genes.</description>
     <requirements>
         <requirement type="package" version="5.3.0">anvio</requirement>

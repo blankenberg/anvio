@@ -1,4 +1,4 @@
-<tool id="anvi_get_split_coverages" name="anvi-get-split-coverages" version="5.3.0">
+<tool id="anvi_get_split_coverages" name="anvi-get-split-coverages" version="5.3.0" tool_type="default">
     <description>Export splits and the coverage table from database</description>
     <requirements>
         <requirement type="package" version="5.3.0">anvio</requirement>

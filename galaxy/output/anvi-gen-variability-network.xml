@@ -1,4 +1,4 @@
-<tool id="anvi_gen_variability_network" name="anvi-gen-variability-network" version="5.3.0">
+<tool id="anvi_gen_variability_network" name="anvi-gen-variability-network" version="5.3.0" tool_type="default">
     <description>A program to generate a network description from an anvi'o                                                  variability profile.</description>
     <requirements>
         <requirement type="package" version="5.3.0">anvio</requirement>

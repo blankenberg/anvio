@@ -1,4 +1,4 @@
-<tool id="anvi_script_snvs_to_interactive" name="anvi-script-snvs-to-interactive" version="5.3.0">
+<tool id="anvi_script_snvs_to_interactive" name="anvi-script-snvs-to-interactive" version="5.3.0" tool_type="default">
     <description>Take the output of anvi-gen-variability-profile, prepare an output for interactive interface</description>
     <requirements>
         <requirement type="package" version="5.3.0">anvio</requirement>

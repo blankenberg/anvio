@@ -1,4 +1,4 @@
-<tool id="anvi_cluster_with_concoct" name="anvi-cluster-with-concoct" version="5.3.0">
+<tool id="anvi_cluster_with_concoct" name="anvi-cluster-with-concoct" version="5.3.0" tool_type="default">
     <description>A program to cluster items in a merged anvi'o profile using CONCOCT, and optionally                                                  creating a collection in the profile database. This is especially useful if you need to                                                  have more control over the number of clusters to work with if you are planning to refine                                                  them manually later.</description>
     <requirements>
         <requirement type="package" version="5.3.0">anvio</requirement>

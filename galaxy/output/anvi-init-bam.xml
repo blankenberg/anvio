@@ -1,0 +1,60 @@
+<tool id="anvi_init_bam" name="anvi-init-bam" version="5.3.0" tool_type="default">
+    <description>Sort/Index BAM files</description>
+    <requirements>
+        <requirement type="package" version="5.3.0">anvio</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <version_command>anvi-init-bam --version</version_command>
+    <command><![CDATA[
+        
+    #if $input_file:
+        ln -s '${input_file}' 'input_file.bam' && ln -s '${input_file.metadata.bam_index}' 'input_file.bam.bai'
+    #else
+        echo ''
+    #end if
+ &&
+ anvi-init-bam
+
+#if $input_file:
+     'input_file.bam'
+#end if
+
+
+#if $output_file:
+    --output-file '${output_file}'
+#end if
+
+&> '${GALAXY_ANVIO_LOG}'
+
+    ]]></command>
+    <inputs>
+        <param name="input_file" type="data" label="Input File" format="bam" optional="True" multiple="False" argument="" help="BAM file to analyze"/>
+    </inputs>
+    <outputs>
+        <data name="output_file" format="txt" format_source="input_output_file" metadata_source="input_output_file" label="${tool.name} on ${on_string}: Output File"/>
+        <data name="GALAXY_ANVIO_LOG" format="txt" label="${tool.name} on ${on_string}: Log"/>
+    </outputs>
+    <help><![CDATA[
+        usage: anvi-init-bam [-h] [-o FILE_PATH] BAM_FILE
+
+Sort/Index BAM files
+
+positional arguments:
+  BAM_FILE              BAM file to analyze
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -o FILE_PATH, --output-file FILE_PATH
+                        File path to store results.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.7717/peerj.1319</citation>
+        <citation type="bibtex">@ARTICLE{Blankenberg19-anvio,
+   author = {Daniel Blankenberg, et al},
+   title = {In preparation..},
+   }</citation>
+    </citations>
+</tool>
